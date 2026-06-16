@@ -117,6 +117,8 @@ slider.addEventListener("mousedown", (e) => {
   startX = e.clientX;
 });
 
+console.log(slider);
+
 slider.addEventListener("mouseup", (e) => {
   if (!isDragging) return;
   isDragging = false;
@@ -253,52 +255,126 @@ dots.forEach(dot => {
 
 /* Load articles from JSON file and display them in the specified container */
 
-async function loadArticles(jsonFile, containerId, limit = null) {
+async function loadArticles(jsonFile, containerId, category = null, limit = null) {
+  try {
 
-    try {
+      const response = await fetch(jsonFile);
+      const articles = await response.json();
 
-        const response = await fetch(jsonFile);
-        const articles = await response.json();
+      const container = document.getElementById(containerId);
 
-        const container = document.getElementById(containerId);
+      container.innerHTML = "";
 
-        container.innerHTML = "";
+      let data = articles;
 
-        let data = articles;
+      // Filter by category if provided
+      if (category) {
+          data = data.filter(article => article.category === category);
+      }
+      console.log(category);
+      // Limit results if needed
+      if (limit !== null) {
+          data = data.slice(0, limit);
+      }
 
-        if (limit) {
-            data = articles.slice(0, limit);
-        }
+      data.forEach(article => {
 
-        data.forEach(article => {
+          const card = document.createElement("article");
+          card.classList.add("card");
 
-            const card = document.createElement("article");
+          card.innerHTML = `
+              <img src="${article.img}" alt="${article.headline}">
 
-            card.classList.add("card");
+              <div class="cardContent">
+                  <h3>${article.headline}</h3>
+                  <p>${article.summary}</p>
+              </div>
+          `;
 
-            card.innerHTML = `
-                <img src="${article.img}" alt="${article.headline}">
+          container.appendChild(card);
 
-                <div class="content">
-                    <h3>${article.headline}</h3>
-                    <p>${article.summary}</p>
-                </div>
-            `;
+      });
 
-            container.appendChild(card);
+  }catch (error){
 
-        });
+      console.error("Error loading JSON:", error);
 
-    } catch (error) {
+  }
+}
 
-        console.error("Error loading JSON:", error);
+//HOME PAGE
+if (document.getElementById("newsGridEducation")) {
+  loadArticles("data/index.json", "topnewsGrid", 6);
+  loadArticles("data/index.json", "newsGridEducation", "Education", 4);
+  loadArticles("data/index.json", "newsGridPolitics", "Politics", 4);
+  loadArticles("data/index.json", "newsGridToday", "Trending", 4);
+  loadArticles("data/index.json", "newsGridEditor", "Editor", 4);
+}
 
-    }
+const page = window.location.pathname;
+//EDUCATION PAGE
+
+if (page.includes("education.html")) {
+
+    loadArticles("../data/index.json", "topNewsGrids", "Education", 4);
+    loadArticles("../data/index.json", "articlesGrid", "Education", 4);
 
 }
 
-loadArticles("data/index.json", "topnewsGrid", 4);
-loadArticles("data/index.json", "newsGridEducation", 4);
-loadArticles("data/index.json", "newsGridPolitics", 4);
-loadArticles("data/index.json", "newsGridToday", 4);
-loadArticles("data/index.json", "newsGridEditor", 4);
+
+//ENTERTAINMENT PAGE
+
+if (page.includes("entertainment.html")) {
+
+    loadArticles("../data/index.json", "topNewsGrids", "Entertainment", 4);
+    loadArticles("../data/index.json", "articlesGrid", "Entertainment", 4);
+
+}
+//ANNOUNCES PAGE
+
+if (page.includes("announces.html")) {
+
+    loadArticles("../data/index.json", "topNewsGrids", "Announces", 4);
+    loadArticles("../data/index.json", "articlesGrid", "Announces", 4);
+
+}
+//ECONOMY PAGE
+
+if (page.includes("economy.html")) {
+
+    loadArticles("../data/index.json", "topNewsGrids", "Economy", 4);
+    loadArticles("../data/index.json", "articlesGrid", "Economy", 4);
+
+}
+//POLITICS PAGE
+
+if (page.includes("politics.html")) {
+
+    loadArticles("../data/index.json", "topNewsGrids", "Politics", 4);
+    loadArticles("../data/index.json", "articlesGrid", "Politics", 4);
+
+}
+//LAUGH PAGE
+
+if (page.includes("laugh.html")) {
+
+    loadArticles("../data/index.json", "topNewsGrids", "Laugh", 4);
+    loadArticles("../data/index.json", "articlesGrid", "Laugh", 4);
+
+}
+//PRESS&EVENTS PAGE
+
+if (page.includes("pressEvent.html")) {
+
+    loadArticles("../data/index.json", "topNewsGrids", "Press&Events", 4);
+    loadArticles("../data/index.json", "articlesGrid", "Press&Events", 4);
+
+}
+//TODAY PAGE
+
+if (page.includes("today.html")) {
+
+    loadArticles("../data/index.json", "topNewsGrids", "Trending", 4);
+    loadArticles("../data/index.json", "articlesGrid", "Trending", 4);
+
+}
