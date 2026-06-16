@@ -1,0 +1,212 @@
+[
+  {
+    "id": 1,
+    "category": "Education",
+    "headline": "Education Story 1",
+    "summary": "Universities announce new academic policies for the upcoming session.",
+    "img": "https://picsum.photos/400/250?1"
+  },
+  {
+    "id": 2,
+    "category": "Politics",
+    "headline": "Politics Story 2",
+    "summary": "Lawmakers debate key reforms during a heated parliamentary session.",
+    "img": "https://picsum.photos/400/250?2"
+  },
+  {
+    "id": 3,
+    "category": "Economy",
+    "headline": "Economy Story 3",
+    "summary": "Analysts discuss recent trends affecting local businesses.",
+    "img": "https://picsum.photos/400/250?3"
+  },
+  {
+    "id": 4,
+    "category": "Entertainment",
+    "headline": "Entertainment Story 4",
+    "summary": "Popular artists prepare for a major music festival this summer.",
+    "img": "https://picsum.photos/400/250?4"
+  },
+  {
+    "id": 5,
+    "category": "Trending",
+    "headline": "Trending Story 5",
+    "summary": "Social media users react to a viral online challenge.",
+    "img": "https://picsum.photos/400/250?5"
+  },
+  {
+    "id": 6,
+    "category": "Jobs",
+    "headline": "Jobs Story 6",
+    "summary": "Several organizations announce new employment opportunities.",
+    "img": "https://picsum.photos/400/250?6"
+  },
+  {
+    "id": 7,
+    "category": "Laugh",
+    "headline": "Laugh Story 7",
+    "summary": "A humorous encounter leaves commuters laughing all day.",
+    "img": "https://picsum.photos/400/250?7"
+  },
+  {
+    "id": 8,
+    "category": "Education",
+    "headline": "Education Story 8",
+    "summary": "Schools receive additional resources to improve learning outcomes.",
+    "img": "https://picsum.photos/400/250?8"
+  },
+  {
+    "id": 9,
+    "category": "Politics",
+    "headline": "Politics Story 9",
+    "summary": "Political leaders meet to discuss national development goals.",
+    "img": "https://picsum.photos/400/250?9"
+  },
+  {
+    "id": 10,
+    "category": "Economy",
+    "headline": "Economy Story 10",
+    "summary": "Experts predict moderate growth across several sectors.",
+    "img": "https://picsum.photos/400/250?10"
+  },
+  {
+    "id": 11,
+    "category": "Entertainment",
+    "headline": "Entertainment Story 11",
+    "summary": "A new film breaks box-office expectations during its opening week.",
+    "img": "https://picsum.photos/400/250?11"
+  },
+  {
+    "id": 12,
+    "category": "Trending",
+    "headline": "Trending Story 12",
+    "summary": "Internet discussions focus on a surprising celebrity announcement.",
+    "img": "https://picsum.photos/400/250?12"
+  },
+  {
+    "id": 13,
+    "category": "Jobs",
+    "headline": "Jobs Story 13",
+    "summary": "Recruiters share advice for recent graduates entering the workforce.",
+    "img": "https://picsum.photos/400/250?13"
+  },
+  {
+    "id": 14,
+    "category": "Laugh",
+    "headline": "Laugh Story 14",
+    "summary": "Friends discover an unexpected solution to a simple problem.",
+    "img": "https://picsum.photos/400/250?14"
+  },
+  {
+    "id": 15,
+    "category": "Education",
+    "headline": "Education Story 15",
+    "summary": "Students celebrate achievements in a national competition.",
+    "img": "https://picsum.photos/400/250?15"
+  },
+  {
+    "id": 16,
+    "category": "Politics",
+    "headline": "Politics Story 16",
+    "summary": "Officials unveil plans aimed at improving public services.",
+    "img": "https://picsum.photos/400/250?16"
+  },
+  {
+    "id": 17,
+    "category": "Economy",
+    "headline": "Economy Story 17",
+    "summary": "Small businesses report increased customer activity this quarter.",
+    "img": "https://picsum.photos/400/250?17"
+  },
+  {
+    "id": 18,
+    "category": "Entertainment",
+    "headline": "Entertainment Story 18",
+    "summary": "Fans eagerly anticipate a highly anticipated concert tour.",
+    "img": "https://picsum.photos/400/250?18"
+  },
+  {
+    "id": 19,
+    "category": "Trending",
+    "headline": "Trending Story 19",
+    "summary": "A creative online campaign gains widespread attention.",
+    "img": "https://picsum.photos/400/250?19"
+  },
+  {
+    "id": 20,
+    "category": "Jobs",
+    "headline": "Jobs Story 20",
+    "summary": "Industry leaders discuss the future of workplace skills.",
+    "img": "https://picsum.photos/400/250?20"
+  },
+  {
+    "id": 21,
+    "category": "Laugh",
+    "headline": "Laugh Story 21",
+    "summary": "A mix-up at a local event produces an unforgettable moment.",
+    "img": "https://picsum.photos/400/250?21"
+  },
+  {
+    "id": 22,
+    "category": "Education",
+    "headline": "Education Story 22",
+    "summary": "Teachers receive recognition for innovative classroom projects.",
+    "img": "https://picsum.photos/400/250?22"
+  },
+  {
+    "id": 23,
+    "category": "Politics",
+    "headline": "Politics Story 23",
+    "summary": "Public consultations begin on a proposed legislative package.",
+    "img": "https://picsum.photos/400/250?23"
+  },
+  {
+    "id": 24,
+    "category": "Economy",
+    "headline": "Economy Story 24",
+    "summary": "Investors monitor developments affecting regional markets.",
+    "img": "https://picsum.photos/400/250?24"
+  },
+  {
+    "id": 25,
+    "category": "Entertainment",
+    "headline": "Entertainment Story 25",
+    "summary": "Award nominees are announced ahead of a major ceremony.",
+    "img": "https://picsum.photos/400/250?25"
+  },
+  {
+    "id": 26,
+    "category": "Trending",
+    "headline": "Trending Story 26",
+    "summary": "Users share creative content inspired by a popular trend.",
+    "img": "https://picsum.photos/400/250?26"
+  },
+  {
+    "id": 27,
+    "category": "Jobs",
+    "headline": "Jobs Story 27",
+    "summary": "Companies expand hiring efforts in response to growth plans.",
+    "img": "https://picsum.photos/400/250?27"
+  },
+  {
+    "id": 28,
+    "category": "Laugh",
+    "headline": "Laugh Story 28",
+    "summary": "An innocent misunderstanding sparks laughter among neighbors.",
+    "img": "https://picsum.photos/400/250?28"
+  },
+  {
+    "id": 29,
+    "category": "Education",
+    "headline": "Education Story 29",
+    "summary": "Researchers publish findings on effective study techniques.",
+    "img": "https://picsum.photos/400/250?29"
+  },
+  {
+    "id": 30,
+    "category": "Politics",
+    "headline": "Politics Story 30",
+    "summary": "Representatives conclude discussions on regional cooperation.",
+    "img": "https://picsum.photos/400/250?30"
+  }
+]
