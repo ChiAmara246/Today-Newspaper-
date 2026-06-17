@@ -489,11 +489,6 @@ footer{
         font-size:15px;
     }
 
-    .container section div{
-        grid-template-columns:repeat(2,1fr);
-        gap:10px;
-    }
-
     .container article{
         width:100%;
         min-height:auto;

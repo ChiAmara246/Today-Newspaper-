@@ -14,29 +14,16 @@ function searchFunction(){
 		}
 	}
 }
-/**
-function dateHour(){
-	const now = new Date();
-	const options = {
-		weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-	};
-	const date = now.toLocaleDateString('en-NG', options);
-	const hour = now.toLocaleTimeString('en-NG');
-	document.getElementById("date-hour").innerHTML = date + "|" + hour;
-}
-
-setInternal(dateHour, 1000);**/
-
 
 window.onload = function () {
-          function updateTime() {
-            const now = new Date();
-            document.getElementById("dateheure").innerHTML = now.toLocaleString();
-          }
+    function updateTime() {
+      const now = new Date();
+      document.getElementById("dateheure").innerHTML = now.toLocaleString();
+    }
 
-          updateTime();
-          setInterval(updateTime, 1000);
-        };
+    updateTime();
+    setInterval(updateTime, 1000);
+};
 
 
 let news = [
@@ -116,8 +103,6 @@ slider.addEventListener("mousedown", (e) => {
   isDragging = true;
   startX = e.clientX;
 });
-
-console.log(slider);
 
 slider.addEventListener("mouseup", (e) => {
   if (!isDragging) return;
@@ -255,52 +240,227 @@ dots.forEach(dot => {
 
 /* Load articles from JSON file and display them in the specified container */
 
-async function loadArticles(jsonFile, containerId, category = null, limit = null) {
-  try {
+async function loadArticles(jsonFile, containerId, category, limit = 4, page = 1) {
 
-      const response = await fetch(jsonFile);
-      const articles = await response.json();
+    const response = await fetch(jsonFile);
+    const articles = await response.json();
 
-      const container = document.getElementById(containerId);
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
 
-      container.innerHTML = "";
+    // 1. filter by category
+    let data = articles;
 
-      let data = articles;
+    if (category) {
+        data = data.filter(article => article.category === category);
+    }
+    const totalPages = Math.ceil(data.length / limit);
+    // 2. pagination math
+    const start = (page - 1) * limit;
+    const end = start + limit;
 
-      // Filter by category if provided
-      if (category) {
-          data = data.filter(article => article.category === category);
-      }
-      console.log(category);
-      // Limit results if needed
-      if (limit !== null) {
-          data = data.slice(0, limit);
-      }
+    const paginated = data.slice(start, end);
 
-      data.forEach(article => {
+    // 3. display cards
+    paginated.forEach((article, index) => {
 
-          const card = document.createElement("article");
-          card.classList.add("card");
+        const card = document.createElement("article");
+        card.classList.add("card");
 
-          card.innerHTML = `
-              <img src="${article.img}" alt="${article.headline}">
+        if (index === 0) {
+          card.classList.add("featured");
+        }
 
-              <div class="cardContent">
-                  <h3>${article.headline}</h3>
-                  <p>${article.summary}</p>
-              </div>
-          `;
+        card.innerHTML = `
+            <img src="${article.img}" alt="${article.headline}">
+            <div class="cardContent">
+                <h3>${article.headline}</h3>
+                <p>${article.summary}</p>
+            </div>
+        `;
 
-          container.appendChild(card);
+        container.appendChild(card);
 
-      });
+    });
 
-  }catch (error){
-
-      console.error("Error loading JSON:", error);
-
-  }
+    return totalPages; // important for pagination buttons
 }
+let currentPage = 1;
+let totalPages = 1;
+const limit = 4;
+const category = document.body.dataset.category;
+
+/*async function renderPage(page) {
+
+    const totalItems = await loadArticles(
+        "../data/index.json",
+        "articlesGrid",
+        category,
+        limit,
+        page
+    );
+
+    renderPagination(totalItems, page);
+}
+
+renderPage(currentPage);
+
+function renderPagination(totalItems, currentPage) {
+
+    const pagination = document.getElementById("pagination");
+    pagination.innerHTML = "";
+
+    const totalPages = Math.ceil(totalItems / limit);
+
+    // Prev
+    const prev = document.createElement("button");
+    prev.textContent = "Prev";
+    prev.disabled = currentPage === 1;
+
+    prev.onclick = () => {
+        if (currentPage > 1) {
+            currentPage--;
+            renderPage(currentPage);
+        }
+    };
+
+    pagination.appendChild(prev);
+
+    // Pages
+    for (let i = 1; i <= totalPages; i++) {
+
+        const btn = document.createElement("button");
+        btn.textContent = i;
+
+        if (i === currentPage) {
+            btn.classList.add("active");
+        }
+
+        btn.onclick = () => {
+            currentPage = i;
+            renderPage(currentPage);
+        };
+
+        pagination.appendChild(btn);
+    }
+
+    // Next
+    const next = document.createElement("button");
+    next.textContent = "Next";
+    next.disabled = currentPage === totalPages;
+
+    next.onclick = () => {
+        if (currentPage < totalPages) {
+            currentPage++;
+            renderPage(currentPage);
+        }
+    };
+
+    pagination.appendChild(next);
+}*/
+
+//PAGINATION
+
+const pagination = document.getElementById("pagination");
+
+if (pagination) {
+
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    const firstPageBtn = document.getElementById("firstPage");
+    const lastPageBtn = document.getElementById("lastPage");
+
+    function toggle(el, show) {
+        el.classList.toggle("hidden", !show);
+    }
+
+    async function renderPage(page) {
+
+        totalPages = await loadArticles(
+            "../data/index.json",
+            "articlesGrid",
+            category,
+            limit,
+            page
+        );
+
+        const currentPageEl = document.getElementById("currentPage");
+        const dots = document.querySelectorAll(".Dots");
+
+        currentPageEl.textContent = page;
+        firstPageBtn.textContent = 1;
+        lastPageBtn.textContent = totalPages;
+
+        const isFirst = page === 1;
+        const isLast = page === totalPages;
+
+        // Remove active state first
+        firstPageBtn.classList.remove("active-page");
+        lastPageBtn.classList.remove("active-page");
+
+        // Add active state to first or last page button
+        if (isFirst) {
+            firstPageBtn.classList.add("active-page");
+        }
+
+        if (isLast) {
+            lastPageBtn.classList.add("active-page");
+        }
+
+        // Show current page only when it is not first or last
+        toggle(currentPageEl, !isFirst && !isLast);
+
+        // Left dots
+        if (dots[0]) {
+            toggle(dots[0], page > 2);
+        }
+
+        // Right dots
+        if (dots[1]) {
+            toggle(dots[1], page < totalPages - 1);
+        }
+
+        prevBtn.disabled = isFirst;
+        nextBtn.disabled = isLast;
+    }
+
+    // Previous button
+    prevBtn.addEventListener("click", () => {
+        if (currentPage > 1) {
+            currentPage--;
+            renderPage(currentPage);
+        }
+    });
+
+    // Next button
+    nextBtn.addEventListener("click", () => {
+        if (currentPage < totalPages) {
+            currentPage++;
+            renderPage(currentPage);
+        }
+    });
+
+    // First page button
+    firstPageBtn.addEventListener("click", () => {
+        if (currentPage !== 1) {
+            currentPage = 1;
+            renderPage(currentPage);
+        }
+    });
+
+    // Last page button
+    lastPageBtn.addEventListener("click", () => {
+        if (currentPage !== totalPages) {
+            currentPage = totalPages;
+            renderPage(currentPage);
+        }
+    });
+
+    // Initial render
+    renderPage(currentPage);
+}
+
 
 //HOME PAGE
 if (document.getElementById("newsGridEducation")) {
@@ -316,8 +476,8 @@ const page = window.location.pathname;
 
 if (page.includes("education.html")) {
 
-    loadArticles("../data/index.json", "topNewsGrids", "Education", 4);
-    loadArticles("../data/index.json", "articlesGrid", "Education", 4);
+    loadArticles("../data/index.json", "topNewsGrids", "Education", 4, 1);
+    loadArticles("../data/index.json", "articlesGrid", "Education", 6, currentPage);
 
 }
 
@@ -326,55 +486,55 @@ if (page.includes("education.html")) {
 
 if (page.includes("entertainment.html")) {
 
-    loadArticles("../data/index.json", "topNewsGrids", "Entertainment", 4);
-    loadArticles("../data/index.json", "articlesGrid", "Entertainment", 4);
+    loadArticles("../data/index.json", "topNewsGrids", "Entertainment", 4, 1);
+    loadArticles("../data/index.json", "articlesGrid", "Entertainment", 6, currentPage);
 
 }
 //ANNOUNCES PAGE
 
 if (page.includes("announces.html")) {
 
-    loadArticles("../data/index.json", "topNewsGrids", "Announces", 4);
-    loadArticles("../data/index.json", "articlesGrid", "Announces", 4);
+    loadArticles("../data/index.json", "topNewsGrids", "Announces", 4, 1);
+    loadArticles("../data/index.json", "articlesGrid", "Announces", 6, currentPage);
 
 }
 //ECONOMY PAGE
 
 if (page.includes("economy.html")) {
 
-    loadArticles("../data/index.json", "topNewsGrids", "Economy", 4);
-    loadArticles("../data/index.json", "articlesGrid", "Economy", 4);
+    loadArticles("../data/index.json", "topNewsGrids", "Economy", 4, 1);
+    loadArticles("../data/index.json", "articlesGrid", "Economy", 6, currentPage);
 
 }
 //POLITICS PAGE
 
 if (page.includes("politics.html")) {
 
-    loadArticles("../data/index.json", "topNewsGrids", "Politics", 4);
-    loadArticles("../data/index.json", "articlesGrid", "Politics", 4);
+    loadArticles("../data/index.json", "topNewsGrids", "Politics", 4, 1);
+    loadArticles("../data/index.json", "articlesGrid", "Politics", 6, currentPage);
 
 }
 //LAUGH PAGE
 
 if (page.includes("laugh.html")) {
 
-    loadArticles("../data/index.json", "topNewsGrids", "Laugh", 4);
-    loadArticles("../data/index.json", "articlesGrid", "Laugh", 4);
+    loadArticles("../data/index.json", "topNewsGrids", "Laugh", 4, 1);
+    loadArticles("../data/index.json", "articlesGrid", "Laugh", 6, currentPage);
 
 }
 //PRESS&EVENTS PAGE
 
 if (page.includes("pressEvent.html")) {
 
-    loadArticles("../data/index.json", "topNewsGrids", "Press&Events", 4);
-    loadArticles("../data/index.json", "articlesGrid", "Press&Events", 4);
+    loadArticles("../data/index.json", "topNewsGrids", "Press&Events", 4, 1);
+    loadArticles("../data/index.json", "articlesGrid", "Press&Events", 6, currentPage);
 
 }
 //TODAY PAGE
 
 if (page.includes("today.html")) {
 
-    loadArticles("../data/index.json", "topNewsGrids", "Trending", 4);
-    loadArticles("../data/index.json", "articlesGrid", "Trending", 4);
+    loadArticles("../data/index.json", "topNewsGrids", "Trending", 4, 1);
+    loadArticles("../data/index.json", "articlesGrid", "Trending", 6, currentPage);
 
 }
