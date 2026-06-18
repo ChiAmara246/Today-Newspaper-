@@ -278,7 +278,11 @@ async function loadArticles(jsonFile, containerId, category, limit = 4, page = 1
                 <p>${article.summary}</p>
             </div>
         `;
-
+        card.addEventListener("click", () => {
+          console.log("CLICKED");
+    console.log(`../article.html?id=${article.id}`);
+    window.location.href = `../article.html?id=${article.id}`;
+});
         container.appendChild(card);
 
     });

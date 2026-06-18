@@ -226,7 +226,99 @@ nav a:hover{
 nav a.active{
     background:white !important;
 }
+/*article.html*/
+.article-page{
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 0 25px 60px;
+}
 
+.article-page h1{
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.15;
+    color: #111;
+    margin-bottom: 20px;
+}
+
+.meta{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    color: #777;
+    font-size: .95rem;
+    padding-bottom: 20px;
+    margin-bottom: 35px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+#author{
+    font-weight: 600;
+    color: #333;
+}
+
+#articleImg{
+    width: 100%;
+    height: auto;
+    max-height: 550px;
+    object-fit: cover;
+    display: block;
+    border-radius: 18px;
+    margin-bottom: 40px;
+    box-shadow: 0 15px 40px rgba(0,0,0,.12);
+    transition: transform .4s ease;
+}
+
+#articleImg:hover{
+    transform: scale(1.01);
+}
+
+#story{
+    font-size: 1.15rem;
+    line-height: 2;
+    color: #333;
+    text-align: justify;
+    padding: 20px;
+}
+
+#story p{
+    margin-bottom: 24px;
+}
+
+#story::first-letter{
+    float: left;
+    font-size: 4rem;
+    line-height: .9;
+    font-weight: 700;
+    margin-right: 10px;
+    color: #c1121f;
+}
+
+@media (max-width: 768px){
+
+    .article-page{
+        margin-top: 30px;
+        padding: 0 18px 40px;
+    }
+
+    .article-page h1{
+        font-size: 2rem;
+    }
+
+    .meta{
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    #story{
+        font-size: 1rem;
+        line-height: 1.9;
+    }
+
+    #story::first-letter{
+        font-size: 3rem;
+    }
+}
 /* MAIN CONTENT */
 
 .container0{
@@ -488,7 +580,6 @@ footer{
         padding:8px 12px;
         font-size:15px;
     }
-
     .container article{
         width:100%;
         min-height:auto;
