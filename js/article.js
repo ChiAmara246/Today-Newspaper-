@@ -1,6 +1,62 @@
 const params = new URLSearchParams(window.location.search);
 const articleId = Number(params.get("id"));
 
+async function loadRelatedArticles(articleId) {
+    
+    const response = await fetch("../data/index.json");
+    const articles = await response.json(); 
+
+    const currentArticle = articles.find(a => a.id === articleId);
+    if (!currentArticle) return;
+
+    let related = articles.filter(article =>
+        article.category === currentArticle.category &&
+        article.id !== articleId
+    );
+
+    if (related.length < 4) {
+        const extra = articles.filter(article =>
+            article.id !== articleId &&
+            !related.includes(article)
+        );
+
+        related = [...related, ...extra];
+    }
+
+    related = related.slice(0, 4);
+
+    const container = document.getElementById("relatedGrid");
+    container.innerHTML = "";
+
+    related.forEach(article => {
+
+        const card = document.createElement("article");
+        card.classList.add("card");
+
+        card.innerHTML = `
+            <h3>${article.headline}</h3>
+        `;
+
+        card.addEventListener("click", () => {
+            window.location.href = `article.html?id=${article.id}`;
+        });
+
+        container.appendChild(card);
+    });
+
+
+if (related.length < 4) {
+
+    const extra = articles.filter(article =>
+        article.id !== articleId &&
+        !related.includes(article)
+    );
+
+    related = [...related, ...extra];
+}
+
+related = related.slice(0, 4);
+}
 async function loadArticle() {
 
     const response = await fetch("../data/index.json");
@@ -27,6 +83,8 @@ async function loadArticle() {
 
     document.getElementById("story").textContent =
         article.fullStory;
-}
 
+    loadRelatedArticles(articleId);
+
+}
 loadArticle();

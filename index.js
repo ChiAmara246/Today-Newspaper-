@@ -1,19 +1,6 @@
-function searchFunction(){
-	let input = document.getElementById("searchInput");
-	let filter = input.value.toLowerCase();
-	let ul = document.getElementById("artcleList");
-	let il = ul.getElementByTagName("li");
-	
-	for (let i = 0; i < li.length; i++){
-		let text = li[i].textContent || li[i].innerText;
-		if (text.toLowerCase().indexOf(filter) > -1){
-			li[i].style.display = "";
-		}
-		else{
-			li[i].style.display = "none";
-		}
-	}
-}
+/* =========================
+   GLOBAL DATA
+========================= */
 
 window.onload = function () {
     function updateTime() {
@@ -140,93 +127,28 @@ slider.addEventListener("touchend", (e) => {
 //createDots();
 //showSlide(0);
 
-function toggleMenu(){
-document.getElementById("links").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
+ /* =========================
+   MENU SYSTEM
+=========================  */
+
+function toggleMenu(id) {
+    const el = document.getElementById(id);
+    const overlay = document.getElementById("overlay");
+
+    if (!el || !overlay) return;
+
+    el.classList.toggle("show");
+    overlay.classList.toggle("show");
 }
 
-function closeMenu(){
-document.getElementById("links").classList.remove("show");
-document.getElementById("overlay").classList.remove("show");
-}
+function closeMenu(id) {
+    const el = document.getElementById(id);
+    const overlay = document.getElementById("overlay");
 
-function toggleMenuAbout(){
-document.getElementById("linksAbout").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
-}
+    if (!el || !overlay) return;
 
-function closeMenu(){
-document.getElementById("linksAbout").classList.remove("show");
-document.getElementById("overlay").classList.remove("show");
-}
-
-function toggleMenuAnnounces(){
-document.getElementById("linksAnnounces").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
-}
-
-function closeMenu(){
-document.getElementById("linksAnnounces").classList.remove("show");
-document.getElementById("overlay").classList.remove("show");
-}
-
-function toggleMenuEconomy(){
-document.getElementById("linksEconomy").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
-}
-
-function closeMenu(){
-document.getElementById("linksEconomy").classList.remove("show");
-document.getElementById("overlay").classList.remove("show");
-}
-
-function toggleMenuEducation(){
-document.getElementById("linksEducation").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
-}
-function closeMenu(){
-document.getElementById("linksEducation").classList.remove("show");
-document.getElementById("overlay").classList.remove("show");
-}
-
-function toggleMenuEntertainment(){
-document.getElementById("linksEntertainment").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
-}
-
-function closeMenu(){
-document.getElementById("linksEntertainment").classList.remove("show");
-document.getElementById("overlay").classList.remove("show");
-}
-
-function toggleMenuLaugh(){
-document.getElementById("linksLaugh").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
-}
-
-function closeMenu(){
-document.getElementById("linksLaugh").classList.remove("show");
-document.getElementById("overlay").classList.remove("show");
-}
-
-function toggleMenuPolitics(){
-document.getElementById("linksPolitics").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
-}
-
-function closeMenu(){
-document.getElementById("linksPolitics").classList.remove("show");
-document.getElementById("overlay").classList.remove("show");
-}
-
-function toggleMenuToday(){
-document.getElementById("linksToday").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
-}
-
-function closeMenu(){
-document.getElementById("linksToday").classList.remove("show");
-document.getElementById("overlay").classList.remove("show");
+    el.classList.remove("show");
+    overlay.classList.remove("show");
 }
 
 const dots = document.querySelectorAll('.dotP');
@@ -241,7 +163,7 @@ dots.forEach(dot => {
 /* Load articles from JSON file and display them in the specified container */
 
 async function loadArticles(jsonFile, containerId, category, limit = 4, page = 1) {
-
+    console.log("loadArticles called");
     const response = await fetch(jsonFile);
     const articles = await response.json();
 
@@ -250,7 +172,7 @@ async function loadArticles(jsonFile, containerId, category, limit = 4, page = 1
 
     // 1. filter by category
     let data = articles;
-
+    allArticles = data;
     if (category) {
         data = data.filter(article => article.category === category);
     }
@@ -286,82 +208,100 @@ async function loadArticles(jsonFile, containerId, category, limit = 4, page = 1
         container.appendChild(card);
 
     });
-
-    return totalPages; // important for pagination buttons
+    console.log("articles loaded", allArticles.length);
+    return totalPages;
 }
+
+/* =========================
+   SEARCH SYSTEM (SAFE)
+========================= */
+
+let allArticles = null;
+
+async function searchFunction() {
+
+    const input = document.getElementById("searchInput");
+    if (!input) return;
+
+    const query = input.value.toLowerCase().trim();
+
+    const home = document.querySelector("div.container");
+    const results = document.getElementById("searchResults");
+
+    if (!results) return;
+
+    // 🔥 ALWAYS LOAD ARTICLES FIRST (once)
+    if (!allArticles) {
+        try {
+            const res = await fetch("../data/index.json");
+            allArticles = await res.json();
+        } catch (err) {
+            console.error("Failed to load articles:", err);
+            return;
+        }
+    }
+
+    // 🔥 ALWAYS FORCE HIDE CONTAINER WHEN SEARCH RUNS
+    if (home) home.style.display = "none";
+
+    // RESET STATE (empty search = show home again)
+    if (query === "") {
+
+        if (home) home.style.display = "block";
+
+        results.classList.add("hidden");
+        results.innerHTML = "";
+        return;
+    }
+
+    // FILTER
+    const matches = allArticles.filter(a =>
+        (a.headline || "").toLowerCase().includes(query) ||
+        (a.summary || "").toLowerCase().includes(query) ||
+        (a.category || "").toLowerCase().includes(query)
+    );
+
+    // SHOW RESULTS
+    results.classList.remove("hidden");
+
+    results.innerHTML = `
+        <h2>Search Results (${matches.length})</h2>
+        <div class="searchGrid"></div>
+    `;
+
+    const grid = results.querySelector(".searchGrid");
+
+    if (matches.length === 0) {
+        grid.innerHTML = "<p>No articles found</p>";
+        return;
+    }
+
+    matches.forEach(article => {
+
+        const card = document.createElement("article");
+        card.classList.add("card");
+
+        card.innerHTML = `
+            <img src="${article.img}">
+            <div class="cardContent">
+                <h3>${article.headline}</h3>
+                <p>${article.summary}</p>
+            </div>
+        `;
+
+        card.addEventListener("click", () => {
+            window.location.href = `navpages/article.html?id=${article.id}`;
+        });
+
+        grid.appendChild(card);
+    });
+}
+
 let currentPage = 1;
 let totalPages = 1;
 const limit = 4;
 const category = document.body.dataset.category;
 
-/*async function renderPage(page) {
-
-    const totalItems = await loadArticles(
-        "../data/index.json",
-        "articlesGrid",
-        category,
-        limit,
-        page
-    );
-
-    renderPagination(totalItems, page);
-}
-
-renderPage(currentPage);
-
-function renderPagination(totalItems, currentPage) {
-
-    const pagination = document.getElementById("pagination");
-    pagination.innerHTML = "";
-
-    const totalPages = Math.ceil(totalItems / limit);
-
-    // Prev
-    const prev = document.createElement("button");
-    prev.textContent = "Prev";
-    prev.disabled = currentPage === 1;
-
-    prev.onclick = () => {
-        if (currentPage > 1) {
-            currentPage--;
-            renderPage(currentPage);
-        }
-    };
-
-    pagination.appendChild(prev);
-
-    // Pages
-    for (let i = 1; i <= totalPages; i++) {
-
-        const btn = document.createElement("button");
-        btn.textContent = i;
-
-        if (i === currentPage) {
-            btn.classList.add("active");
-        }
-
-        btn.onclick = () => {
-            currentPage = i;
-            renderPage(currentPage);
-        };
-
-        pagination.appendChild(btn);
-    }
-
-    // Next
-    const next = document.createElement("button");
-    next.textContent = "Next";
-    next.disabled = currentPage === totalPages;
-
-    next.onclick = () => {
-        if (currentPage < totalPages) {
-            currentPage++;
-            renderPage(currentPage);
-        }
-    };
-
-    pagination.appendChild(next);
-}*/
 
 //PAGINATION
 
@@ -542,3 +482,4 @@ if (page.includes("today.html")) {
     loadArticles("../data/index.json", "articlesGrid", "Trending", 6, currentPage);
 
 }
+

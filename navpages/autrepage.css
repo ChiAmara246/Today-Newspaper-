@@ -262,6 +262,7 @@ nav a:hover{
     width:100%;
     box-sizing:border-box;
     padding:10px;
+    justify-content: space-between;
 }
 .grid{
     display:grid;
@@ -449,34 +450,82 @@ nav a:hover{
     color:white;
     font-size:0.85rem;
 }
+/*search article*/
 
+.hidden{
+    display:none;
+}
+
+.searchGrid .card{
+    background:#fff;
+    border:1px solid rgba(0,0,0,0.08);
+    border-radius:12px;
+    transition:0.2s ease;
+    height:260px;
+    display:flex;
+    flex-direction:column;
+}
+.searchGrid .card img{
+    height:120px;
+    width:100%;
+    object-fit:cover;
+}
+.searchGrid .cardContent{
+    padding:10px 12px;
+}
+
+.searchGrid .cardContent h3{
+    font-size:0.95rem;
+    margin:0;
+}
+
+.searchGrid .cardContent p{
+    font-size:0.8rem;
+    -webkit-line-clamp:2;
+}
+/*search tag*/
+.categoryTag{
+    display:inline-block;
+    margin-bottom:12px;
+    padding:4px 10px;
+    border-radius:20px;
+
+    background:#c1121f;
+    color:white;
+    width: fit-content;
+
+    font-size:.75rem;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+}
 /*latest news style*/
-#articlesGrid{
+.grid{
     display:grid;
     grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
     gap:20px;
 }
-#articlesGrid .card{
+.grid .card{
     background:#fff;
     border:1px solid rgba(0,0,0,0.08);
     border-radius:12px;
     transition:0.2s ease;
 }
-#articlesGrid .card img{
+.grid .card img{
     height:120px;
     width:100%;
     object-fit:cover;
 }
-#articlesGrid .cardContent{
+.grid .cardContent{
     padding:10px 12px;
 }
 
-#articlesGrid .cardContent h3{
+.grid .cardContent h3{
     font-size:0.95rem;
     margin:0;
 }
 
-#articlesGrid .cardContent p{
+.grid .cardContent p{
     font-size:0.8rem;
     -webkit-line-clamp:2;
 }
