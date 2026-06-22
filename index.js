@@ -1,6 +1,51 @@
 /* =========================
    GLOBAL DATA
 ========================= */
+/*topnews home page*/
+function renderTopNews(articles) {
+
+    const categories = [
+        "Education",
+        "Politics",
+        "Trending",
+        "Entertainment"
+    ];
+
+    const selected = categories
+        .map(category =>
+            articles
+                .filter(article => article.category === category)
+                .sort((a, b) => b.id - a.id)[0]
+        )
+        .filter(Boolean)
+        .sort((a, b) => b.id - a.id);
+
+    if (!selected.length) return;
+
+    const hero = selected[0];
+    const others = selected.slice(1);
+    const grid = document.getElementById("topnewsGrid");
+    grid.innerHTML = `
+        <div class="hero-news">    
+            <img src="${hero.img}" alt="${hero.headline}">
+            <div class="content">
+                <span class="categoryTag">${hero.category}</span>
+                <h3>${hero.headline}</h3>
+                <p>${hero.summary}</p>
+            </div>
+        </div>
+        <div class="side-news">
+            ${others.map(article => `
+                    <img src="${article.img}" alt="${article.headline}">
+                    <div>
+                        <span class="categoryTag">${article.category}</span>
+                        <h4>${article.headline}</h4>
+                    </div>
+            `).join("")}
+        </div>
+    `;
+
+}
 
 window.onload = function () {
     function updateTime() {
@@ -163,10 +208,11 @@ dots.forEach(dot => {
 /* Load articles from JSON file and display them in the specified container */
 
 async function loadArticles(jsonFile, containerId, category, limit = 4, page = 1) {
-    console.log("loadArticles called");
     const response = await fetch(jsonFile);
     const articles = await response.json();
-
+    if (document.getElementById("newsGridEducation")) {
+        renderTopNews(articles);
+    }
     const container = document.getElementById(containerId);
     container.innerHTML = "";
 
@@ -208,7 +254,6 @@ async function loadArticles(jsonFile, containerId, category, limit = 4, page = 1
         container.appendChild(card);
 
     });
-    console.log("articles loaded", allArticles.length);
     return totalPages;
 }
 
@@ -266,10 +311,10 @@ async function searchFunction() {
 
     results.innerHTML = `
         <h2>Search Results (${matches.length})</h2>
-        <div class="searchGrid"></div>
+        <div class="grid"></div>
     `;
 
-    const grid = results.querySelector(".searchGrid");
+    const grid = results.querySelector(".grid");
 
     if (matches.length === 0) {
         grid.innerHTML = "<p>No articles found</p>";
@@ -284,13 +329,14 @@ async function searchFunction() {
         card.innerHTML = `
             <img src="${article.img}">
             <div class="cardContent">
+                <span class="categoryTag">${article.category}</span>
                 <h3>${article.headline}</h3>
                 <p>${article.summary}</p>
             </div>
         `;
 
         card.addEventListener("click", () => {
-            window.location.href = `navpages/article.html?id=${article.id}`;
+            window.location.href = `../article.html?id=${article.id}`;
         });
 
         grid.appendChild(card);

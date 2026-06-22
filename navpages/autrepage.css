@@ -314,10 +314,11 @@ nav a:hover{
     box-shadow: 0 4px 12px rgba(0,0,0,0.12);
 }
 .active-page{
-    background:#0b2c5f !important;
+    background:#111 !important;
     color:white !important;
-    border-color:#0b2c5f !important;
     box-shadow:0 6px 14px rgba(11,44,95,0.25);
+    font-size: 14px;
+    min-width: 24px;
 }
 /* dots = subtle, not noisy */
 .Dots{
@@ -364,7 +365,7 @@ nav a:hover{
 }
 .container article img{
     width:100%;
-    height:140px;   /* reduced from ~180–220 */
+    height:140px;
     object-fit:cover;
     display:block;
 }
@@ -373,7 +374,7 @@ nav a:hover{
     transform:scale(1.05);
 }
 .cardContent{
-    padding:12px 14px; /* tighter spacing */
+    padding:12px 14px;
     display:flex;
     flex-direction:column;
     gap:6px;
@@ -391,7 +392,7 @@ nav a:hover{
     line-height:1.4;
 
     display:-webkit-box;
-    -webkit-line-clamp:2; /* try 2 lines only */
+    -webkit-line-clamp:2;
     -webkit-box-orient:vertical;
     overflow:hidden;
 }
@@ -456,37 +457,19 @@ nav a:hover{
     display:none;
 }
 
-.searchGrid .card{
-    background:#fff;
-    border:1px solid rgba(0,0,0,0.08);
-    border-radius:12px;
-    transition:0.2s ease;
-    height:260px;
-    display:flex;
-    flex-direction:column;
+#searchResults{
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
 }
-.searchGrid .card img{
-    height:120px;
-    width:100%;
-    object-fit:cover;
-}
-.searchGrid .cardContent{
-    padding:10px 12px;
+#searchResults h2{
+    border-bottom:1px solid rgb(215, 215, 215);
+    padding: 10px;
 }
 
-.searchGrid .cardContent h3{
-    font-size:0.95rem;
-    margin:0;
-}
-
-.searchGrid .cardContent p{
-    font-size:0.8rem;
-    -webkit-line-clamp:2;
-}
 /*search tag*/
 .categoryTag{
     display:inline-block;
-    margin-bottom:12px;
     padding:4px 10px;
     border-radius:20px;
 
