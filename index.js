@@ -26,24 +26,34 @@ function renderTopNews(articles) {
     const others = selected.slice(1);
     const grid = document.getElementById("topnewsGrid");
     grid.innerHTML = `
-        <div class="hero-news">    
-            <img src="${hero.img}" alt="${hero.headline}">
-            <div class="content">
-                <span class="categoryTag">${hero.category}</span>
-                <h3>${hero.headline}</h3>
-                <p>${hero.summary}</p>
+    <div class="hero-card" data-id="${hero.id}">
+        <img src="${hero.img}" alt="${hero.headline}">
+        <div class="content">
+            <span class="categoryTag">${hero.category}</span>
+            <h3>${hero.headline}</h3>
+            <p>${hero.summary}</p>
+        </div>
+    </div>
+
+    <div class="side-news">
+        ${others.map(article => `
+            <div class="side-card" data-id="${article.id}">
+                <img src="${article.img}" alt="${article.headline}">
+                <div>
+                    <span class="categoryTag">${article.category}</span>
+                    <h4>${article.headline}</h4>
+                </div>
             </div>
-        </div>
-        <div class="side-news">
-            ${others.map(article => `
-                    <img src="${article.img}" alt="${article.headline}">
-                    <div>
-                        <span class="categoryTag">${article.category}</span>
-                        <h4>${article.headline}</h4>
-                    </div>
-            `).join("")}
-        </div>
-    `;
+        `).join("")}
+    </div>
+`;
+grid.addEventListener("click", (e) => {
+    const card = e.target.closest("[data-id]");
+    if (!card) return;
+
+    window.location.href =
+        `../article.html?id=${card.dataset.id}`;
+});
 
 }
 
