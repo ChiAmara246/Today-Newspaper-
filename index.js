@@ -32,6 +32,7 @@ function renderTopNews(articles) {
             <span class="categoryTag">${hero.category}</span>
             <h3>${hero.headline}</h3>
             <p>${hero.summary}</p>
+            <span class="date">${hero.date}</span>
         </div>
     </div>
 
@@ -42,6 +43,7 @@ function renderTopNews(articles) {
                 <div>
                     <span class="categoryTag">${article.category}</span>
                     <h4>${article.headline}</h4>
+                    <span class="date">${article.date}</span>
                 </div>
             </div>
         `).join("")}
@@ -186,25 +188,95 @@ slider.addEventListener("touchend", (e) => {
    MENU SYSTEM
 =========================  */
 
-function toggleMenu(id) {
-    const el = document.getElementById(id);
-    const overlay = document.getElementById("overlay");
-
-    if (!el || !overlay) return;
-
-    el.classList.toggle("show");
-    overlay.classList.toggle("show");
+function toggleMenu(){
+document.getElementById("links").classList.toggle("show");
+document.getElementById("overlay").classList.toggle("show");
 }
 
-function closeMenu(id) {
-    const el = document.getElementById(id);
-    const overlay = document.getElementById("overlay");
-
-    if (!el || !overlay) return;
-
-    el.classList.remove("show");
-    overlay.classList.remove("show");
+function closeMenu(){
+document.getElementById("links").classList.remove("show");
+document.getElementById("overlay").classList.remove("show");
 }
+
+function toggleMenuAbout(){
+document.getElementById("linksAbout").classList.toggle("show");
+document.getElementById("overlay").classList.toggle("show");
+}
+
+function closeMenu(){
+document.getElementById("linksAbout").classList.remove("show");
+document.getElementById("overlay").classList.remove("show");
+}
+
+function toggleMenuAnnounces(){
+document.getElementById("linksAnnounces").classList.toggle("show");
+document.getElementById("overlay").classList.toggle("show");
+}
+
+function closeMenu(){
+document.getElementById("linksAnnounces").classList.remove("show");
+document.getElementById("overlay").classList.remove("show");
+}
+
+function toggleMenuEconomy(){
+document.getElementById("linksEconomy").classList.toggle("show");
+document.getElementById("overlay").classList.toggle("show");
+}
+
+function closeMenu(){
+document.getElementById("linksEconomy").classList.remove("show");
+document.getElementById("overlay").classList.remove("show");
+}
+
+function toggleMenuEducation(){
+document.getElementById("linksEducation").classList.toggle("show");
+document.getElementById("overlay").classList.toggle("show");
+}
+function closeMenu(){
+document.getElementById("linksEducation").classList.remove("show");
+document.getElementById("overlay").classList.remove("show");
+}
+
+function toggleMenuEntertainment(){
+document.getElementById("linksEntertainment").classList.toggle("show");
+document.getElementById("overlay").classList.toggle("show");
+}
+
+function closeMenu(){
+document.getElementById("linksEntertainment").classList.remove("show");
+document.getElementById("overlay").classList.remove("show");
+}
+
+function toggleMenuLaugh(){
+document.getElementById("linksLaugh").classList.toggle("show");
+document.getElementById("overlay").classList.toggle("show");
+}
+
+function closeMenu(){
+document.getElementById("linksLaugh").classList.remove("show");
+document.getElementById("overlay").classList.remove("show");
+}
+
+function toggleMenuPolitics(){
+document.getElementById("linksPolitics").classList.toggle("show");
+document.getElementById("overlay").classList.toggle("show");
+}
+
+function closeMenu(){
+document.getElementById("linksPolitics").classList.remove("show");
+document.getElementById("overlay").classList.remove("show");
+}
+
+function toggleMenuToday(){
+document.getElementById("linksToday").classList.toggle("show");
+document.getElementById("overlay").classList.toggle("show");
+}
+
+function closeMenu(){
+document.getElementById("linksToday").classList.remove("show");
+document.getElementById("overlay").classList.remove("show");
+}
+
 
 const dots = document.querySelectorAll('.dotP');
 
@@ -254,6 +326,7 @@ async function loadArticles(jsonFile, containerId, category, limit = 4, page = 1
             <div class="cardContent">
                 <h3>${article.headline}</h3>
                 <p>${article.summary}</p>
+                <span class="date">${article.date}</span>
             </div>
         `;
         card.addEventListener("click", () => {
@@ -342,6 +415,7 @@ async function searchFunction() {
                 <span class="categoryTag">${article.category}</span>
                 <h3>${article.headline}</h3>
                 <p>${article.summary}</p>
+                <span class="date">${article.date}</span>
             </div>
         `;
 
@@ -539,3 +613,50 @@ if (page.includes("today.html")) {
 
 }
 
+function sidebarCarousel() {
+
+    const track = document.querySelector(".track");
+
+    if (!track) return;
+
+    const slides = [...track.children];
+
+    // Clone the first slide
+    const firstClone = slides[0].cloneNode(true);
+    track.appendChild(firstClone);
+
+    let index = 0;
+
+    function moveSlide() {
+
+        index++;
+
+        track.style.transition = "transform .6s ease";
+        track.style.transform = `translateX(-${index * 100}%)`;
+
+    }
+
+    const timer = setInterval(moveSlide, 3000);
+
+    track.addEventListener("transitionend", () => {
+
+        // Reached the clone
+        if (index === slides.length) {
+
+            track.style.transition = "none";
+
+            index = 0;
+
+            track.style.transform = "translateX(0)";
+
+            // Force browser reflow
+            track.offsetHeight;
+
+            track.style.transition = "transform .6s ease";
+        }
+
+    });
+
+}
+
+sidebarCarousel();
