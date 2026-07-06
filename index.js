@@ -1,9 +1,70 @@
 /* =========================
    GLOBAL DATA
 ========================= */
+function formatPublicationDate(dateString) {
+
+    const published = new Date(dateString);
+    const now = new Date();
+
+    const diff = now - published;
+
+    const minute = 1000 * 60;
+    const hour = minute * 60;
+    const day = hour * 24;
+
+    // Future dates
+    if (diff < 0) {
+        return published.toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric"
+        });
+    }
+
+    // Less than a minute
+    if (diff < minute) {
+        return "Just now";
+    }
+
+    // Minutes
+    if (diff < hour) {
+        const mins = Math.floor(diff / minute);
+        return `${mins} min${mins === 1 ? "" : "s"} ago`;
+    }
+
+    // Hours
+    if (diff < day) {
+        const hours = Math.floor(diff / hour);
+        return `${hours} hour${hours === 1 ? "" : "s"} ago`;
+    }
+
+    // Days (up to 3)
+    if (diff < day * 4) {
+        const days = Math.floor(diff / day);
+        return `${days} day${days === 1 ? "" : "s"} ago`;
+    }
+
+    // Older than 3 days
+    return published.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric"
+    });
+
+}
 /*topnews home page*/
 function renderTopNews(articles) {
 
+    // Newest first
+    const sorted = [...articles].sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+    );
+
+    // Pick a random hero from the newest 8
+    const latestEight = sorted.slice(0, 8);
+    const hero = latestEight[Math.floor(Math.random() * latestEight.length)];
+
+    // Categories to display in the side cards
     const categories = [
         "Education",
         "Politics",
@@ -11,51 +72,51 @@ function renderTopNews(articles) {
         "Entertainment"
     ];
 
-    const selected = categories
+    // Get the newest article from each category, excluding the hero
+    const others = categories
         .map(category =>
-            articles
-                .filter(article => article.category === category)
-                .sort((a, b) => b.id - a.id)[0]
+            sorted.find(article =>
+                article.category === category &&
+                article.id !== hero.id
+            )
         )
         .filter(Boolean)
-        .sort((a, b) => b.id - a.id);
+        .slice(0, 3);
 
-    if (!selected.length) return;
-
-    const hero = selected[0];
-    const others = selected.slice(1);
     const grid = document.getElementById("topnewsGrid");
+    if (!grid) return;
+
     grid.innerHTML = `
-    <div class="hero-card" data-id="${hero.id}">
-        <img src="${hero.img}" alt="${hero.headline}">
-        <div class="content">
-            <span class="categoryTag">${hero.category}</span>
-            <h3>${hero.headline}</h3>
-            <p>${hero.summary}</p>
-            <span class="date">${hero.date}</span>
-        </div>
-    </div>
-
-    <div class="side-news">
-        ${others.map(article => `
-            <div class="side-card" data-id="${article.id}">
-                <img src="${article.img}" alt="${article.headline}">
-                <div>
-                    <span class="categoryTag">${article.category}</span>
-                    <h4>${article.headline}</h4>
-                    <span class="date">${article.date}</span>
-                </div>
+        <div class="hero-card" data-id="${hero.id}">
+            <img src="${hero.img}" alt="${hero.headline}">
+            <div class="content">
+                <span class="categoryTag">${hero.category}</span>
+                <h3>${hero.headline}</h3>
+                <p>${hero.summary}</p>
+                <span class="date">${formatPublicationDate(hero.date)}</span>
             </div>
-        `).join("")}
-    </div>
-`;
-grid.addEventListener("click", (e) => {
-    const card = e.target.closest("[data-id]");
-    if (!card) return;
+        </div>
 
-    window.location.href =
-        `../article.html?id=${card.dataset.id}`;
-});
+        <div class="side-news">
+            ${others.map(article => `
+                <div class="side-card" data-id="${article.id}">
+                    <img src="${article.img}" alt="${article.headline}">
+                    <div>
+                        <span class="categoryTag">${article.category}</span>
+                        <h4>${article.headline}</h4>
+                        <span class="date">${formatPublicationDate(article.date)}</span>
+                    </div>
+                </div>
+            `).join("")}
+        </div>
+    `;
+
+    grid.addEventListener("click", (e) => {
+        const card = e.target.closest("[data-id]");
+        if (!card) return;
+
+        window.location.href = `../article.html?id=${card.dataset.id}`;
+    });
 
 }
 
@@ -326,7 +387,7 @@ async function loadArticles(jsonFile, containerId, category, limit = 4, page = 1
             <div class="cardContent">
                 <h3>${article.headline}</h3>
                 <p>${article.summary}</p>
-                <span class="date">${article.date}</span>
+                <span class="date">${formatPublicationDate(article.date)}</span>
             </div>
         `;
         card.addEventListener("click", () => {
@@ -415,7 +476,7 @@ async function searchFunction() {
                 <span class="categoryTag">${article.category}</span>
                 <h3>${article.headline}</h3>
                 <p>${article.summary}</p>
-                <span class="date">${article.date}</span>
+                <span class="date">${formatPublicationDate(article.date)}</span>
             </div>
         `;
 

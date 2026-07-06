@@ -1,4 +1,49 @@
 [
+  {
+    "id": 101,
+    "category": "Economy",
+    "headline": "Breaking: Market Opens Strong",
+    "summary": "Stocks gained momentum in early trading as investor confidence improved.",
+    "img": "https://picsum.photos/400/250?101",
+    "date": "2026-07-06T09:58:00",
+    "fullStory": "Financial markets opened on a positive note Monday morning as investors responded to encouraging economic indicators and stronger-than-expected corporate earnings. The benchmark stock index climbed steadily during the first hour of trading, led by gains in banking, manufacturing, and technology companies. Market analysts attributed the optimism to renewed confidence among investors after recent reports showed steady economic growth and easing inflation. Trading volumes also increased significantly compared to the previous session, suggesting that both institutional and retail investors were actively participating. Despite the upbeat start, experts cautioned that global uncertainties, including fluctuating commodity prices and international trade developments, could still influence market performance later in the week. Investors are expected to closely monitor upcoming central bank statements and quarterly financial reports from major corporations. While short-term volatility remains possible, many analysts believe the market's strong opening reflects growing confidence in the country's economic outlook and business environment."
+  },
+  {
+    "id": 102,
+    "category": "Education",
+    "headline": "New Smartphone Announced",
+    "summary": "The latest flagship device introduces several AI-powered features and a redesigned camera system.",
+    "img": "https://picsum.photos/400/250?102",
+    "date": "2026-07-06T09:20:00",
+    "fullStory": "A leading smartphone manufacturer has officially unveiled its newest flagship device, highlighting major improvements in artificial intelligence, battery efficiency, and mobile photography. During the launch event, company executives demonstrated several AI-powered tools capable of summarizing messages, translating conversations in real time, and enhancing photos automatically. The redesigned camera system features a larger image sensor and improved low-light performance, while the upgraded processor promises faster multitasking with reduced power consumption. Industry analysts believe the device is aimed at consumers looking for premium performance without sacrificing battery life. Pre-orders are expected to begin later this week, with retail availability scheduled shortly afterward. Technology experts say competition in the flagship smartphone market continues to intensify, encouraging manufacturers to focus heavily on AI features and software integration rather than hardware upgrades alone."
+  },
+  {
+    "id": 103,
+    "category": "Entertainment",
+    "headline": "Football Club Signs New Striker",
+    "summary": "Supporters welcomed the new signing ahead of the upcoming league season.",
+    "img": "https://picsum.photos/400/250?103",
+    "date": "2026-07-06T08:05:00",
+    "fullStory": "One of the league's most successful football clubs has completed the signing of a highly rated striker in preparation for the new season. The player joins on a multi-year contract after an impressive campaign that saw him finish among the top scorers in his previous league. Club officials described the transfer as an important step toward strengthening the team's attacking options and increasing competition within the squad. Fans gathered outside the stadium to welcome the player following the official announcement, expressing optimism about the club's title ambitions. The head coach praised the striker's pace, finishing ability, and work ethic, saying his arrival fits perfectly with the team's style of play. Training sessions are expected to begin immediately, giving the player sufficient time to build chemistry with teammates before the opening fixtures of the season."
+  },
+  {
+    "id": 104,
+    "category": "Trending",
+    "headline": "Heavy Rain Expected This Afternoon",
+    "summary": "Meteorologists advised residents to prepare for possible flooding in low-lying areas.",
+    "img": "https://picsum.photos/400/250?104",
+    "date": "2026-07-06T06:30:00",
+    "fullStory": "Weather authorities have issued an advisory warning that heavy rainfall is expected across several regions later this afternoon. Forecast models indicate that slow-moving storm systems could produce prolonged periods of intense rain accompanied by strong winds and occasional thunderstorms. Emergency management officials urged residents living in flood-prone communities to remain alert, clear drainage channels where possible, and avoid unnecessary travel during severe weather conditions. Motorists were also advised to exercise caution as reduced visibility and waterlogged roads may increase the risk of accidents. Local authorities confirmed that emergency response teams are on standby to assist communities if flooding occurs. Although weather conditions are expected to improve by tomorrow morning, residents are encouraged to monitor official forecasts for updates as storm paths can change rapidly."
+  },
+  {
+    "id": 105,
+    "category": "Politics",
+    "headline": "Government Unveils New Initiative",
+    "summary": "Officials say the program aims to improve access to essential public services.",
+    "img": "https://picsum.photos/400/250?105",
+    "date": "2026-07-06T00:15:00",
+    "fullStory": "Government officials have announced a nationwide initiative designed to improve access to essential public services through expanded digital infrastructure and simplified administrative processes. According to the policy framework released Monday, citizens will gradually be able to complete more government services online, reducing waiting times and paperwork. Authorities said the program also includes investments in training public servants, upgrading information technology systems, and expanding internet access in underserved communities. Speaking during the launch ceremony, officials emphasized that the initiative is intended to increase transparency, efficiency, and convenience for citizens interacting with government agencies. Independent policy experts welcomed the focus on modernization but noted that successful implementation will depend on sustained funding, reliable digital infrastructure, and continuous staff training. The first phase of the initiative is expected to roll out over the coming months, with additional services being introduced gradually."
+  },
 {
 "id": 1,
 "category": "Education",

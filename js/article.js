@@ -76,7 +76,7 @@ async function loadArticle() {
         article.author;
 
     document.getElementById("date").textContent =
-        article.date;
+       formatPublicationDate(article.date);
 
     document.getElementById("articleImg").src =
         article.img;
