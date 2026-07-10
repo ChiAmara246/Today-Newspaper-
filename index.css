@@ -1,3 +1,15 @@
+
+/*JSON FILE ARTICLE
+{
+    "id": 1002,
+    "category": "Politics",
+    "headline": "SDP Tells INEC to Ignore Gabam's High Court Judgement, Cites Supreme Court Ruling",
+    "summary": "The Social Democratic Party (SDP) has urged the Independent National Electoral Commission (INEC) to disregard a Federal High Court judgment being relied upon by its expelled former National Chairman, Shehu Musa Gabam, insisting that the decision cannot supersede an existing Supreme Court ruling on the party's leadership.",
+    "img": "../images/edit4.jpeg",
+    "date": "2026-07-10T11:38:00",
+    "fullStory" :" The Social Democratic Party (SDP) has urged the Independent National Electoral Commission (INEC) to disregard a Federal High Court judgment being relied upon by its expelled former National Chairman, Shehu Musa Gabam, insisting that the decision cannot supersede an existing Supreme Court ruling on the party's leadership. The party stated this in a statement issued on Friday by its National Publicity Secretary, Araba Rufus Aiyenigba, following a letter dated July 9, 2026, reportedly submitted to INEC on Gabam's behalf by White Chambers & Co., forwarding the judgment in Suit No. FHC/ABJ/CS/402/2026. According to the SDP, the Federal High Court judgment is already the subject of an appeal before the Court of Appeal and, therefore, cannot form the basis for any action by the electoral commission. The party argued that the plaintiff in the case, Salawu Adeniyi Mustapha Adeoti, was neither its governorship candidate in Osun State nor a participant in its governorship primary, maintaining that Dr Ajala remains the party's duly nominated candidate. The SDP further contended that the Supreme Court had already settled the issue of party leadership by affirming that courts lack jurisdiction to determine who occupies positions such as National Chairman and National Secretary in political parties. It maintained that the Federal High Court judgment did not contain any order directing INEC to recognise Gabam as National Chairman or Ogbonna Okechukwu as National Secretary. The party also argued that aspects of the judgment relied on a Court of Appeal decision in Fayemi Tosin Babatunde v. INEC & Others, which it said had already been set aside by the Supreme Court on May 22, 2026, before the Federal High Court delivered its ruling. According to the statement, INEC had complied with the earlier Court of Appeal decision until it was nullified by the apex court. 'The party therefore urges the Independent National Electoral Commission (INEC) to maintain the status quo on the leadership of the SDP pending the final determination of the appeal, because there is a subsisting decision of the Supreme Court which has set aside the Court of Appeal judgment referenced in the Federal High Court judgment,' the statement said. The SDP warned that any attempt to alter its leadership based on the Federal High Court ruling would amount to allowing a lower court to overrule the Supreme Court. The party accused Gabam of engaging in actions capable of undermining internal democracy, insisting that the SDP was 'not his private estate or inheritance' but 'a public institution belonging to Nigerians'. It also said the successful conduct of its National Executive Committee (NEC) meeting on July 9 marked a departure from what it described as years of one-man rule and constitutional violations under Gabam's leadership. The party disclosed that it had completed the nomination of Prince Adewole Adebayo as its presidential candidate and Dr Usman Bugaje as his running mate for the 2027 general elections, with their names and documents already uploaded, while work was ongoing to submit details of other candidates who emerged from the party's primaries. The SDP added that it was focusing on strengthening its internal structures, expanding membership, deepening internal democracy and enhancing accountability as part of preparations for the 2027 elections."
+}*/
+
 /*-----1. RESET & GLOBAL------*/
 
 /* Root Variables */
@@ -488,7 +500,7 @@ nav a.active{
 
 /* Section Header (.h2 contains the title and "See More" link) */
 
-.h2{
+.h2, section h2{
     position: relative;
     display: flex;
     justify-content: space-between;
@@ -1016,7 +1028,6 @@ footer{
         font-size:1.05rem;
         line-height:1.85;
     }
-
     #story p{
         margin-bottom:22px;
     }

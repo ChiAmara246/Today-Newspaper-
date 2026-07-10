@@ -122,8 +122,8 @@ function renderTopNews(articles) {
 
 window.onload = function () {
     function updateTime() {
-      const now = new Date();
-      document.getElementById("dateheure").innerHTML = now.toLocaleString();
+        const now = new Date();
+        document.getElementById("dateheure").innerHTML = now.toLocaleString();
     }
 
     updateTime();
@@ -132,67 +132,67 @@ window.onload = function () {
 
 
 let news = [
-  {
-    img: "https://elements-resized.envatousercontent.com/envato-dam-assets-production/46fc6827-980d-491d-b4ca-429a0281d76f/fddcef10-fa33-44b2-86c8-30615c6f0fa8.jpg?w=1600&cf_fit=scale-down&mark-alpha=18&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark4.png&q=85&format=auto&s=21ee1801dc9e6e3a434ea905ee9cbae18487415953dc1f7963d9b16eea4b225d",
-    title: "Gloria and Grace are cooking something",
-    desc: "Stock markets react to economic updates"
-  },
-  {
-    img: "https://elements-resized.envatousercontent.com/envato-dam-assets-production/EVA/TRX/29/f5/e4/59/b0/v1_E10/E10PLB8.jpg?w=1600&cf_fit=scale-down&mark-alpha=18&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark4.png&q=85&format=auto&s=7d5bc67ec7b118e31139006d21b304bcf4ea5508f6595c382fd4e8117c10f733",
-    title: "when you have time, visit Greece",
-    desc: "make I cook this beans finish."
-  },
-  {
-    img: "https://elements-resized.envatousercontent.com/envato-dam-assets-production/EVA/TRX/46/73/8c/23/ee/v1_E10/E10BK8LT.jpg?w=1600&cf_fit=scale-down&mark-alpha=18&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark4.png&q=85&format=auto&s=d19b7f7c46180897bda401d2d9d8f47d42dd787d10be82ee0097154141b35f40",
-    title: "JESUS est le Chemin, la Verite et la Vie",
-    desc: "AI and robotics reshape modern industries"
-  },
-  {
-    img: "https://elements-resized.envatousercontent.com/envato-dam-assets-production/EVA/TRX/e5/c4/09/50/7a/v1_E10/E10AG887.jpg?w=1600&cf_fit=scale-down&mark-alpha=18&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark4.png&q=85&format=auto&s=67b8086922c6c391b1fde399a25c2ceb9ee598b898801043044940b222375bb6",
-    title: "in progress of building the future",
-    desc: "Top teams compete in thrilling finals"
-  }
+    {
+        img: "https://elements-resized.envatousercontent.com/envato-dam-assets-production/46fc6827-980d-491d-b4ca-429a0281d76f/fddcef10-fa33-44b2-86c8-30615c6f0fa8.jpg?w=1600&cf_fit=scale-down&mark-alpha=18&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark4.png&q=85&format=auto&s=21ee1801dc9e6e3a434ea905ee9cbae18487415953dc1f7963d9b16eea4b225d",
+        title: "Gloria and Grace are cooking something",
+        desc: "Stock markets react to economic updates"
+    },
+    {
+        img: "https://elements-resized.envatousercontent.com/envato-dam-assets-production/EVA/TRX/29/f5/e4/59/b0/v1_E10/E10PLB8.jpg?w=1600&cf_fit=scale-down&mark-alpha=18&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark4.png&q=85&format=auto&s=7d5bc67ec7b118e31139006d21b304bcf4ea5508f6595c382fd4e8117c10f733",
+        title: "when you have time, visit Greece",
+        desc: "make I cook this beans finish."
+    },
+    {
+        img: "https://elements-resized.envatousercontent.com/envato-dam-assets-production/EVA/TRX/46/73/8c/23/ee/v1_E10/E10BK8LT.jpg?w=1600&cf_fit=scale-down&mark-alpha=18&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark4.png&q=85&format=auto&s=d19b7f7c46180897bda401d2d9d8f47d42dd787d10be82ee0097154141b35f40",
+        title: "JESUS est le Chemin, la Verite et la Vie",
+        desc: "AI and robotics reshape modern industries"
+    },
+    {
+        img: "https://elements-resized.envatousercontent.com/envato-dam-assets-production/EVA/TRX/e5/c4/09/50/7a/v1_E10/E10AG887.jpg?w=1600&cf_fit=scale-down&mark-alpha=18&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark4.png&q=85&format=auto&s=67b8086922c6c391b1fde399a25c2ceb9ee598b898801043044940b222375bb6",
+        title: "in progress of building the future",
+        desc: "Top teams compete in thrilling finals"
+    }
 ];
 
 let index = 0;
 
 /* SHOW SLIDE */
 function showSlide(i) {
-  index = i;
-  document.getElementById("slide").src = news[i].img;
-  document.getElementById("title").textContent = news[i].title;
-  document.getElementById("desc").textContent = news[i].desc;
-  //updateDots();
+    index = i;
+    document.getElementById("slide").src = news[i].img;
+    document.getElementById("title").textContent = news[i].title;
+    document.getElementById("desc").textContent = news[i].desc;
+    //updateDots();
 }
 
 /* DOTS */
 function createDots() {
-  let dotsContainer = document.getElementById("dots");
-  for (let i = 0; i < news.length; i++) {
-    let dot = document.createElement("span");
-    dot.classList.add("dot");
-    dot.onclick = () => showSlide(i);
-    dotsContainer.appendChild(dot);
-  }
+    let dotsContainer = document.getElementById("dots");
+    for (let i = 0; i < news.length; i++) {
+        let dot = document.createElement("span");
+        dot.classList.add("dot");
+        dot.onclick = () => showSlide(i);
+        dotsContainer.appendChild(dot);
+    }
 }
 
 function updateDots() {
-  let dots = document.getElementsByClassName("dot");
-  for (let i = 0; i < dots.length; i++) {
-    dots[i].classList.remove("active");
-  }
-  dots[index].classList.add("active");
+    let dots = document.getElementsByClassName("dot");
+    for (let i = 0; i < dots.length; i++) {
+        dots[i].classList.remove("active");
+    }
+    dots[index].classList.add("active");
 }
 
 /* NEXT / PREV */
 function nextSlide() {
-  index = (index + 1) % news.length;
-  showSlide(index);
+    index = (index + 1) % news.length;
+    showSlide(index);
 }
 
 function prevSlide() {
-  index = (index - 1 + news.length) % news.length;
-  showSlide(index);
+    index = (index - 1 + news.length) % news.length;
+    showSlide(index);
 }
 
 /* AUTO SLIDE */
@@ -205,137 +205,137 @@ let isDragging = false;
 const slider = document.getElementById("slider");
 
 slider.addEventListener("mousedown", (e) => {
-  isDragging = true;
-  startX = e.clientX;
+    isDragging = true;
+    startX = e.clientX;
 });
 
 slider.addEventListener("mouseup", (e) => {
-  if (!isDragging) return;
-  isDragging = false;
+    if (!isDragging) return;
+    isDragging = false;
 
-  let endX = e.clientX;
+    let endX = e.clientX;
 
-  if (startX - endX > 50) {
-    nextSlide(); // swipe left
-  } else if (endX - startX > 50) {
-    prevSlide(); // swipe right
-  }
+    if (startX - endX > 50) {
+        nextSlide(); // swipe left
+    } else if (endX - startX > 50) {
+        prevSlide(); // swipe right
+    }
 });
 
 slider.addEventListener("mouseleave", () => {
-  isDragging = false;
+    isDragging = false;
 });
 
 /* MOBILE TOUCH SUPPORT */
 slider.addEventListener("touchstart", (e) => {
-  startX = e.touches[0].clientX;
+    startX = e.touches[0].clientX;
 });
 
 slider.addEventListener("touchend", (e) => {
-  let endX = e.changedTouches[0].clientX;
+    let endX = e.changedTouches[0].clientX;
 
-  if (startX - endX > 50) {
-    nextSlide();
-  } else if (endX - startX > 50) {
-    prevSlide();
-  }
+    if (startX - endX > 50) {
+        nextSlide();
+    } else if (endX - startX > 50) {
+        prevSlide();
+    }
 });
 
 /* INIT */
 //createDots();
 //showSlide(0);
 
- /* =========================
-   MENU SYSTEM
+/* =========================
+  MENU SYSTEM
 =========================  */
 
-function toggleMenu(){
-document.getElementById("links").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
+function toggleMenu() {
+    document.getElementById("links").classList.toggle("show");
+    document.getElementById("overlay").classList.toggle("show");
 }
 
-function closeMenu(){
-document.getElementById("links").classList.remove("show");
-document.getElementById("overlay").classList.remove("show");
+function closeMenu() {
+    document.getElementById("links").classList.remove("show");
+    document.getElementById("overlay").classList.remove("show");
 }
 
-function toggleMenuAbout(){
-document.getElementById("linksAbout").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
+function toggleMenuAbout() {
+    document.getElementById("linksAbout").classList.toggle("show");
+    document.getElementById("overlay").classList.toggle("show");
 }
 
-function closeMenu(){
-document.getElementById("linksAbout").classList.remove("show");
-document.getElementById("overlay").classList.remove("show");
+function closeMenu() {
+    document.getElementById("linksAbout").classList.remove("show");
+    document.getElementById("overlay").classList.remove("show");
 }
 
-function toggleMenuAnnounces(){
-document.getElementById("linksAnnounces").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
+function toggleMenuAnnounces() {
+    document.getElementById("linksAnnounces").classList.toggle("show");
+    document.getElementById("overlay").classList.toggle("show");
 }
 
-function closeMenu(){
-document.getElementById("linksAnnounces").classList.remove("show");
-document.getElementById("overlay").classList.remove("show");
+function closeMenu() {
+    document.getElementById("linksAnnounces").classList.remove("show");
+    document.getElementById("overlay").classList.remove("show");
 }
 
-function toggleMenuEconomy(){
-document.getElementById("linksEconomy").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
+function toggleMenuEconomy() {
+    document.getElementById("linksEconomy").classList.toggle("show");
+    document.getElementById("overlay").classList.toggle("show");
 }
 
-function closeMenu(){
-document.getElementById("linksEconomy").classList.remove("show");
-document.getElementById("overlay").classList.remove("show");
+function closeMenu() {
+    document.getElementById("linksEconomy").classList.remove("show");
+    document.getElementById("overlay").classList.remove("show");
 }
 
-function toggleMenuEducation(){
-document.getElementById("linksEducation").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
+function toggleMenuEducation() {
+    document.getElementById("linksEducation").classList.toggle("show");
+    document.getElementById("overlay").classList.toggle("show");
 }
-function closeMenu(){
-document.getElementById("linksEducation").classList.remove("show");
-document.getElementById("overlay").classList.remove("show");
-}
-
-function toggleMenuEntertainment(){
-document.getElementById("linksEntertainment").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
+function closeMenu() {
+    document.getElementById("linksEducation").classList.remove("show");
+    document.getElementById("overlay").classList.remove("show");
 }
 
-function closeMenu(){
-document.getElementById("linksEntertainment").classList.remove("show");
-document.getElementById("overlay").classList.remove("show");
+function toggleMenuEntertainment() {
+    document.getElementById("linksEntertainment").classList.toggle("show");
+    document.getElementById("overlay").classList.toggle("show");
 }
 
-function toggleMenuLaugh(){
-document.getElementById("linksLaugh").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
+function closeMenu() {
+    document.getElementById("linksEntertainment").classList.remove("show");
+    document.getElementById("overlay").classList.remove("show");
 }
 
-function closeMenu(){
-document.getElementById("linksLaugh").classList.remove("show");
-document.getElementById("overlay").classList.remove("show");
+function toggleMenuLaugh() {
+    document.getElementById("linksLaugh").classList.toggle("show");
+    document.getElementById("overlay").classList.toggle("show");
 }
 
-function toggleMenuPolitics(){
-document.getElementById("linksPolitics").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
+function closeMenu() {
+    document.getElementById("linksLaugh").classList.remove("show");
+    document.getElementById("overlay").classList.remove("show");
 }
 
-function closeMenu(){
-document.getElementById("linksPolitics").classList.remove("show");
-document.getElementById("overlay").classList.remove("show");
+function toggleMenuPolitics() {
+    document.getElementById("linksPolitics").classList.toggle("show");
+    document.getElementById("overlay").classList.toggle("show");
 }
 
-function toggleMenuToday(){
-document.getElementById("linksToday").classList.toggle("show");
-document.getElementById("overlay").classList.toggle("show");
+function closeMenu() {
+    document.getElementById("linksPolitics").classList.remove("show");
+    document.getElementById("overlay").classList.remove("show");
 }
 
-function closeMenu(){
-document.getElementById("linksToday").classList.remove("show");
-document.getElementById("overlay").classList.remove("show");
+function toggleMenuToday() {
+    document.getElementById("linksToday").classList.toggle("show");
+    document.getElementById("overlay").classList.toggle("show");
+}
+
+function closeMenu() {
+    document.getElementById("linksToday").classList.remove("show");
+    document.getElementById("overlay").classList.remove("show");
 }
 
 
@@ -348,38 +348,192 @@ dots.forEach(dot => {
     });
 });
 
+function renderTopNewsCategory(articles) {
+
+    const grid = document.getElementById("topNewsGrids");
+
+    if (!grid) {
+        console.log("Grid not found");
+        return [];
+    }
+    const now = new Date();
+    const sevenDays = 7 * 24 * 60 * 60 * 1000;
+    
+    // Only articles from the last 7 days
+    const recent = articles.filter(article => {
+        const diff = now - new Date(article.date);
+        return diff >= 0 && diff <= sevenDays;
+    }).sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    if (recent.length < 3) {
+        grid.innerHTML = "";
+        return [];
+    }
+    
+    // Group articles by day (ignore time)
+    const grouped = {};
+
+    recent.forEach(article => {
+        const day = article.date.split("T")[0];
+
+        if (!grouped[day]) {
+            grouped[day] = [];
+        }
+
+        grouped[day].push(article);
+    });
+
+    const dates = Object.keys(grouped);
+    
+    if (dates.length < 3) {
+        grid.innerHTML = "";
+        return [];
+    }
+
+    const category = recent[0].category;
+    const storageKey = `topNews_${category}`;
+
+    let selected = [];
+
+    // Check saved selection
+    const saved = JSON.parse(localStorage.getItem(storageKey));
+
+    if (saved && saved.expires > Date.now()) {
+
+        selected = saved.ids
+            .map(id => recent.find(article => article.id === id))
+            .filter(Boolean);
+
+    }
+
+    // Create a new selection if necessary
+    if (selected.length !== 3) {
+
+        // Shuffle the available dates
+        const shuffledDates = [...dates].sort(() => Math.random() - 0.5);
+
+        // Pick three unique dates
+        const chosenDates = shuffledDates.slice(0, 3);
+
+        selected = chosenDates.map(date => {
+
+            const group = grouped[date];
+
+            return group[Math.floor(Math.random() * group.length)];
+
+        });
+
+        // Shuffle selected articles so the hero is random
+        selected.sort(() => Math.random() - 0.5);
+
+        // Save for 2 days
+        localStorage.setItem(storageKey, JSON.stringify({
+
+            ids: selected.map(article => article.id),
+
+            expires: Date.now() + (2 * 24 * 60 * 60 * 1000)
+
+        }));
+
+    }
+
+    const hero = selected[0];
+    const others = selected.slice(1);
+
+    grid.innerHTML = `
+        <div class="featured" data-id="${hero.id}">
+            <img src="${hero.img}" alt="${hero.headline}">
+            <div class="cardContent">
+                <h3>${hero.headline}</h3>
+                <p>${hero.summary}</p>
+                <span class="date">${formatPublicationDate(hero.date)}</span>
+            </div>
+        </div>
+
+        <div class="s-card">
+            ${others.map(article => `
+                <div class="card" data-id="${article.id}">
+                    <img src="${article.img}" alt="${article.headline}">
+                    <div>
+                        <h4>${article.headline}</h4>
+                        <p>${hero.summary}</p>
+                        <span class="date">${formatPublicationDate(article.date)}</span>
+                    </div>
+                </div>
+            `).join("")}
+        </div>
+    `;
+
+    grid.onclick = (e) => {
+
+        const card = e.target.closest("[data-id]");
+
+        if (!card) return;
+
+        window.location.href = `../article.html?id=${card.dataset.id}`;
+
+    };
+
+    // Return IDs so Latest News can exclude them
+    return selected.map(article => article.id);
+
+}
 /* Load articles from JSON file and display them in the specified container */
 
-async function loadArticles(jsonFile, containerId, category, limit = 4, page = 1) {
+async function loadArticles(jsonFile, containerId, category, limit = 6, page = 1) {
+
     const response = await fetch(jsonFile);
     const articles = await response.json();
-    if (document.getElementById("newsGridEducation")) {
-        renderTopNews(articles);
-    }
-    const container = document.getElementById(containerId);
-    container.innerHTML = "";
 
-    // 1. filter by category
-    let data = articles;
-    allArticles = data;
+    // Sort newest to oldest
+    articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    let data = [...articles];
+
+    // Filter by category
     if (category) {
         data = data.filter(article => article.category === category);
     }
+
+    // Home page Top News
+    if (document.getElementById("newsGridEducation")) {
+        renderTopNews(articles);
+    }
+
+    // Category page Top News
+    let usedIds = [];
+
+    if (document.getElementById("topNewsGrids")) {
+        usedIds = renderTopNewsCategory(data);
+    }
+    // Remove Top News articles from pagination
+    data = data.filter(article => !usedIds.includes(article.id));
+
+    allArticles = data;
+
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
+
     const totalPages = Math.ceil(data.length / limit);
-    // 2. pagination math
+
     const start = (page - 1) * limit;
     const end = start + limit;
 
     const paginated = data.slice(start, end);
-
-    // 3. display cards
+    //hide top news section from second pagination page
+    if (page > 1) {
+        const topNewsSection = document.getElementById("topNewsGrid");
+        if (topNewsSection) {
+            topNewsSection.style.display = "none";
+        }
+    }
     paginated.forEach((article, index) => {
 
         const card = document.createElement("article");
         card.classList.add("card");
 
         if (index === 0) {
-          card.classList.add("featured");
+            card.classList.add("featured");
         }
 
         card.innerHTML = `
@@ -390,15 +544,17 @@ async function loadArticles(jsonFile, containerId, category, limit = 4, page = 1
                 <span class="date">${formatPublicationDate(article.date)}</span>
             </div>
         `;
+
         card.addEventListener("click", () => {
-          console.log("CLICKED");
-    console.log(`../article.html?id=${article.id}`);
-    window.location.href = `../article.html?id=${article.id}`;
-});
+            window.location.href = `../article.html?id=${article.id}`;
+        });
+
         container.appendChild(card);
 
     });
+
     return totalPages;
+
 }
 
 /* =========================
@@ -599,11 +755,11 @@ if (pagination) {
 
 //HOME PAGE
 if (document.getElementById("newsGridEducation")) {
-  loadArticles("data/index.json", "topnewsGrid", 6);
-  loadArticles("data/index.json", "newsGridEducation", "Education", 4);
-  loadArticles("data/index.json", "newsGridPolitics", "Politics", 4);
-  loadArticles("data/index.json", "newsGridToday", "Trending", 4);
-  loadArticles("data/index.json", "newsGridEditor", "Editor", 4);
+    loadArticles("data/index.json", "topnewsGrid", 6);
+    loadArticles("data/index.json", "newsGridEducation", "Education", 4);
+    loadArticles("data/index.json", "newsGridPolitics", "Politics", 4);
+    loadArticles("data/index.json", "newsGridToday", "Trending", 4);
+    loadArticles("data/index.json", "newsGridEditor", "Editor", 4);
 }
 
 const page = window.location.pathname;
@@ -611,7 +767,6 @@ const page = window.location.pathname;
 
 if (page.includes("education.html")) {
 
-    loadArticles("../data/index.json", "topNewsGrids", "Education", 4, 1);
     loadArticles("../data/index.json", "articlesGrid", "Education", 6, currentPage);
 
 }
@@ -621,7 +776,6 @@ if (page.includes("education.html")) {
 
 if (page.includes("entertainment.html")) {
 
-    loadArticles("../data/index.json", "topNewsGrids", "Entertainment", 4, 1);
     loadArticles("../data/index.json", "articlesGrid", "Entertainment", 6, currentPage);
 
 }
@@ -629,7 +783,6 @@ if (page.includes("entertainment.html")) {
 
 if (page.includes("announces.html")) {
 
-    loadArticles("../data/index.json", "topNewsGrids", "Announces", 4, 1);
     loadArticles("../data/index.json", "articlesGrid", "Announces", 6, currentPage);
 
 }
@@ -637,7 +790,6 @@ if (page.includes("announces.html")) {
 
 if (page.includes("economy.html")) {
 
-    loadArticles("../data/index.json", "topNewsGrids", "Economy", 4, 1);
     loadArticles("../data/index.json", "articlesGrid", "Economy", 6, currentPage);
 
 }
@@ -645,7 +797,6 @@ if (page.includes("economy.html")) {
 
 if (page.includes("politics.html")) {
 
-    loadArticles("../data/index.json", "topNewsGrids", "Politics", 4, 1);
     loadArticles("../data/index.json", "articlesGrid", "Politics", 6, currentPage);
 
 }
@@ -653,7 +804,6 @@ if (page.includes("politics.html")) {
 
 if (page.includes("laugh.html")) {
 
-    loadArticles("../data/index.json", "topNewsGrids", "Laugh", 4, 1);
     loadArticles("../data/index.json", "articlesGrid", "Laugh", 6, currentPage);
 
 }
@@ -661,7 +811,6 @@ if (page.includes("laugh.html")) {
 
 if (page.includes("pressEvent.html")) {
 
-    loadArticles("../data/index.json", "topNewsGrids", "Press&Events", 4, 1);
     loadArticles("../data/index.json", "articlesGrid", "Press&Events", 6, currentPage);
 
 }
@@ -669,7 +818,6 @@ if (page.includes("pressEvent.html")) {
 
 if (page.includes("today.html")) {
 
-    loadArticles("../data/index.json", "topNewsGrids", "Trending", 4, 1);
     loadArticles("../data/index.json", "articlesGrid", "Trending", 6, currentPage);
 
 }
