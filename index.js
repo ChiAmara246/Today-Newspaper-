@@ -514,12 +514,36 @@ async function loadArticles(jsonFile, containerId, category, limit = 6, page = 1
     const container = document.getElementById(containerId);
     container.innerHTML = "";
 
-    const totalPages = Math.ceil(data.length / limit);
+    // Calculate total pages
+    let totalPages;
 
-    const start = (page - 1) * limit;
-    const end = start + limit;
+    if (data.length <= 4) {
+        totalPages = 1;
+    } else {
+        totalPages = 1 + Math.ceil((data.length - 4) / 8);
+    }
+
+    // Determine which articles to display
+    let start, end;
+
+    if (page === 1) {
+        // First page: 4 articles
+        start = 0;
+        end = 4;
+    } else {
+        // Remaining pages: 8 articles each
+        start = 4 + (page - 2) * 8;
+        end = start + 8;
+    }
 
     const paginated = data.slice(start, end);
+
+    // Show Top News only on page 1
+    const topNewsSection = document.getElementById("topNewsGrid");
+
+    if (topNewsSection) {
+        topNewsSection.style.display = page === 1 ? "" : "none";
+    }
     //hide top news section from second pagination page
     if (page > 1) {
         const topNewsSection = document.getElementById("topNewsGrid");

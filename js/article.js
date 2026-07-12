@@ -57,6 +57,12 @@ if (related.length < 4) {
 
 related = related.slice(0, 4);
 }
+
+function getReadingTime(text) {
+    const words = text.trim().split(/\s+/).length;
+    return `${Math.max(1, Math.ceil(words / 200))} min read`;
+}
+
 async function loadArticle() {
 
     const response = await fetch("../data/index.json");
@@ -72,11 +78,14 @@ async function loadArticle() {
     document.getElementById("headline").textContent =
         article.headline;
 
-    document.getElementById("author").textContent =
-        article.author;
+    let authorText = article.author.trim() === "" ? "by Today Newspaper Staff" : `By ${article.author}`;
+    document.getElementById("author").textContent = authorText;
 
     document.getElementById("date").textContent =
-       formatPublicationDate(article.date);
+        formatPublicationDate(article.date);
+
+    document.getElementById("readingTime").textContent =
+        getReadingTime(article.fullStory);
 
     document.getElementById("articleImg").src =
         article.img;
@@ -87,4 +96,6 @@ async function loadArticle() {
     loadRelatedArticles(articleId);
 
 }
+
+
 loadArticle();
