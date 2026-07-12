@@ -123,7 +123,11 @@ function renderTopNews(articles) {
         const card = e.target.closest("[data-id]");
         if (!card) return;
 
-        window.location.href = `../article.html?id=${card.dataset.id}`;
+        const articlePath = window.location.pathname.includes("/navpages/")
+            ? "../article.html"
+            : "article.html";
+
+        window.location.href = `${articlePath}?id=${card.dataset.id}`;
     });
 
 }
@@ -478,7 +482,11 @@ function renderTopNewsCategory(articles) {
 
         if (!card) return;
 
-        window.location.href = `../article.html?id=${card.dataset.id}`;
+        const articlePath = window.location.pathname.includes("/navpages/")
+            ? "../article.html"
+            : "article.html";
+
+        window.location.href = `${articlePath}?id=${card.dataset.id}`;
 
     };
 
@@ -578,7 +586,10 @@ async function loadArticles(jsonFile, containerId, category, limit = 6, page = 1
         `;
 
         card.addEventListener("click", () => {
-            window.location.href = `../article.html?id=${article.id}`;
+            const articlePath = window.location.pathname.includes("/navpages/")
+                ? "../article.html"
+                : "article.html";
+            window.location.href = `${articlePath}?id=${article.id}`;
         });
 
         container.appendChild(card);
@@ -669,7 +680,10 @@ async function searchFunction() {
         `;
 
         card.addEventListener("click", () => {
-            window.location.href = `../article.html?id=${article.id}`;
+            const articlePath = window.location.pathname.includes("/navpages/")
+                ? "../article.html"
+                : "article.html";
+            window.location.href = `${articlePath}?id=${article.id}`;
         });
 
         grid.appendChild(card);

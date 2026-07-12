@@ -38,7 +38,11 @@ async function loadRelatedArticles(articleId) {
         `;
 
         card.addEventListener("click", () => {
-            window.location.href = `article.html?id=${article.id}`;
+            const articlePath = window.location.pathname.includes("/navpages/")
+                ? "../article.html"
+                : "article.html";
+
+            window.location.href = `${articlePath}?id=${card.dataset.id}`;
         });
 
         container.appendChild(card);
