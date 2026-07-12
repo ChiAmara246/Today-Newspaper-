@@ -8,7 +8,13 @@ function getImagePath(filename) {
         ? `../images/${filename}`
         : `images/${filename}`;
 }
+function openArticle(id) {
+    const articlePath = window.location.pathname.includes("/navpages/")
+        ? "../article.html"
+        : "article.html";
 
+    window.location.href = `${articlePath}?id=${id}`;
+}
 function formatPublicationDate(dateString) {
 
     const published = new Date(dateString);
@@ -123,12 +129,7 @@ function renderTopNews(articles) {
         const card = e.target.closest("[data-id]");
         if (!card) return;
 
-        const articlePath = window.location.pathname.includes("/navpages/")
-            ? "../article.html"
-            : "article.html";
-
-        window.location.href = `${articlePath}?id=${card.dataset.id}`;
-    });
+        openArticle(article.id);});
 
 }
 
@@ -482,13 +483,7 @@ function renderTopNewsCategory(articles) {
 
         if (!card) return;
 
-        const articlePath = window.location.pathname.includes("/navpages/")
-            ? "../article.html"
-            : "article.html";
-
-        window.location.href = `${articlePath}?id=${card.dataset.id}`;
-
-    };
+        openArticle(article.id);};
 
     // Return IDs so Latest News can exclude them
     return selected.map(article => article.id);
@@ -586,10 +581,7 @@ async function loadArticles(jsonFile, containerId, category, limit = 6, page = 1
         `;
 
         card.addEventListener("click", () => {
-            const articlePath = window.location.pathname.includes("/navpages/")
-                ? "../article.html"
-                : "article.html";
-            window.location.href = `${articlePath}?id=${article.id}`;
+            openArticle(article.id);
         });
 
         container.appendChild(card);
@@ -680,10 +672,7 @@ async function searchFunction() {
         `;
 
         card.addEventListener("click", () => {
-            const articlePath = window.location.pathname.includes("/navpages/")
-                ? "../article.html"
-                : "article.html";
-            window.location.href = `${articlePath}?id=${article.id}`;
+            openArticle(article.id);
         });
 
         grid.appendChild(card);

@@ -38,12 +38,7 @@ async function loadRelatedArticles(articleId) {
         `;
 
         card.addEventListener("click", () => {
-            const articlePath = window.location.pathname.includes("/navpages/")
-                ? "../article.html"
-                : "article.html";
-
-            window.location.href = `${articlePath}?id=${card.dataset.id}`;
-        });
+            openArticle(article.id);});
 
         container.appendChild(card);
     });
