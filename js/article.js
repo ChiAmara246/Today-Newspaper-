@@ -3,7 +3,7 @@ const articleId = Number(params.get("id"));
 
 async function loadRelatedArticles(articleId) {
     
-    const response = await fetch("../data/index.json");
+    const response = await fetch("data/index.json");
     const articles = await response.json(); 
 
     const currentArticle = articles.find(a => a.id === articleId);
