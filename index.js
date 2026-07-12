@@ -1,6 +1,14 @@
 /* =========================
    GLOBAL DATA
 ========================= */
+
+function getImagePath(filename) {
+    const isNavPage = window.location.pathname.includes("/navpages/");
+    return isNavPage
+        ? `../images/${filename}`
+        : `images/${filename}`;
+}
+
 function formatPublicationDate(dateString) {
 
     const published = new Date(dateString);
@@ -100,7 +108,7 @@ function renderTopNews(articles) {
         <div class="side-news">
             ${others.map(article => `
                 <div class="side-card" data-id="${article.id}">
-                    <img src="${article.img}" alt="${article.headline}">
+                    <img src="${getImagePath(article.img)}" alt="${article.headline}">
                     <div>
                         <span class="categoryTag">${article.category}</span>
                         <h4>${article.headline}</h4>
@@ -442,7 +450,7 @@ function renderTopNewsCategory(articles) {
 
     grid.innerHTML = `
         <div class="featured" data-id="${hero.id}">
-            <img src="${hero.img}" alt="${hero.headline}">
+            <img src="${getImagePath(hero.img)}" alt="${hero.headline}">
             <div class="cardContent">
                 <h3>${hero.headline}</h3>
                 <p>${hero.summary}</p>
@@ -453,10 +461,10 @@ function renderTopNewsCategory(articles) {
         <div class="s-card">
             ${others.map(article => `
                 <div class="card" data-id="${article.id}">
-                    <img src="${article.img}" alt="${article.headline}">
+                    <img src="${getImagePath(article.img)}" alt="${article.headline}">
                     <div>
                         <h4>${article.headline}</h4>
-                        <p>${hero.summary}</p>
+                        <p>${article.summary}</p>
                         <span class="date">${formatPublicationDate(article.date)}</span>
                     </div>
                 </div>
@@ -561,7 +569,7 @@ async function loadArticles(jsonFile, containerId, category, limit = 6, page = 1
         }
 
         card.innerHTML = `
-            <img src="${article.img}" alt="${article.headline}">
+            <img src="${getImagePath(article.img)}" alt="${article.headline}">
             <div class="cardContent">
                 <h3>${article.headline}</h3>
                 <p>${article.summary}</p>
@@ -651,7 +659,7 @@ async function searchFunction() {
         card.classList.add("card");
 
         card.innerHTML = `
-            <img src="${article.img}">
+            <img src="${getImagePath(article.img)}" alt="${article.headline}">
             <div class="cardContent">
                 <span class="categoryTag">${article.category}</span>
                 <h3>${article.headline}</h3>
