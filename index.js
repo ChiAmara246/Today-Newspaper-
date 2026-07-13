@@ -269,92 +269,19 @@ slider.addEventListener("touchend", (e) => {
 =========================  */
 
 function toggleMenu() {
-    document.getElementById("links").classList.toggle("show");
-    document.getElementById("overlay").classList.toggle("show");
+    const menu = document.getElementById("links");
+    if (menu) menu.classList.toggle("show");
+
+    const overlay = document.getElementById("overlay");
+    if (overlay) overlay.classList.toggle("show");
 }
 
-function closeMenu() {
-    document.getElementById("links").classList.remove("show");
-    document.getElementById("overlay").classList.remove("show");
-}
+function closeMenu(){
+    const menu = document.getElementById("links");
+    if (menu) menu.classList.remove("show");
 
-function toggleMenuAbout() {
-    document.getElementById("linksAbout").classList.toggle("show");
-    document.getElementById("overlay").classList.toggle("show");
-}
-
-function closeMenu() {
-    document.getElementById("linksAbout").classList.remove("show");
-    document.getElementById("overlay").classList.remove("show");
-}
-
-function toggleMenuAnnounces() {
-    document.getElementById("linksAnnounces").classList.toggle("show");
-    document.getElementById("overlay").classList.toggle("show");
-}
-
-function closeMenu() {
-    document.getElementById("linksAnnounces").classList.remove("show");
-    document.getElementById("overlay").classList.remove("show");
-}
-
-function toggleMenuEconomy() {
-    document.getElementById("linksEconomy").classList.toggle("show");
-    document.getElementById("overlay").classList.toggle("show");
-}
-
-function closeMenu() {
-    document.getElementById("linksEconomy").classList.remove("show");
-    document.getElementById("overlay").classList.remove("show");
-}
-
-function toggleMenuEducation() {
-    document.getElementById("linksEducation").classList.toggle("show");
-    document.getElementById("overlay").classList.toggle("show");
-}
-function closeMenu() {
-    document.getElementById("linksEducation").classList.remove("show");
-    document.getElementById("overlay").classList.remove("show");
-}
-
-function toggleMenuEntertainment() {
-    document.getElementById("linksEntertainment").classList.toggle("show");
-    document.getElementById("overlay").classList.toggle("show");
-}
-
-function closeMenu() {
-    document.getElementById("linksEntertainment").classList.remove("show");
-    document.getElementById("overlay").classList.remove("show");
-}
-
-function toggleMenuLaugh() {
-    document.getElementById("linksLaugh").classList.toggle("show");
-    document.getElementById("overlay").classList.toggle("show");
-}
-
-function closeMenu() {
-    document.getElementById("linksLaugh").classList.remove("show");
-    document.getElementById("overlay").classList.remove("show");
-}
-
-function toggleMenuPolitics() {
-    document.getElementById("linksPolitics").classList.toggle("show");
-    document.getElementById("overlay").classList.toggle("show");
-}
-
-function closeMenu() {
-    document.getElementById("linksPolitics").classList.remove("show");
-    document.getElementById("overlay").classList.remove("show");
-}
-
-function toggleMenuToday() {
-    document.getElementById("linksToday").classList.toggle("show");
-    document.getElementById("overlay").classList.toggle("show");
-}
-
-function closeMenu() {
-    document.getElementById("linksToday").classList.remove("show");
-    document.getElementById("overlay").classList.remove("show");
+    const overlay = document.getElementById("overlay");
+    if (overlay) overlay.classList.remove("show");
 }
 
 
@@ -496,9 +423,9 @@ function renderTopNewsCategory(articles) {
 }
 /* Load articles from JSON file and display them in the specified container */
 
-async function loadArticles(jsonFile, containerId, category, limit = 6, page = 1) {
+async function loadArticles(containerId, category, limit = 6, page = 1) {
 
-    const response = await fetch(jsonFile);
+    const response = await fetch(getDataPath());
     const articles = await response.json();
 
     // Sort newest to oldest
@@ -795,11 +722,11 @@ if (pagination) {
 
 //HOME PAGE
 if (document.getElementById("newsGridEducation")) {
-    loadArticles("data/index.json", "topnewsGrid", 6);
-    loadArticles("data/index.json", "newsGridEducation", "Education", 4);
-    loadArticles("data/index.json", "newsGridPolitics", "Politics", 4);
-    loadArticles("data/index.json", "newsGridToday", "Trending", 4);
-    loadArticles("data/index.json", "newsGridEditor", "Editor", 4);
+    loadArticles("topnewsGrid", 6);
+    loadArticles("articlesGrid", "Education", 4);
+    loadArticles("articlesGrid", "Politics", 4);
+    loadArticles("articlesGrid", "Trending", 4);
+    loadArticles("articlesGrid", "Editor", 4);
 }
 
 const page = window.location.pathname;
@@ -807,7 +734,7 @@ const page = window.location.pathname;
 
 if (page.includes("education.html")) {
 
-    loadArticles("../data/index.json", "articlesGrid", "Education", 6, currentPage);
+    loadArticles("articlesGrid", "Education", 6, currentPage);
 
 }
 
@@ -816,49 +743,49 @@ if (page.includes("education.html")) {
 
 if (page.includes("entertainment.html")) {
 
-    loadArticles("../data/index.json", "articlesGrid", "Entertainment", 6, currentPage);
+    loadArticles("articlesGrid", "Entertainment", 6, currentPage);
 
 }
 //ANNOUNCES PAGE
 
 if (page.includes("announces.html")) {
 
-    loadArticles("../data/index.json", "articlesGrid", "Announces", 6, currentPage);
+    loadArticles("articlesGrid", "Announces", 6, currentPage);
 
 }
 //ECONOMY PAGE
 
 if (page.includes("economy.html")) {
 
-    loadArticles("../data/index.json", "articlesGrid", "Economy", 6, currentPage);
+    loadArticles("articlesGrid", "Economy", 6, currentPage);
 
 }
 //POLITICS PAGE
 
 if (page.includes("politics.html")) {
 
-    loadArticles("../data/index.json", "articlesGrid", "Politics", 6, currentPage);
+    loadArticles("articlesGrid", "Politics", 6, currentPage);
 
 }
 //LAUGH PAGE
 
 if (page.includes("laugh.html")) {
 
-    loadArticles("../data/index.json", "articlesGrid", "Laugh", 6, currentPage);
+    loadArticles("articlesGrid", "Laugh", 6, currentPage);
 
 }
 //PRESS&EVENTS PAGE
 
 if (page.includes("pressEvent.html")) {
 
-    loadArticles("../data/index.json", "articlesGrid", "Press&Events", 6, currentPage);
+    loadArticles("articlesGrid", "Press&Events", 6, currentPage);
 
 }
 //TODAY PAGE
 
 if (page.includes("today.html")) {
 
-    loadArticles("../data/index.json", "articlesGrid", "Trending", 6, currentPage);
+    loadArticles("articlesGrid", "Trending", 6, currentPage);
 
 }
 
