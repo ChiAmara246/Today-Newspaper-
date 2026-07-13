@@ -139,15 +139,19 @@ function renderTopNews(articles) {
 
 }
 
-window.onload = function () {
+document.addEventListener("DOMContentLoaded", () => {
+
     function updateTime() {
-        const now = new Date();
-        document.getElementById("dateheure").innerHTML = now.toLocaleString();
+        const dateElement = document.getElementById("dateheure");
+        if (!dateElement) return;
+
+        dateElement.textContent = new Date().toLocaleString();
     }
 
     updateTime();
     setInterval(updateTime, 1000);
-};
+
+});
 
 
 let news = [
@@ -729,66 +733,17 @@ if (document.getElementById("newsGridEducation")) {
     loadArticles("articlesGrid", "Editor", 4);
 }
 
-const page = window.location.pathname;
-//EDUCATION PAGE
+const pageCategories = {"education.html": "Education", "politics.html": "Politics", "entertainment.html": "Entertainment", "announces.html": "Announces", "economy.html": "Economy", "laugh.html": "Laugh", "pressEvent.html": "Press&Events", "today.html": "Trending"};
+const currentPageName = window.location.pathname.split("/").pop();
 
-if (page.includes("education.html")) {
-
-    loadArticles("articlesGrid", "Education", 6, currentPage);
-
+if (pageCategories[currentPageName]) {
+    loadArticles(
+        "articlesGrid",
+        pageCategories[currentPageName],
+        6,
+        currentPage
+    );
 }
-
-
-//ENTERTAINMENT PAGE
-
-if (page.includes("entertainment.html")) {
-
-    loadArticles("articlesGrid", "Entertainment", 6, currentPage);
-
-}
-//ANNOUNCES PAGE
-
-if (page.includes("announces.html")) {
-
-    loadArticles("articlesGrid", "Announces", 6, currentPage);
-
-}
-//ECONOMY PAGE
-
-if (page.includes("economy.html")) {
-
-    loadArticles("articlesGrid", "Economy", 6, currentPage);
-
-}
-//POLITICS PAGE
-
-if (page.includes("politics.html")) {
-
-    loadArticles("articlesGrid", "Politics", 6, currentPage);
-
-}
-//LAUGH PAGE
-
-if (page.includes("laugh.html")) {
-
-    loadArticles("articlesGrid", "Laugh", 6, currentPage);
-
-}
-//PRESS&EVENTS PAGE
-
-if (page.includes("pressEvent.html")) {
-
-    loadArticles("articlesGrid", "Press&Events", 6, currentPage);
-
-}
-//TODAY PAGE
-
-if (page.includes("today.html")) {
-
-    loadArticles("articlesGrid", "Trending", 6, currentPage);
-
-}
-
 function sidebarCarousel() {
 
     const track = document.querySelector(".track");
