@@ -20,7 +20,6 @@ function getDataPath() {
         ? "../data/index.json"
         : "data/index.json";
 }
-
 function formatPublicationDate(dateString) {
 
     const published = new Date(dateString);
@@ -617,16 +616,10 @@ async function searchFunction() {
     if (!results) return;
 
     // 🔥 ALWAYS LOAD ARTICLES FIRST (once)
-    if (allArticles.length === 0) {
+    if (!allArticles) {
         try {
-            const res = await fetch(getDataPath());
-
-            if (!res.ok) {
-                throw new Error(`HTTP ${res.status}`);
-            }
-
+            const res = await fetch("../data/index.json");
             allArticles = await res.json();
-
         } catch (err) {
             console.error("Failed to load articles:", err);
             return;
@@ -716,7 +709,7 @@ if (pagination) {
     async function renderPage(page) {
 
         totalPages = await loadArticles(
-            getDataPath(),
+            "../data/index.json",
             "articlesGrid",
             category,
             limit,
@@ -802,11 +795,11 @@ if (pagination) {
 
 //HOME PAGE
 if (document.getElementById("newsGridEducation")) {
-    loadArticles(getDataPath(), "topnewsGrid", 6);
-    loadArticles(getDataPath(), "newsGridEducation", "Education", 4);
-    loadArticles(getDataPath(), "newsGridPolitics", "Politics", 4);
-    loadArticles(getDataPath(), "newsGridToday", "Trending", 4);
-    loadArticles(getDataPath(), "newsGridEditor", "Editor", 4);
+    loadArticles("data/index.json", "topnewsGrid", 6);
+    loadArticles("data/index.json", "newsGridEducation", "Education", 4);
+    loadArticles("data/index.json", "newsGridPolitics", "Politics", 4);
+    loadArticles("data/index.json", "newsGridToday", "Trending", 4);
+    loadArticles("data/index.json", "newsGridEditor", "Editor", 4);
 }
 
 const page = window.location.pathname;
@@ -814,7 +807,7 @@ const page = window.location.pathname;
 
 if (page.includes("education.html")) {
 
-    loadArticles(getDataPath(), "articlesGrid", "Education", 6, currentPage);
+    loadArticles("../data/index.json", "articlesGrid", "Education", 6, currentPage);
 
 }
 
@@ -823,49 +816,49 @@ if (page.includes("education.html")) {
 
 if (page.includes("entertainment.html")) {
 
-    loadArticles(getDataPath(), "articlesGrid", "Entertainment", 6, currentPage);
+    loadArticles("../data/index.json", "articlesGrid", "Entertainment", 6, currentPage);
 
 }
 //ANNOUNCES PAGE
 
 if (page.includes("announces.html")) {
 
-    loadArticles(getDataPath(), "articlesGrid", "Announces", 6, currentPage);
+    loadArticles("../data/index.json", "articlesGrid", "Announces", 6, currentPage);
 
 }
 //ECONOMY PAGE
 
 if (page.includes("economy.html")) {
 
-    loadArticles(getDataPath(), "articlesGrid", "Economy", 6, currentPage);
+    loadArticles("../data/index.json", "articlesGrid", "Economy", 6, currentPage);
 
 }
 //POLITICS PAGE
 
 if (page.includes("politics.html")) {
 
-    loadArticles(getDataPath(), "articlesGrid", "Politics", 6, currentPage);
+    loadArticles("../data/index.json", "articlesGrid", "Politics", 6, currentPage);
 
 }
 //LAUGH PAGE
 
 if (page.includes("laugh.html")) {
 
-    loadArticles(getDataPath(), "articlesGrid", "Laugh", 6, currentPage);
+    loadArticles("../data/index.json", "articlesGrid", "Laugh", 6, currentPage);
 
 }
 //PRESS&EVENTS PAGE
 
 if (page.includes("pressEvent.html")) {
 
-    loadArticles(getDataPath(), "articlesGrid", "Press&Events", 6, currentPage);
+    loadArticles("../data/index.json", "articlesGrid", "Press&Events", 6, currentPage);
 
 }
 //TODAY PAGE
 
 if (page.includes("today.html")) {
 
-    loadArticles(getDataPath(), "articlesGrid", "Trending", 6, currentPage);
+    loadArticles("../data/index.json", "articlesGrid", "Trending", 6, currentPage);
 
 }
 
