@@ -131,10 +131,11 @@ function renderTopNews(articles) {
     `;
 
     grid.addEventListener("click", (e) => {
-        const card = e.target.closest("[data-id]");
-        if (!card) return;
+    const card = e.target.closest("[data-id]");
+    if (!card) return;
 
-        openArticle(articles.id);});
+    openArticle(card.dataset.id);
+});
 
 }
 
@@ -483,12 +484,11 @@ function renderTopNewsCategory(articles) {
     `;
 
     grid.onclick = (e) => {
+    const card = e.target.closest("[data-id]");
+    if (!card) return;
 
-        const card = e.target.closest("[data-id]");
-
-        if (!card) return;
-
-        openArticle(article.id);};
+    openArticle(card.dataset.id);
+};
 
     // Return IDs so Latest News can exclude them
     return selected.map(article => article.id);
@@ -618,7 +618,7 @@ async function searchFunction() {
     // 🔥 ALWAYS LOAD ARTICLES FIRST (once)
     if (!allArticles) {
         try {
-            const res = await fetch("../data/index.json");
+            const res = await fetch(getDataPath());
             allArticles = await res.json();
         } catch (err) {
             console.error("Failed to load articles:", err);
