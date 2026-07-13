@@ -64,7 +64,7 @@ function getReadingTime(text) {
 
 async function loadArticle() {
 
-    const response = await fetch(getDataPath());
+    const response = await fetch(data/index.json);
     const articles = await response.json();
 
     const article = articles.find(a => a.id === articleId);
