@@ -107,7 +107,7 @@ function renderTopNews(articles) {
 
     grid.innerHTML = `
         <div class="hero-card" data-id="${hero.id}">
-            <img src="${hero.img}" alt="${hero.headline}">
+            <img src="${getImagePath(hero.img)}" alt="${hero.headline}">
             <div class="content">
                 <span class="categoryTag">${hero.category}</span>
                 <h3>${hero.headline}</h3>
@@ -134,7 +134,7 @@ function renderTopNews(articles) {
         const card = e.target.closest("[data-id]");
         if (!card) return;
 
-        openArticle(article.id);});
+        openArticle(articles.id);});
 
 }
 
