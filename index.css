@@ -502,7 +502,7 @@ nav a.active{
 
 /* Section Header (.h2 contains the title and "See More" link) */
 
-.h2, section h2{
+.h2{
     position: relative;
     display: flex;
     justify-content: space-between;

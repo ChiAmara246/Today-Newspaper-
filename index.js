@@ -491,8 +491,6 @@ async function loadArticles(containerId, category, limit = 6, page = 1) {
     // Remove Top News articles from pagination
     data = data.filter(article => !usedIds.includes(article.id));
 
-    allArticles = data;
-
     const container = document.getElementById(containerId);
 
     if (!container) {
@@ -592,6 +590,7 @@ async function searchFunction() {
         try {
             const res = await fetch(getDataPath());
             allArticles = await res.json();
+            
         } catch (err) {
             console.error("Failed to load articles:", err);
             return;
@@ -610,7 +609,7 @@ async function searchFunction() {
         results.innerHTML = "";
         return;
     }
-
+    console.log(allArticles.length);
     // FILTER
     const matches = allArticles.filter(a =>
         (a.headline || "").toLowerCase().includes(query) ||
