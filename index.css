@@ -84,7 +84,6 @@ header{
     justify-content: center;
     align-items: center;
 
-    margin-bottom: 18px;
     padding: 16px 24px;
 
     background: var(--surface);
@@ -905,6 +904,13 @@ footer{
 /* Phone */
 @media (max-width:746px){
 
+    header{
+        flex-direction:column;
+        gap:10px;
+        border-bottom: none;
+        margin-bottom: 0px;
+    }
+
     /* Layout */
 
     .container article{
@@ -1077,7 +1083,8 @@ footer{
 @media (max-width:450px){
 
     header img{
-        width:180px;
+        width:250px;
+        height: 100px;
     }
 
     .slider{
