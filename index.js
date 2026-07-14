@@ -459,6 +459,12 @@ async function loadArticles(containerId, category, limit = 6, page = 1) {
     allArticles = data;
 
     const container = document.getElementById(containerId);
+
+    if (!container) {
+        console.error(`Container "${containerId}" not found.`);
+        return;
+    }
+
     container.innerHTML = "";
 
     // Calculate total pages
@@ -727,10 +733,10 @@ if (pagination) {
 //HOME PAGE
 if (document.getElementById("newsGridEducation")) {
     loadArticles("topnewsGrid", 6);
-    loadArticles("articlesGrid", "Education", 4);
-    loadArticles("articlesGrid", "Politics", 4);
-    loadArticles("articlesGrid", "Trending", 4);
-    loadArticles("articlesGrid", "Editor", 4);
+    loadArticles("newsGridEducation", "Education", 4);
+    loadArticles("newsGridPolitics", "Politics", 4);
+    loadArticles("newsGridToday", "Trending", 4);
+    loadArticles("newsGridEditor", "Editor", 4);
 }
 
 const pageCategories = {"education.html": "Education", "politics.html": "Politics", "entertainment.html": "Entertainment", "announces.html": "Announces", "economy.html": "Economy", "laugh.html": "Laugh", "pressEvent.html": "Press&Events", "today.html": "Trending"};
