@@ -68,15 +68,25 @@
         <div class="popup" id="popup">
             <h2>Our Policies</h2>
             <p>Your privacy matters to us. We collect only necessary information to improve your experience, and we never share your personal data without your consent. By using this website, you agree to our privacy practices and data protection policies.</p>
-            <button onclick="close_Popup()">Close</button>
+            <button onclick="close_Popup()">I agree</button>
         </div>
         <script>
-            window.onload = function(){
-            document.getElementById("popup").style.display = "block";
+            window.onload = function () {
+
+                const popup = document.getElementById("popup");
+
+                if (!localStorage.getItem("popupShown")) {
+
+                    popup.style.display = "block";
+
+                    localStorage.setItem("popupShown", "true");
+                }
             }
 
-            function close_Popup(){
-            document.getElementById("popup").style.display = "none";
+            function close_Popup() {
+
+                document.getElementById("popup").style.display = "none";
+
             }
         </script>
         <div class="subnav">
@@ -152,7 +162,7 @@
                     <h3> Contact us </h3>
                     <p alt="call our office">☎️: +234 7076254498</p>
                     <p alt="call for personnal assistance">📞: +234 8129493173</p>
-                    <p><a href="mailto:todaynewspapaer@gmail.com" alt="send us and email">✉️: todaynewspapaer@gmail.com</a></p>
+                    <p><a href="mailto:press@todaynewspaper.com" alt="send us and email">✉️: press@todaynewspaperng.com</a></p>
                     <p alt="our location"><a href="https://maps.app.goo.gl/2A75kmczoF2HZVJ4A?g_st=iwb">📍: lagos lekki</a></p>
                 </section>
 

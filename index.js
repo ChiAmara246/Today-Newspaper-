@@ -232,10 +232,11 @@ let isDragging = false;
 
 const slider = document.getElementById("slider");
 
-slider.addEventListener("mousedown", (e) => {
-    isDragging = true;
-    startX = e.clientX;
-});
+if(slider) {
+    slider.addEventListener("mousedown", (e) => {
+        isDragging = true;
+        startX = e.clientX;
+    });
 
 slider.addEventListener("mouseup", (e) => {
     if (!isDragging) return;
@@ -267,7 +268,7 @@ slider.addEventListener("touchend", (e) => {
     } else if (endX - startX > 50) {
         prevSlide();
     }
-});
+});}
 
 /* INIT */
 //createDots();
@@ -687,7 +688,6 @@ async function searchFunction() {
         results.innerHTML = "";
         return;
     }
-    console.log(allArticles.length);
     // FILTER
     const matches = allArticles.filter(a =>
         (a.headline || "").toLowerCase().includes(query) ||
@@ -736,7 +736,6 @@ async function searchFunction() {
 let currentPage = 1;
 let totalPages = 1;
 const limit = 4;
-const category = document.body.dataset.category;
 
 
 //PAGINATION
@@ -744,6 +743,7 @@ const category = document.body.dataset.category;
 const pagination = document.getElementById("pagination");
 
 if (pagination) {
+    const category = document.body.dataset.category;
 
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
