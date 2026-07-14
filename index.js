@@ -341,30 +341,64 @@ function showLoadingCards(container, count = 4) {
         card.className = "card skeleton";
 
         card.innerHTML = `
-            <div class="skeleton-image"></div>
-            <div class="cardContent">
-                <div class="skeleton-line title"></div>
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line short"></div>
-                <div class="skeleton-date"></div>
-            </div>
-        `;
+        <div class="skeleton-image"></div>
+
+        <div class="skeleton-content">
+
+            <div class="skeleton-category"></div>
+
+            <div class="skeleton-title"></div>
+            <div class="skeleton-title"></div>
+
+            <div class="skeleton-text"></div>
+            <div class="skeleton-text"></div>
+            <div class="skeleton-text short"></div>
+
+            <div class="skeleton-date"></div>
+
+        </div>
+    `;
 
         container.appendChild(card);
     }
 }
 function showFailedCards(container, count = 4) {
+
     container.innerHTML = "";
 
     for (let i = 0; i < count; i++) {
+
         const card = document.createElement("article");
         card.className = "card failed-card";
 
         card.innerHTML = `
-            <div class="failed-icon">📡</div>
-            <h3>Unable to load article</h3>
-            <p>Please check your connection and refresh the page.</p>
+            <div class="failed-icon">
+                📰
+            </div>
+
+            <div class="failed-content">
+
+                <span class="failed-label">
+                    TODAY NEWSPAPER
+                </span>
+
+                <h3>article unavailable</h3>
+
+                <p>
+                    We're having trouble loading this story at the moment.
+                    Please check your internet connectionand try again shortly.
+                </p>
+
+                <button class="retry-btn">
+                    ↻ Try Again
+                </button>
+
+            </div>
         `;
+
+        card.querySelector(".retry-btn").addEventListener("click", () => {
+            location.reload();
+        });
 
         container.appendChild(card);
     }
