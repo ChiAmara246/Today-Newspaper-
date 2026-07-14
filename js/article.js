@@ -87,7 +87,7 @@ async function loadArticle() {
         getReadingTime(article.fullStory);
 
     document.getElementById("articleImg").src =
-        article.img;
+        getImagePath(article.img);
 
     document.getElementById("story").textContent =
         article.fullStory;
