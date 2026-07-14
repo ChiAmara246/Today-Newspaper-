@@ -333,6 +333,42 @@ dots.forEach(dot => {
     });
 });
 
+function showLoadingCards(container, count = 4) {
+    container.innerHTML = "";
+
+    for (let i = 0; i < count; i++) {
+        const card = document.createElement("article");
+        card.className = "card skeleton";
+
+        card.innerHTML = `
+            <div class="skeleton-image"></div>
+            <div class="cardContent">
+                <div class="skeleton-line title"></div>
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line short"></div>
+                <div class="skeleton-date"></div>
+            </div>
+        `;
+
+        container.appendChild(card);
+    }
+}
+function showFailedCards(container, count = 4) {
+    container.innerHTML = "";
+
+    for (let i = 0; i < count; i++) {
+        const card = document.createElement("article");
+        card.className = "card failed-card";
+
+        card.innerHTML = `
+            <div class="failed-icon">📡</div>
+            <h3>Unable to load article</h3>
+            <p>Please check your connection and refresh the page.</p>
+        `;
+
+        container.appendChild(card);
+    }
+}
 function renderTopNewsCategory(articles) {
 
     const grid = document.getElementById("topNewsGrids");
@@ -464,8 +500,32 @@ function renderTopNewsCategory(articles) {
 
 async function loadArticles(containerId, category, limit = 6, page = 1) {
 
-    const response = await fetch(getDataPath());
-    const articles = await response.json();
+    const container = document.getElementById(containerId);
+
+    if (!container) {
+        console.error(`Container "${containerId}" not found.`);
+        return;
+    }
+
+    // Show loading placeholders
+    showLoadingCards(container, limit);
+
+    let articles;
+
+    try {
+        const response = await fetch(getDataPath());
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        articles = await response.json();
+
+    } catch (err) {
+        console.error("Failed to load articles:", err);
+        showFailedCards(container, limit);
+        return;
+    }
 
     // Sort newest to oldest
     articles.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -488,16 +548,11 @@ async function loadArticles(containerId, category, limit = 6, page = 1) {
     if (document.getElementById("topNewsGrids")) {
         usedIds = renderTopNewsCategory(data);
     }
+
     // Remove Top News articles from pagination
     data = data.filter(article => !usedIds.includes(article.id));
 
-    const container = document.getElementById(containerId);
-
-    if (!container) {
-        console.error(`Container "${containerId}" not found.`);
-        return;
-    }
-
+    // Clear loading skeletons
     container.innerHTML = "";
 
     // Calculate total pages
@@ -513,11 +568,9 @@ async function loadArticles(containerId, category, limit = 6, page = 1) {
     let start, end;
 
     if (page === 1) {
-        // First page: 4 articles
         start = 0;
         end = 4;
     } else {
-        // Remaining pages: 8 articles each
         start = 4 + (page - 2) * 8;
         end = start + 8;
     }
@@ -530,13 +583,7 @@ async function loadArticles(containerId, category, limit = 6, page = 1) {
     if (topNewsSection) {
         topNewsSection.style.display = page === 1 ? "" : "none";
     }
-    //hide top news section from second pagination page
-    if (page > 1) {
-        const topNewsSection = document.getElementById("topNewsGrid");
-        if (topNewsSection) {
-            topNewsSection.style.display = "none";
-        }
-    }
+
     paginated.forEach((article, index) => {
 
         const card = document.createElement("article");
@@ -560,13 +607,10 @@ async function loadArticles(containerId, category, limit = 6, page = 1) {
         });
 
         container.appendChild(card);
-
     });
 
     return totalPages;
-
 }
-
 /* =========================
    SEARCH SYSTEM (SAFE)
 ========================= */
