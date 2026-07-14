@@ -276,21 +276,51 @@ slider.addEventListener("touchend", (e) => {
 /* =========================
   MENU SYSTEM
 =========================  */
-
-function toggleMenu() {
+function updateMenuPosition() {
     const menu = document.getElementById("links");
-    if (menu) menu.classList.toggle("show");
+    const nav = document.querySelector("nav");
 
-    const overlay = document.getElementById("overlay");
-    if (overlay) overlay.classList.toggle("show");
+    if (!menu || !nav) return;
+
+    menu.style.top = `${nav.getBoundingClientRect().bottom}px`;
 }
 
-function closeMenu(){
-    const menu = document.getElementById("links");
-    if (menu) menu.classList.remove("show");
+window.addEventListener("scroll", updateMenuPosition);
+window.addEventListener("resize", updateMenuPosition);
 
+function toggleMenu() {
+    updateMenuPosition();
+    const menu = document.getElementById("links");
     const overlay = document.getElementById("overlay");
-    if (overlay) overlay.classList.remove("show");
+    const nav = document.querySelector("nav");
+
+    if (!menu || !nav) return;
+
+    // Position menu directly below the visible nav
+    const navRect = nav.getBoundingClientRect();
+    const top = navRect.top + nav.offsetHeight;
+
+    menu.style.top = `${top}px`;
+    menu.style.height = `calc(100vh - ${top}px)`;
+
+    menu.classList.toggle("show");
+
+    if (overlay) {
+        overlay.classList.toggle("show");
+    }
+}
+
+function closeMenu() {
+    const menu = document.getElementById("links");
+    const overlay = document.getElementById("overlay");
+
+    if (menu) {
+        menu.classList.remove("show");
+    }
+
+    if (overlay) {
+        overlay.classList.remove("show");
+    }
 }
 
 
@@ -651,7 +681,6 @@ if (pagination) {
     async function renderPage(page) {
 
         totalPages = await loadArticles(
-            "../data/index.json",
             "articlesGrid",
             category,
             limit,
