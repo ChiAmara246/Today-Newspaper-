@@ -2,11 +2,16 @@
    GLOBAL DATA
 ========================= */
 
-function getImagePath(filename) {
+function getImagePath(img) {
+    // External URL (https://, http://, //)
+    if (/^(https?:)?\/\//.test(img)) {
+        return img;
+    }
+    // Plain filename
     const isNavPage = window.location.pathname.includes("/navpages/");
     return isNavPage
-        ? `../images/${filename}`
-        : `images/${filename}`;
+        ? `../images/${img}`
+        : `images/${img}`;
 }
 function openArticle(id) {
     const articlePath = window.location.pathname.includes("/navpages/")
