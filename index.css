@@ -37,7 +37,110 @@
     /* Transition */
     --transition: .25s ease;
 }
+/* =========================
+   DARK MODE
+========================= */
 
+body.dark-mode {
+    --primary: #0b2c5f;
+    --primary-dark: #a88a4f;
+
+    --background: #1b2936;
+    --surface: #000c1a;
+
+    --text: #f1f0ec;
+    --text-secondary: #c5c5c2;
+    --text-muted: #92959a;
+
+    --border: #303438;
+}
+/* =========================
+   DARK MODE SWITCH
+========================= */
+
+.theme-toggle {
+    position: relative;
+    width: 62px;
+    height: 32px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.12);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Sun and Moon icons */
+.theme-icon {
+    position: relative;
+    z-index: 2;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.sun {
+    color: #f5c76b;
+}
+
+.moon {
+    color: #d7d9e0;
+}
+
+/* Sliding circle */
+.theme-switch {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+    transition: transform 0.35s ease, background 0.35s ease;
+}
+
+/* =========================
+   DARK MODE ACTIVE
+========================= */
+
+body.dark-mode .theme-toggle {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+body.dark-mode .theme-switch {
+    transform: translateX(30px);
+    background: #d8b56a;
+}
+
+body.dark-mode .sun {
+    opacity: 0.35;
+}
+
+body.dark-mode .moon {
+    color: #ffffff;
+}
+
+/* Hover */
+.theme-toggle:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+/* Keyboard accessibility */
+.theme-toggle:focus-visible {
+    outline: 2px solid #d8b56a;
+    outline-offset: 3px;
+}
 /* Reset */
 *,
 *::before,
@@ -132,9 +235,12 @@ header img{
 /* Sub Navigation */
 .subnav{
     border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5px;
 }
 
-.subnav ul{
+.subnav ul, .subnavLeft{
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
@@ -282,7 +388,7 @@ nav a.active{
     border: none;
     border-radius: 50%;
 
-    background: var(--surface);
+    background: white;
     cursor: pointer;
     transform: translateY(-50%);
 }

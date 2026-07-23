@@ -157,8 +157,61 @@ document.addEventListener("DOMContentLoaded", () => {
     setInterval(updateTime, 1000);
 
 });
+/* =========================
+DARK MODE SYSTEM
+========================= */
+
+const darkModeToggle = document.getElementById("darkModeToggle");
+const body = document.body;
+
+function toggleDarkMode() {
+    const logo = document.getElementById("logo");
+
+    body.classList.toggle("dark-mode");
+
+    const isDarkMode = body.classList.contains("dark-mode");
+
+    // Change logo
+    if (logo) {
+        logo.src = isDarkMode
+            ? getImagePath("logoDarkMode.PNG")
+            : getImagePath("logoDefaultMode.PNG");
+    }
+
+    // Save preference
+    localStorage.setItem(
+        "darkMode",
+        isDarkMode ? "enabled" : "disabled"
+    );
+}
 
 
+/* =========================
+RESTORE SAVED DARK MODE
+========================= */
+
+if (localStorage.getItem("darkMode") === "enabled") {
+    body.classList.add("dark-mode");
+
+    const logo = document.getElementById("logo");
+
+    if (logo) {
+        logo.src = getImagePath("logoDarkMode.PNG");
+    }
+}
+
+
+/* =========================
+DARK MODE TOGGLE BUTTON
+========================= */
+
+if (darkModeToggle) {
+    darkModeToggle.addEventListener("click", toggleDarkMode);
+}
+
+/* =========================
+   SLIDER SYSTEM
+========================= */
 let news = [
     {
         img: "https://elements-resized.envatousercontent.com/envato-dam-assets-production/46fc6827-980d-491d-b4ca-429a0281d76f/fddcef10-fa33-44b2-86c8-30615c6f0fa8.jpg?w=1600&cf_fit=scale-down&mark-alpha=18&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark4.png&q=85&format=auto&s=21ee1801dc9e6e3a434ea905ee9cbae18487415953dc1f7963d9b16eea4b225d",
@@ -844,13 +897,13 @@ if (pagination) {
 //HOME PAGE
 if (document.getElementById("newsGridEducation")) {
     loadArticles("topnewsGrid", 6);
-    loadArticles("newsGridEducation", "Education", 4);
-    loadArticles("newsGridPolitics", "Politics", 4);
-    loadArticles("newsGridToday", "Trending", 4);
-    loadArticles("newsGridEditor", "Editor", 4);
+    loadArticles("newsGridEducation", "Education", 3);
+    loadArticles("newsGridPolitics", "Politics", 3);
+    loadArticles("newsGridToday", "Trending", 3);
+    loadArticles("newsGridEditor", "Editor", 3);
 }
 
-const pageCategories = {"education.html": "Education", "politics.html": "Politics", "entertainment.html": "Entertainment", "announces.html": "Announces", "economy.html": "Economy", "laugh.html": "Laugh", "pressEvent.html": "Press&Events", "today.html": "Trending"};
+const pageCategories = {"education.html": "Education", "politics.html": "Politics", "entertainment.html": "Entertainment", "announces.html": "Announces", "economy.html": "Economy", "laugh.html": "Laugh", "pressEvent.html": "Press & Events", "today.html": "Trending"};
 const currentPageName = window.location.pathname.split("/").pop();
 
 if (pageCategories[currentPageName]) {
