@@ -158,51 +158,51 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 /* =========================
-DARK MODE SYSTEM
+   DARK MODE SYSTEM
 ========================= */
 
 const darkModeToggle = document.getElementById("darkModeToggle");
-const body = document.body;
+const root = document.documentElement;
 
-function toggleDarkMode() {
+function updateLogo() {
     const logo = document.getElementById("logo");
 
-    body.classList.toggle("dark-mode");
+    if (!logo) return;
 
-    const isDarkMode = body.classList.contains("dark-mode");
+    const isDarkMode = root.classList.contains("dark-mode");
 
-    // Change logo
-    if (logo) {
-        logo.src = isDarkMode
-            ? getImagePath("logoDarkMode.PNG")
-            : getImagePath("logoDefaultMode.PNG");
-    }
+    logo.src = isDarkMode
+        ? getImagePath("logoDarkMode.PNG")
+        : getImagePath("logoDefaultMode.PNG");
+}
+
+
+function toggleDarkMode() {
+
+    root.classList.toggle("dark-mode");
+
+    const isDarkMode = root.classList.contains("dark-mode");
 
     // Save preference
     localStorage.setItem(
         "darkMode",
         isDarkMode ? "enabled" : "disabled"
     );
+
+    // Update logo
+    updateLogo();
 }
 
 
 /* =========================
-RESTORE SAVED DARK MODE
+   SET CORRECT LOGO ON PAGE LOAD
 ========================= */
 
-if (localStorage.getItem("darkMode") === "enabled") {
-    body.classList.add("dark-mode");
-
-    const logo = document.getElementById("logo");
-
-    if (logo) {
-        logo.src = getImagePath("logoDarkMode.PNG");
-    }
-}
+updateLogo();
 
 
 /* =========================
-DARK MODE TOGGLE BUTTON
+   DARK MODE BUTTON
 ========================= */
 
 if (darkModeToggle) {

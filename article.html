@@ -4,6 +4,35 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Today Newspaper</title>
+        <script>
+            (function () {
+
+                const isDarkMode = localStorage.getItem("darkMode") === "enabled";
+
+                // Apply theme before the page is painted
+                if (isDarkMode) {
+                    document.documentElement.classList.add("dark-mode");
+                }
+
+                // Set the correct logo path immediately
+                const logoPath = window.location.pathname.includes("/navpages/")
+                    ? "../images/"
+                    : "images/";
+
+                const logoFile = isDarkMode
+                    ? "logoDarkMode.PNG"
+                    : "logoDefaultMode.PNG";
+
+                // Create a preload link for the correct logo
+                const preload = document.createElement("link");
+                preload.rel = "preload";
+                preload.as = "image";
+                preload.href = logoPath + logoFile;
+
+                document.head.appendChild(preload);
+
+            })();
+        </script>
         <link rel="stylesheet" type="text/css" href="index.css">
         <script src="index.js" defer></script>
     </head>
@@ -31,7 +60,27 @@
             </div>
         </div>
         <header>
-        <img id="logo" src="images/logoDefaultMode.PNG" alt="Today Newspaper Logo">
+            <img id="logo" alt="Today Newspaper">
+
+            <script>
+            (function () {
+
+                const logo = document.getElementById("logo");
+                const isDarkMode =
+                    document.documentElement.classList.contains("dark-mode");
+
+                const logoPath = window.location.pathname.includes("/navpages/")
+                    ? "../images/"
+                    : "images/";
+
+                logo.src = logoPath + (
+                    isDarkMode
+                        ? "logoDarkMode.PNG"
+                        : "logoDefaultMode.PNG"
+                );
+
+            })();
+            </script>        
         </header>
         <nav>
                 <div class="dot" onclick="toggleMenu()">☰</div>
@@ -55,12 +104,12 @@
             <a href="navpages/education.html">Education</a>
             <a href="navpages/politics.html">Politics</a>
             <a href="navpages/economy.html">Economy</a>
-            <a href="navpages/entertainment.html">Entertainment</a>
             <a href="navpages/today.html">Trending NEWS</a>
-            <a href="navpages/announces.html">Announces</a>
+            <a href="navpages/entertainment.html">Entertainment</a>
+            <a href="navpages/announces.html">Jobs & Opportunities</a>
+            <a href="navpages/pressEvent.html">Press & Events</a>
             <a href="navpages/laugh.html">Laugh It Out</a>
             <a href="navpages/about.html">About Us</a>
-            <a href="navpages/pressEvent.html">Press & Events</a>
         </div>
         <div>
             <div class="slider" id="slider">

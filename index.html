@@ -4,6 +4,35 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Today Newspaper</title>
+        <script>
+            (function () {
+
+                const isDarkMode = localStorage.getItem("darkMode") === "enabled";
+
+                // Apply theme before the page is painted
+                if (isDarkMode) {
+                    document.documentElement.classList.add("dark-mode");
+                }
+
+                // Set the correct logo path immediately
+                const logoPath = window.location.pathname.includes("/navpages/")
+                    ? "../images/"
+                    : "images/";
+
+                const logoFile = isDarkMode
+                    ? "logoDarkMode.PNG"
+                    : "logoDefaultMode.PNG";
+
+                // Create a preload link for the correct logo
+                const preload = document.createElement("link");
+                preload.rel = "preload";
+                preload.as = "image";
+                preload.href = logoPath + logoFile;
+
+                document.head.appendChild(preload);
+
+            })();
+        </script>
         <link rel="stylesheet" type="text/css" href="index.css">
         <script src="index.js" defer></script>
     </head>
@@ -31,7 +60,27 @@
             </div>
         </div>
         <header>
-        <img id="logo" src="images/logoDefaultMode.PNG" alt="Today Newspaper Logo">
+            <img id="logo" alt="Today Newspaper">
+
+            <script>
+            (function () {
+
+                const logo = document.getElementById("logo");
+                const isDarkMode =
+                    document.documentElement.classList.contains("dark-mode");
+
+                const logoPath = window.location.pathname.includes("/navpages/")
+                    ? "../images/"
+                    : "images/";
+
+                logo.src = logoPath + (
+                    isDarkMode
+                        ? "logoDarkMode.PNG"
+                        : "logoDefaultMode.PNG"
+                );
+
+            })();
+            </script>        
         </header>
         <nav>
                 <div class="dot" onclick="toggleMenu()">☰</div>
@@ -82,8 +131,11 @@
         <div class="container0">
             <div class="container">
                 <section class="featuredNews">
-                    <h2> Top News</h2>
+                    <div class="h2">
+                        <h2> Top News</h2>
+                    </div>
                     <div class="grid" id="topnewsGrid"></div>
+                    
                 </section>
                 
                 <section>
@@ -109,7 +161,9 @@
                     
                 </section>
                 <section class ="editor">
-                    <h2>Editor's Picks</h2>
+                    <div class="h2">
+                        <h2>Editor's Picks</h2>
+                    </div>
                     <div class="grid" id="newsGridEditor"></div>
                 </section>
             </div>
