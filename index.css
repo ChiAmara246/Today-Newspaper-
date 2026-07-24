@@ -1598,9 +1598,14 @@ footer{
     .navlist{
         display:none;
     }
-    subnavLeft{
-        justify-content:right;
+    .subnav {
+        justify-content: space-between;
     }
+
+    .subnavLeft {
+        margin-left: auto;
+    }
+
     .links,
     .dot{
         display:block;
