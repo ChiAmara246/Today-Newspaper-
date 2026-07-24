@@ -248,15 +248,24 @@ header img{
     padding: 0 10px;
 }
 
-.subnav ul, .subnavLeft{
+.subnav ul {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 1px;
 
     margin: 0;
-    padding: 10px 0 0;
+    padding: 0;
 
     list-style: none;
+}
+
+.subnavLeft {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+
+    margin: 0;
+    padding: 0;
 }
 
 #dateheure, .subnav a {
@@ -280,6 +289,41 @@ header img{
     color: var(--primary-dark);
 }
 
+.subnavLeft a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 20px;
+    height: 20px;
+
+    padding: 0;
+
+    transition:
+        transform var(--transition),
+        opacity var(--transition);
+}
+
+.subnavLeft img {
+    display: block;
+
+    width: 13px;
+    height: 13px;
+
+    object-fit: contain;
+
+    transition:
+        transform var(--transition),
+        opacity var(--transition);
+}
+
+.subnavLeft a:hover {
+    transform: translateY(-1px);
+}
+
+.subnavLeft a:hover img {
+    transform: scale(1.1);
+}
 /* Main Navigation */
 nav{
     position: sticky;
@@ -1435,6 +1479,95 @@ footer{
 /* Phone */
 @media (max-width:746px){
 
+    /* Section titles */
+    .h2 {
+        margin: 22px 6px 14px;
+        padding-bottom: 8px;
+    }
+
+    .h2 h2 {
+        padding-left: 11px;
+        font-size: 1.05rem;
+        font-weight: 700;
+        line-height: 1.3;
+        letter-spacing: -0.01em;
+    }
+
+    .h2 h2::before {
+        width: 3px;
+        height: 18px;
+    }
+
+    .h2 a {
+        font-size: 11px;
+    }
+
+
+    /* Hero title */
+    .hero-card h2 {
+        margin: 7px 0 9px;
+
+        font-size: clamp(1.3rem, 5vw, 1.6rem);
+        font-weight: 700;
+        line-height: 1.25;
+        letter-spacing: -0.02em;
+    }
+
+
+    /* Regular card titles */
+    .grid .cardContent h3 {
+        font-size: 0.95rem;
+        font-weight: 650;
+        line-height: 1.4;
+        letter-spacing: 0;
+    }
+
+
+    /* Side news titles */
+    .side-card h4 {
+        margin-top: 5px;
+
+        font-size: 0.9rem;
+        font-weight: 650;
+        line-height: 1.4;
+        letter-spacing: 0;
+    }
+
+
+    /* Related articles */
+    .related-section h2 {
+        margin-bottom: 14px;
+        padding-left: 11px;
+
+        font-size: 1.05rem;
+        line-height: 1.3;
+    }
+
+
+    /* Article page title */
+    .article-page h1 {
+        margin-bottom: 18px;
+
+        font-size: clamp(1.8rem, 8vw, 2.4rem);
+        font-weight: 700;
+        line-height: 1.15;
+        letter-spacing: -0.025em;
+
+        text-wrap: balance;
+    }
+
+
+    /* Slider title */
+    .headline h1 {
+        font-size: clamp(1.2rem, 5.5vw, 1.6rem);
+        font-weight: 700;
+        line-height: 1.25;
+        letter-spacing: -0.01em;
+
+        text-wrap: balance;
+    }
+
+
     header{
         flex-direction:column;
         gap:10px;
@@ -1465,7 +1598,9 @@ footer{
     .navlist{
         display:none;
     }
-
+    subnavLeft{
+        justify-content:right;
+    }
     .links,
     .dot{
         display:block;
