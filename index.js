@@ -1,7 +1,6 @@
 /* =========================
    GLOBAL DATA
 ========================= */
-let allArticles = null;
 
 function getImagePath(img) {
     // External URL (https://, http://, //)
@@ -209,77 +208,145 @@ updateLogo();
 if (darkModeToggle) {
     darkModeToggle.addEventListener("click", toggleDarkMode);
 }
-
 // =========================
 // WHATSAPP POPUP
 // =========================
 
 const whatsapp = document.getElementById("whatsapp");
-const whatsappLink = whatsapp.querySelector("a");
-
 const whatsappPopup = document.getElementById("whatsappPopup");
-const closeWhatsappPopup = document.getElementById("closeWhatsappPopup");
-const whatsappPopupOk = document.getElementById("whatsappPopupOk");
-
-let whatsappClicked = false;
 
 
 // =========================
-// WHATSAPP CLICK
+// CHECK REQUIRED ELEMENTS
 // =========================
 
-whatsappLink.addEventListener("click", function (event) {
+if (whatsapp && whatsappPopup) {
 
-    // First click
-    if (!whatsappClicked) {
+    const whatsappLink = whatsapp.querySelector("a");
 
-        whatsappClicked = true;
+    const closeWhatsappPopup =
+        document.getElementById("closeWhatsappPopup");
 
-        // Allow the link to open in the same tab
-        return;
+    const whatsappPopupOk =
+        document.getElementById("whatsappPopupOk");
+
+
+    // =========================
+    // WHATSAPP GROUP URL
+    // =========================
+
+    const whatsappURL =
+        "https://chat.whatsapp.com/JRep0h9StkDKcaHAel0TeN?mode=gi_t";
+
+
+    // =========================
+    // WHATSAPP LINK
+    // =========================
+
+    if (whatsappLink) {
+
+        whatsappLink.addEventListener("click", function (event) {
+
+            // Always stop the default link
+            // behaviour
+            event.preventDefault();
+
+
+            // =========================
+            // CHECK STORAGE
+            // =========================
+
+            const hasClicked =
+                localStorage.getItem("whatsappClicked") === "true";
+
+
+            // =========================
+            // FIRST CLICK
+            // =========================
+
+            if (!hasClicked) {
+
+                // Save BEFORE leaving page
+                localStorage.setItem(
+                    "whatsappClicked",
+                    "true"
+                );
+
+                // Open WhatsApp in same tab
+                window.location.href = whatsappURL;
+
+                return;
+            }
+
+
+            // =========================
+            // SECOND + FUTURE CLICKS
+            // =========================
+
+            whatsappPopup.classList.add("show");
+
+        });
+
     }
 
 
-    // Second click
-    event.preventDefault();
+    // =========================
+    // CLOSE POPUP FUNCTION
+    // =========================
 
-    // Show popup
-    whatsappPopup.classList.add("show");
+    function closeWhatsappPopupFunction() {
 
-});
+        whatsappPopup.classList.remove("show");
+
+    }
 
 
-// =========================
-// CLOSE POPUP
-// =========================
+    // =========================
+    // CLOSE WITH X
+    // =========================
 
-function closeWhatsappPopupFunction() {
-    whatsappPopup.classList.remove("show");
+    if (closeWhatsappPopup) {
+
+        closeWhatsappPopup.addEventListener(
+            "click",
+            closeWhatsappPopupFunction
+        );
+
+    }
+
+
+    // =========================
+    // CLOSE WITH OKAY BUTTON
+    // =========================
+
+    if (whatsappPopupOk) {
+
+        whatsappPopupOk.addEventListener(
+            "click",
+            closeWhatsappPopupFunction
+        );
+
+    }
+
+
+    // =========================
+    // CLOSE OUTSIDE POPUP
+    // =========================
+
+    whatsappPopup.addEventListener(
+        "click",
+        function (event) {
+
+            if (event.target === whatsappPopup) {
+
+                closeWhatsappPopupFunction();
+
+            }
+
+        }
+    );
+
 }
-
-
-// Close with X
-closeWhatsappPopup.addEventListener(
-    "click",
-    closeWhatsappPopupFunction
-);
-
-
-// Close with Okay button
-whatsappPopupOk.addEventListener(
-    "click",
-    closeWhatsappPopupFunction
-);
-
-
-// Close when clicking outside
-whatsappPopup.addEventListener("click", function (event) {
-
-    if (event.target === whatsappPopup) {
-        closeWhatsappPopupFunction();
-    }
-
-});
 /* =========================
    SLIDER SYSTEM
 ========================= */
@@ -823,7 +890,7 @@ async function loadArticles(containerId, category, limit = 6, page = 1) {
    SEARCH SYSTEM (SAFE)
 ========================= */
 
-
+let allArticles = null;
 async function searchFunction() {
 
     const input = document.getElementById("searchInput");
