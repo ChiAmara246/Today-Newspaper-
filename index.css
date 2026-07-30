@@ -168,7 +168,7 @@ body{
 /*-----2. LAYOUT------*/
 
 /* Containers */
-.container0{
+.container0 {
     display: flex;
     width: 100%;
     gap: 20px;
@@ -176,14 +176,19 @@ body{
     box-sizing: border-box;
 }
 
-.container{
-    width: 75%;
+.container {
+    flex: 3;
+    min-width: 0;
 }
 
-.aside{
-    width: 23%;
-}
+.aside {
+    flex: 1;
+    min-width: 0;
 
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
 /*-----3. HEADER------*/
 
 header{
@@ -587,7 +592,7 @@ nav a.active{
 
 /* Featured Articles */
 
-#topnewsGrid{
+#topnewsGrid {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 20px;
@@ -596,69 +601,100 @@ nav a.active{
 
 /* Hero Card */
 
-.hero-card{
+.hero-card {
     display: flex;
     flex-direction: column;
-    height: 100%;
+
+    height: auto;
+
     background: var(--surface);
+
     border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    overflow: hidden;
+
     cursor: pointer;
 }
 
-.hero-card img{
+
+.hero-card img {
     display: block;
+
     width: 100%;
-    height: 75%;
+
+    aspect-ratio: 16 / 9;
+
     object-fit: cover;
 }
 
-.hero-card .content{
+
+.hero-card .content {
     display: flex;
     flex-direction: column;
-    padding: 12px;
+
+    padding: 16px;
 }
 
-.hero-card .category{
+
+.hero-card .category {
     color: var(--text-muted);
+
     font-size: .8rem;
     font-weight: 600;
+
     text-transform: uppercase;
 }
 
-.hero-card h2{
-    margin: 0;
+
+.hero-card h2 {
+    margin: 6px 0 0;
 
     color: var(--text);
+
     font-size: 2rem;
     font-weight: 700;
+
     line-height: 1.2;
 }
 
-.hero-card p{
-    margin: 0;
+
+.hero-card p {
+    margin: 10px 0 0;
 
     color: var(--text-secondary);
+
     font-size: 1rem;
+
     line-height: 1.7;
 }
 
 
 /* Side News */
 
-.side-news{
+.side-news {
     display: grid;
+
+    grid-template-rows: repeat(2, auto);
+
     gap: 15px;
+
     align-content: start;
 }
 
 
 /* Side Card */
 
-.side-card{
+.side-card {
     background: var(--surface);
+
     border: 1px solid var(--border);
+
     border-radius: var(--radius);
+
     overflow: hidden;
+
     cursor: pointer;
 
     transition:
@@ -667,31 +703,42 @@ nav a.active{
         border-color var(--transition);
 }
 
-.side-card:hover{
+
+.side-card:hover {
     transform: translateY(-2px);
 }
 
-.side-card img{
+
+.side-card img {
     display: block;
+
     width: 100%;
     height: 110px;
+
     object-fit: cover;
 }
 
-.side-card .content{
+
+.side-card .content {
     padding: 12px;
 }
 
-.side-card .category{
+
+.side-card .category {
     color: var(--text-muted);
+
     font-size: .75rem;
     font-weight: 600;
+
     text-transform: uppercase;
 }
 
-.side-card h4{
-    margin-top: 8px;
+
+.side-card h4 {
+    margin: 8px 0 0;
+
     color: var(--text);
+
     line-height: 1.4;
 }
 /*card loading skeleton*/
@@ -1225,90 +1272,293 @@ nav a.active{
 .searchTitle{
     margin-bottom: 20px;
     font-size: 1.5rem;
-}
-/*-----10. SIDEBAR------*/
+}/*-----10. SIDEBAR------*/
 
-/* Image Slider */
 
-#frame-box{
-    display:flex;
-    flex-direction:column;
-    gap:15px;
-}
-#frameBox{
-    width:100%;
-    height: 110%;
-}
+/* =========================================
+   SIDEBAR MAIN CONTAINER
+   ========================================= */
 
-#frameBox h3{
-    margin:0;
-    padding:12px;
-    text-align:center;
+.aside {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.carousel{
-    width:100%;
-    aspect-ratio:4/3;
 
-    overflow:hidden;
+/* =========================================
+   SIDEBAR BLOCKS
+   ========================================= */
+
+.aside > aside {
+    width: 100%;
+    margin: 0;
+
+    box-sizing: border-box;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.04),
+        0 2px 6px rgba(0, 0, 0, 0.025);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
 }
 
-.track{
-    display:flex;
-    height:100%;
-    transition:transform .6s ease;
+.aside > aside:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 14px 32px rgba(0, 0, 0, 0.07),
+        0 3px 8px rgba(0, 0, 0, 0.035);
 }
 
-.track img{
-    width:100%;
-    flex:0 0 100%;
-    height:100%;
-    object-fit:cover;
-}
-/* Related Articles */
 
-.related-section{
-    margin-top: 3rem;
+/* =========================================
+   1. TEAM PRESENTATION CAROUSEL
+   ========================================= */
+
+#frameBox {
+    width: 100%;
+    height: auto;
+
+    padding: 0;
 }
 
-.related-section h2{
+#frameBox h3 {
+    margin: 0;
+
+    padding: 14px 12px;
+
+    text-align: center;
+
+    color: var(--text);
+
+    font-family:
+        "Playfair Display",
+        "Cormorant Garamond",
+        serif;
+
+    font-size: 17px;
+    font-weight: 600;
+
+    letter-spacing: 0.2px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+
+/* =========================================
+   IMAGE SLIDER
+   ========================================= */
+
+.carousel {
+    width: 100%;
+
+    aspect-ratio: 4 / 3;
+
+    overflow: hidden;
+}
+
+.track {
+    display: flex;
+
+    width: 100%;
+    height: 100%;
+
+    transition: transform 0.6s ease;
+}
+
+.track img {
+    width: 100%;
+    height: 100%;
+
+    flex: 0 0 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+/* =========================================
+   2. E-PAPER
+   ========================================= */
+
+#ePaper {
+    width: 100%;
+    min-height: 250px;
+
+    padding: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-sticky-area {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.mobile-sticky-area .uniPub {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    height: auto;
+}
+/* =========================================
+   3. ADVERTISEMENTS
+   ========================================= */
+
+#uniPub,
+.uniPub {
+    position: relative;
+
+    width: 100%;
+    min-height: 250px;
+
+    padding: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    background:
+        linear-gradient(
+            145deg,
+            var(--surface),
+            var(--background)
+        );
+}
+
+
+/* Advertisement label */
+
+#uniPub::before,
+.uniPub::before {
+    content: "ADVERTISEMENT";
+
+    position: absolute;
+
+    top: 10px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    font-size: 9px;
+
+    font-weight: 500;
+
+    letter-spacing: 1.5px;
+
+    text-transform: uppercase;
+
+    color: var(--text-secondary);
+
+    opacity: 0.45;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   4. CHARITY EVENT
+   ========================================= */
+
+#charityEvent {
+    width: 100%;
+    min-height: 250px;
+
+    padding: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* =========================================
+   5. MOST READ
+   ========================================= */
+
+#mostRead {
+    width: 100%;
+    min-height: 200px;
+
+    padding: 18px;
+}
+
+
+/* =========================================
+   MOST READ / RELATED ARTICLES
+   ========================================= */
+
+.related-section {
+    margin-top: 0;
+}
+
+.related-section h2 {
     margin: 0 0 18px;
+
     padding-left: 14px;
 
     color: var(--text);
 
+    font-family:
+        "Playfair Display",
+        "Cormorant Garamond",
+        serif;
+
     font-size: 1.25rem;
     font-weight: 700;
+
     line-height: 1.3;
 
     border-left: 4px solid var(--primary-dark);
 }
 
-#relatedGrid{
+
+#relatedGrid {
     display: grid;
     grid-template-columns: 1fr;
 
     background: var(--background);
-    border-left: 1px solid #e5e5e5;
+
+    border-left: 1px solid var(--border);
 }
 
-#relatedGrid .card{
+
+#relatedGrid .card {
     position: relative;
 
     margin: 0;
     padding: 14px 18px;
 
-    border-bottom: 1px solid #ececec;
+    border-bottom: 1px solid var(--border);
 
     cursor: pointer;
+
     transition:
-        background .2s ease,
-        padding-left .2s ease;
+        background 0.2s ease,
+        padding-left 0.2s ease;
 }
 
-#relatedGrid .card::before{
+
+#relatedGrid .card::before {
     content: "";
+
     position: absolute;
+
     top: 50%;
     left: 0;
 
@@ -1316,75 +1566,462 @@ nav a.active{
     height: 0;
 
     background: var(--text);
+
     transform: translateY(-50%);
-    transition: height .2s ease;
+
+    transition: height 0.2s ease;
 }
 
-#relatedGrid .card:hover{
-    background: #f5f5f5;
+
+#relatedGrid .card:hover {
+    background: var(--background);
+
     padding-left: 24px;
 }
 
-#relatedGrid .card:hover::before{
+
+#relatedGrid .card:hover::before {
     height: 60%;
 }
 
-#relatedGrid .card h3{
+
+#relatedGrid .card h3 {
     margin: 0;
 
     color: var(--text);
+
     font-size: 1rem;
     font-weight: 600;
+
     line-height: 1.45;
 
-    transition: color .2s ease;
+    transition: color 0.2s ease;
 }
 
-#relatedGrid .card:hover h3{
-    color: #000;
+
+#relatedGrid .card:hover h3 {
+    color: var(--primary-dark);
 }
 
-#relatedGrid .card:last-child{
+
+#relatedGrid .card:last-child {
     border-bottom: 0;
 }
 
-/* WhatsApp */
-#whatsapp{
-    display:flex;
-    justify-content:center;
-    align-items:center;
 
-    width:100%;
-    height:50px;
+/* =========================================
+   6. WHATSAPP
+   ========================================= */
 
-    padding:0;
+#whatsapp {
+    display: flex;
 
-    background:white;
-    border-radius:10px;
-    animation:pulse 1.2s ease-in-out infinite;
-}
-#whatsapp a{
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    justify-content: center;
+    align-items: center;
 
-    width:100%;
-    height:100%;
-}
-#whatsapp img{
-    height:40px;
-    width:auto;
+    width: 100%;
+    height: 50px;
 
-    border-radius:8px;
-}
-.aside{
-    display: block;
-    gap: 20px;
-}
-aside{
-    margin: 20px 0;
-    height: 300px;
+    padding: 0;
+
     background: var(--surface);
+
+    border-radius: 10px;
+
+    animation: pulse 1.2s ease-in-out infinite;
+}
+
+.mobile-sticky-area {
+    
+}
+
+#whatsapp a {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+}
+
+
+#whatsapp img {
+    width: auto;
+    height: 40px;
+
+    border-radius: 8px;
+
+    object-fit: contain;
+}
+
+/* =========================
+   WHATSAPP POPUP OVERLAY
+========================= */
+
+.whatsapp-popup {
+    position: fixed;
+    inset: 0;
+
+    z-index: 9999;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(0, 0, 0, 0.55);
+
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.whatsapp-popup.show {
+    display: flex;
+}
+
+
+/* =========================
+   POPUP CARD
+========================= */
+
+.whatsapp-popup-card {
+    position: relative;
+
+    width: 100%;
+    max-width: 390px;
+
+    padding: 35px 30px 30px;
+
+    background: #ffffff;
+    color: #222;
+
+    border-radius: 18px;
+
+    text-align: center;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.25);
+
+    animation: whatsappPopupIn 0.25s ease-out;
+}
+
+
+/* =========================
+   WHATSAPP ICON
+========================= */
+
+.whatsapp-icon {
+    width: 65px;
+    height: 65px;
+
+    margin: 0 auto 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #25D366;
+    color: #ffffff;
+
+    border-radius: 50%;
+
+    font-size: 34px;
+
+    box-shadow:
+        0 8px 20px rgba(37, 211, 102, 0.25);
+}
+
+
+/* =========================
+   TITLE
+========================= */
+
+.whatsapp-popup-card h3 {
+    margin: 0 0 12px;
+
+    font-size: 21px;
+    font-weight: 700;
+
+    color: #222;
+}
+
+
+/* =========================
+   DESCRIPTION
+========================= */
+
+.whatsapp-popup-card p {
+    margin: 0 auto 25px;
+
+    max-width: 310px;
+
+    font-size: 14px;
+    line-height: 1.6;
+
+    color: #666;
+}
+
+
+/* =========================
+   WHATSAPP BUTTON
+========================= */
+
+.whatsapp-popup-button {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    width: 100%;
+
+    padding: 13px 20px;
+
+    background: #25D366;
+    color: #ffffff;
+
+    border-radius: 8px;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.whatsapp-popup-button:hover {
+    background: #1ebe5d;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(37, 211, 102, 0.25);
+}
+
+
+/* =========================
+   CLOSE BUTTON
+========================= */
+
+.whatsapp-close {
+    position: absolute;
+
+    top: 12px;
+    right: 15px;
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+    color: #777;
+
+    font-size: 25px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.whatsapp-close:hover {
+    background: #f1f1f1;
+    color: #222;
+}
+
+
+/* =========================
+   ANIMATION
+========================= */
+
+@keyframes whatsappPopupIn {
+
+    from {
+        opacity: 0;
+        transform: scale(0.92) translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 480px) {
+
+    .whatsapp-popup {
+        padding: 15px;
+    }
+
+    .whatsapp-popup-card {
+        padding: 32px 22px 22px;
+        border-radius: 16px;
+    }
+
+    .whatsapp-popup-card h3 {
+        font-size: 19px;
+    }
+
+    .whatsapp-popup-card p {
+        font-size: 13px;
+    }
+
+}
+
+/* =========================================
+   WHATSAPP PULSE
+   ========================================= */
+
+@keyframes pulse {
+
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.02);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+
+}
+#mostRead {
+    padding: 20px;
+    background: var(--surface);
+}
+
+.most-read-header {
+    margin-bottom: 16px;
+}
+
+.section-label {
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-size: 9px;
+    font-weight: 600;
+
+    letter-spacing: 2px;
+
+    color: var(--primary-dark);
+}
+
+.most-read-header h2 {
+    margin: 0;
+
+    font-family:
+        "Playfair Display",
+        "Cormorant Garamond",
+        serif;
+
+    font-size: 1.35rem;
+    font-weight: 600;
+
+    color: var(--text);
+}
+
+#mostReadGrid {
+    display: flex;
+    flex-direction: column;
+}
+
+.most-read-item {
+    display: flex;
+    gap: 14px;
+
+    padding: 15px 0;
+
+    border-top: 1px solid var(--border);
+
+    cursor: pointer;
+
+    transition:
+        padding-left 0.25s ease,
+        background 0.25s ease;
+}
+
+.most-read-item:first-child {
+    border-top: 0;
+}
+
+.most-read-item:hover {
+    padding-left: 5px;
+}
+
+.most-read-number {
+    flex-shrink: 0;
+
+    font-family:
+        "Playfair Display",
+        "Cormorant Garamond",
+        serif;
+
+    font-size: 1.4rem;
+    font-weight: 500;
+
+    line-height: 1;
+
+    color: var(--primary-dark);
+
+    opacity: 0.65;
+}
+
+.most-read-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.most-read-content h3 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 0.92rem;
+    font-weight: 600;
+
+    line-height: 1.4;
+
+    transition: color 0.2s ease;
+}
+
+.most-read-item:hover .most-read-content h3 {
+    color: var(--primary-dark);
+}
+
+.most-read-meta {
+    display: block;
+
+    margin-top: 6px;
+
+    font-size: 0.72rem;
+
+    color: var(--text-secondary);
+
+    opacity: 0.7;
 }
 /*-----11. ANIMATIONS------*/
 
@@ -2058,4 +2695,91 @@ footer {
     .hero-card img{
         height:170px;
     }
+}
+@media (max-width: 800px) {
+
+    /* Sidebar */
+    .aside {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        width: 100%;
+    }
+
+    /* Charity */
+    #charityEvent {
+        grid-column: 1;
+        grid-row: 1;
+        height: 100px;
+        min-height: 100px;
+    }
+
+    /* E-Paper */
+    #ePaper {
+        grid-column: 2;
+        grid-row: 1;
+        height: 100px;
+        min-height: 100px;
+    }
+
+    /* Team */
+    #frameBox {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        height: auto;
+    }
+
+    /* Hide Most Read */
+    #mostRead {
+        display: none;
+    }
+
+    /* Sticky Ads + WhatsApp */
+    .mobile-sticky-area {
+        grid-column: 1 / -1;
+        grid-row: 3;
+
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+
+        position: relative;
+        z-index: 100;
+    }
+
+    /* Sticky state controlled by JS */
+    .mobile-sticky-area.is-sticky {
+        position: fixed;
+        left: auto;
+        bottom: 20px;
+    }
+
+    /* Advertisements */
+    .mobile-sticky-area .uniPub {
+        position: static;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        height: auto;
+        min-height: 0;
+        padding: 5px;
+    }
+
+    /* WhatsApp */
+    .mobile-sticky-area #whatsapp {
+        grid-column: 1 / -1;
+
+        position: static;
+
+        width: 100%;
+        height: 40px;
+        min-height: 40px;
+
+        padding: 0;
+        border-radius: 8px;
+    }
+
+    .mobile-sticky-area #whatsapp img {
+        height: 30px;
+    }
+
 }

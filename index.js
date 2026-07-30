@@ -1,6 +1,7 @@
 /* =========================
    GLOBAL DATA
 ========================= */
+let allArticles = null;
 
 function getImagePath(img) {
     // External URL (https://, http://, //)
@@ -209,6 +210,76 @@ if (darkModeToggle) {
     darkModeToggle.addEventListener("click", toggleDarkMode);
 }
 
+// =========================
+// WHATSAPP POPUP
+// =========================
+
+const whatsapp = document.getElementById("whatsapp");
+const whatsappLink = whatsapp.querySelector("a");
+
+const whatsappPopup = document.getElementById("whatsappPopup");
+const closeWhatsappPopup = document.getElementById("closeWhatsappPopup");
+const whatsappPopupOk = document.getElementById("whatsappPopupOk");
+
+let whatsappClicked = false;
+
+
+// =========================
+// WHATSAPP CLICK
+// =========================
+
+whatsappLink.addEventListener("click", function (event) {
+
+    // First click
+    if (!whatsappClicked) {
+
+        whatsappClicked = true;
+
+        // Allow the link to open in the same tab
+        return;
+    }
+
+
+    // Second click
+    event.preventDefault();
+
+    // Show popup
+    whatsappPopup.classList.add("show");
+
+});
+
+
+// =========================
+// CLOSE POPUP
+// =========================
+
+function closeWhatsappPopupFunction() {
+    whatsappPopup.classList.remove("show");
+}
+
+
+// Close with X
+closeWhatsappPopup.addEventListener(
+    "click",
+    closeWhatsappPopupFunction
+);
+
+
+// Close with Okay button
+whatsappPopupOk.addEventListener(
+    "click",
+    closeWhatsappPopupFunction
+);
+
+
+// Close when clicking outside
+whatsappPopup.addEventListener("click", function (event) {
+
+    if (event.target === whatsappPopup) {
+        closeWhatsappPopupFunction();
+    }
+
+});
 /* =========================
    SLIDER SYSTEM
 ========================= */
@@ -584,6 +655,55 @@ function renderTopNewsCategory(articles) {
     return selected.map(article => article.id);
 
 }
+function renderMostRead(articles) {
+
+    const container = document.getElementById("mostReadGrid");
+
+    if (!container) {
+        return;
+    }
+
+    const views = JSON.parse(localStorage.getItem("articleViews")) || {};
+
+    const mostRead = [...articles]
+        .sort((a, b) => {
+            const viewsA = views[a.id] || 0;
+            const viewsB = views[b.id] || 0;
+
+            return viewsB - viewsA;
+        })
+        .slice(0, 5);
+
+    container.innerHTML = "";
+
+    mostRead.forEach((article, index) => {
+
+        const articleViews = views[article.id] || 0;
+
+        const item = document.createElement("article");
+        item.classList.add("most-read-item");
+
+        item.innerHTML = `
+            <span class="most-read-number">
+                ${String(index + 1).padStart(2, "0")}
+            </span>
+
+            <div class="most-read-content">
+                <h3>${article.headline}</h3>
+
+                <span class="most-read-meta">
+                    ${articleViews} ${articleViews === 1 ? "view" : "views"}
+                </span>
+            </div>
+        `;
+
+        item.addEventListener("click", () => {
+            openArticle(article.id);
+        });
+
+        container.appendChild(item);
+    });
+}
 /* Load articles from JSON file and display them in the specified container */
 
 async function loadArticles(containerId, category, limit = 6, page = 1) {
@@ -602,12 +722,12 @@ async function loadArticles(containerId, category, limit = 6, page = 1) {
 
     try {
         const response = await fetch(getDataPath());
-
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
         }
 
         articles = await response.json();
+        renderMostRead(articles);
 
     } catch (err) {
         console.error("Failed to load articles:", err);
@@ -703,7 +823,6 @@ async function loadArticles(containerId, category, limit = 6, page = 1) {
    SEARCH SYSTEM (SAFE)
 ========================= */
 
-let allArticles = null;
 
 async function searchFunction() {
 
@@ -961,3 +1080,75 @@ function sidebarCarousel() {
 }
 
 sidebarCarousel();
+
+function handleStickyAds() {
+    const stickyArea = document.querySelector(".mobile-sticky-area");
+    const aside = document.querySelector(".aside");
+    const footer = document.querySelector("footer");
+
+    if (!stickyArea || !aside || !footer) {
+        return;
+    }
+
+    const asideRect = aside.getBoundingClientRect();
+    const footerRect = footer.getBoundingClientRect();
+
+    const bottomOffset = 20;
+    const stickyHeight = stickyArea.offsetHeight;
+
+    /*
+    Position where the sticky area should normally sit.
+    */
+    const desiredTop =
+        window.innerHeight -
+        stickyHeight -
+        bottomOffset;
+
+    /*
+    The bottom boundary of the sidebar.
+    */
+    const asideBottom = asideRect.bottom;
+
+    /*
+    If the sidebar is tall enough,
+    keep the ads fixed at the desired viewport position.
+    */
+    if (asideBottom > desiredTop + stickyHeight) {
+
+        stickyArea.classList.add("is-sticky");
+
+        stickyArea.style.left =
+            `${asideRect.left}px`;
+
+        stickyArea.style.width =
+            `${asideRect.width}px`;
+
+    } else {
+
+        /*
+        Stop the sticky area at the bottom
+        of the sidebar before the footer.
+        */
+        stickyArea.classList.remove("is-sticky");
+
+        stickyArea.style.left = "";
+        stickyArea.style.width = "";
+    }
+}
+
+
+window.addEventListener(
+    "scroll",
+    handleStickyAds,
+    { passive: true }
+);
+
+window.addEventListener(
+    "resize",
+    handleStickyAds
+);
+
+window.addEventListener(
+    "load",
+    handleStickyAds
+);

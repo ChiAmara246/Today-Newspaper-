@@ -129,81 +129,118 @@
                 <button class="btn" id="next" onclick="nextSlide()">&#10095;</button>
             </div>
         </div>
-        <div class="container0">
-            <div class="container">
-                <section class="featuredNews">
-                    <div class="h2">
-                        <h2> Top News</h2>
-                    </div>
-                    <div class="grid" id="topnewsGrid"></div>
-                    
-                </section>
-                
-                <section>
-                    <div class="h2">
-                    <h2> Education </h2>
-                    <p><a href="navpages/education.html">see more →</a></p>
-                    </div>
-                    <div class="grid" id="newsGridEducation"></div>
-                </section>
-                <section>
-                    <div class="h2">
-                    <h2> Politics </h2>
-                    <p><a href="navpages/politics.html">see more →</a></p>
-                    </div>
-                    <div class="grid" id="newsGridPolitics"></div>
-                </section>
-                <section>
-                    <div class="h2">
-                    <h2> Trending News </h2>
-                    <p><a href="navpages/today.html">see more →</a></p>
-                    </div>
-                    <div class="grid" id="newsGridToday"></div>
-                    
-                </section>
-                <section class ="editor">
-                    <div class="h2">
-                        <h2>Editor's Picks</h2>
-                    </div>
-                    <div class="grid" id="newsGridEditor"></div>
-                </section>
-            </div>
-            <section id="searchResults" class="hidden"></section>
-            <div class="aside">
-                <div id="frame-box">
-                <aside id="frameBox">
-                    <h3>Today Newspaper Team</h3>
-                    <div class="carousel">
-                        <div class="track">
-                            <img src="images/today_bus_500px.jpg" alt="Today Newspaper delivery bus">
-                            <img src="images/waiting room.jpeg" alt="Today Newspaper waiting room">
-                            <img src="images/officeImage.jpeg" alt="Today Newspaper office">
+        <main>
+            <div class="container0">
+                <div class="container">
+                    <section class="featuredNews">
+                        <div class="h2">
+                            <h2> Top News</h2>
                         </div>
-                    </div>
-                </aside>
-                <aside id="mostRead">
+                        <div class="grid" id="topnewsGrid"></div>
+                        
+                    </section>
+                    
+                    <section>
+                        <div class="h2">
+                        <h2> Education </h2>
+                        <p><a href="navpages/education.html">see more →</a></p>
+                        </div>
+                        <div class="grid" id="newsGridEducation"></div>
+                    </section>
+                    <section>
+                        <div class="h2">
+                        <h2> Politics </h2>
+                        <p><a href="navpages/politics.html">see more →</a></p>
+                        </div>
+                        <div class="grid" id="newsGridPolitics"></div>
+                    </section>
+                    <section>
+                        <div class="h2">
+                        <h2> Trending News </h2>
+                        <p><a href="navpages/today.html">see more →</a></p>
+                        </div>
+                        <div class="grid" id="newsGridToday"></div>
+                        
+                    </section>
+                    <section class ="editor">
+                        <div class="h2">
+                            <h2>Editor's Picks</h2>
+                        </div>
+                        <div class="grid" id="newsGridEditor"></div>
+                    </section>
+                </div>
+                <section id="searchResults" class="hidden"></section>
+                <div class="aside">
 
-                </aside>
-                <aside id="whatsapp">
-                    <a href="https://chat.whatsapp.com/JRep0h9StkDKcaHAel0TeN?mode=gi_t" rel="noopener noreferrer" target="_blank"><img src="images/images-8.jpeg" alt="Join us on WhatsApp"/></a>
-                </aside>
+                    <aside id="frameBox">
+                        <h3>Today Newspaper Team</h3>
+                        <div class="carousel">
+                            <div class="track">
+                                <img src="images/today_bus_500px.jpg" alt="Today Newspaper delivery bus">
+                                <img src="images/waiting room.jpeg" alt="Today Newspaper waiting room">
+                                <img src="images/officeImage.jpeg" alt="Today Newspaper office">
+                            </div>
+                        </div>
+                    </aside>
+
+                    <aside id="charityEvent"></aside>
+
+                    <aside id="mostRead">
+                        <div class="most-read-header">
+                            <span class="section-label">TRENDING</span>
+                            <h2>Most Read</h2>
+                        </div>
+                        <div id="mostReadGrid"></div>
+                    </aside>
+
+                    <aside id="ePaper"></aside>
+
+                    <div class="mobile-sticky-area">
+                        <aside class="uniPub">
+                            <a href="https://babcock.edu.ng"><img src="images/babcockLogo.jpeg" alt="babcock university logo"/></a>
+                        </aside>
+                        <aside class="uniPub">
+                            <a href="https://nileuniversity.edu.ng"><img src="images/nileLogo.jpeg" alt="nile university logo"/></a>
+                        </aside>
+                    <aside id="whatsapp">
+                        <a 
+                            href="https://chat.whatsapp.com/JRep0h9StkDKcaHAel0TeN?mode=gi_t"
+                            rel="noopener noreferrer"
+                            target="_blank"
+                        >
+                            <img 
+                                src="images/images-8.jpeg"
+                                alt="Join us on WhatsApp"
+                            >
+                        </a>
+                    </aside>
+
+
+                    <!-- WhatsApp Popup -->
+                    <div id="whatsappPopup" class="whatsapp-popup">
+
+                        <div class="whatsapp-popup-card">
+
+                            <button id="closeWhatsappPopup" class="whatsapp-close" aria-label="Close popup">
+                                &times;
+                            </button>
+
+                            <div class="whatsapp-icon">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </div>
+
+                            <p>
+                                Sorry, this whatsapp group is filled.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    </div>
                 </div>
             </div>
-            <div class="advert">
-                <aside id="ePaper">
-
-                </aside>
-                <aside id="charityEvent">
-
-                </aside>
-                <aside id="uniPub">
-
-                </aside>
-                <aside class="uniPub">
-
-                </aside>
-            </div>
-        </div>
+        </main>
         <footer>
 
             <!-- Brand -->
