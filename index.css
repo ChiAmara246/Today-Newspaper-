@@ -1316,29 +1316,21 @@ nav a.active{
    ========================================= */
 
 .carousel {
-  width: 100%;
-  overflow: hidden;
-  position: relative;
+    width: 100%;
+    overflow: hidden;
 }
 
 .track {
-  display: flex;
-  width: 100%;
-  transition: transform .6s ease;
-  will-change: transform;
+    display: flex;
+    transition: transform .6s ease;
 }
 
-.slide {
-  flex: 0 0 100%;
-  width: 100%;
-  overflow: hidden;
-}
-
-.slide img {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-width: 100%;
+.track img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 /* =========================================
    2. E-PAPER

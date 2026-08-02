@@ -1105,9 +1105,13 @@ function sidebarCarousel() {
   const track = document.querySelector(".track");
   if (!track) return;
 
-  const images = ["today_bus_500px.jpg", "officeImage.jpeg",
-"waiting room.jpeg", "editorsOffice.jpeg", "chiefEditor.jpeg"];
-
+  const images = [
+    "today_bus_500px.jpg",
+    "officeImage.jpeg",
+    "waiting room.jpeg",
+    "editorsOffice.jpeg",
+    "chiefEditor.jpeg"
+  ];
 
   images.forEach(image => {
     const slide = document.createElement("div");
@@ -1124,12 +1128,33 @@ function sidebarCarousel() {
 
   let index = 0;
 
-  function moveSlide() {
-    index++;
-    track.style.transform = `translateX(-${index * 100}%)`;
+  function resizeCarousel() {
+    const carousel = track.parentElement;
+    const width = carousel.clientWidth;
+    const height = width * 0.65;
+
+    track.style.height = `${height}px`;
+
+    [...track.children].forEach(slide => {
+      slide.style.width = `${width}px`;
+      slide.style.height = `${height}px`;
+      slide.style.flex = `0 0 ${width}px`;
+
+      const img = slide.querySelector("img");
+
+      if (img) {
+        img.style.width = "100%";
+        img.style.height = "100%";
+        img.style.objectFit = "cover";
+      }
+    });
   }
 
-  const timer = setInterval(moveSlide, 3000);
+  function moveSlide() {
+    index++;
+    track.style.transition = "transform .6s ease";
+    track.style.transform = `translateX(-${index * 100}%)`;
+  }
 
   track.addEventListener("transitionend", () => {
     if (index === slides.length) {
@@ -1140,6 +1165,12 @@ function sidebarCarousel() {
       track.style.transition = "transform .6s ease";
     }
   });
+
+  window.addEventListener("resize", resizeCarousel);
+
+  resizeCarousel();
+
+  setInterval(moveSlide, 3000);
 }
 
 sidebarCarousel();
