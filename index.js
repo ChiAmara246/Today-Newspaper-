@@ -1278,3 +1278,247 @@ function initEPaper() {
 }
 
 document.addEventListener("DOMContentLoaded", initEPaper);
+
+function initEPaperModal() {
+    const epaper = document.getElementById("ePaper");
+    if (!epaper) return;
+
+    const modal = document.createElement("div");
+    modal.className = "epaper-modal";
+    modal.id = "epaperModal";
+
+    modal.innerHTML = `
+        <div class="epaper-modal-content">
+            <button class="epaper-close" aria-label="Close">&times;</button>
+
+            <div class="epaper-modal-header">
+                <span class="epaper-label">TODAY NEWSPAPER</span>
+                <h2 id="epaperModalTitle">Access the ePaper</h2>
+                <p id="epaperModalText">Sign in to continue reading today's edition.</p>
+            </div>
+
+            <form id="epaperSignInForm">
+                <div class="epaper-input-group">
+                    <label for="epaperEmail">Email Address</label>
+                    <input type="email" id="epaperEmail" placeholder="Enter your email address" required>
+                </div>
+
+                <div class="epaper-input-group">
+                    <label for="epaperPassword">Password</label>
+                    <input type="password" id="epaperPassword" placeholder="Enter your password" required>
+                </div>
+
+                <div class="epaper-form-options">
+                    <label class="remember-me">
+                        <input type="checkbox">
+                        <span>Remember me</span>
+                    </label>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="epaper-signin-btn">Sign In</button>
+            </form>
+
+            <form id="epaperRegisterForm" style="display:none;">
+                <div class="epaper-input-group">
+                    <label for="epaperFullName">Full Name</label>
+                    <input type="text" id="epaperFullName" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="epaper-input-group">
+                    <label for="epaperRegisterEmail">Email Address</label>
+                    <input type="email" id="epaperRegisterEmail" placeholder="Enter your email address" required>
+                </div>
+
+                <div class="epaper-input-group">
+                    <label for="epaperRegisterPassword">Password</label>
+                    <input type="password" id="epaperRegisterPassword" placeholder="Create a password" required>
+                    
+                    <div class="epaper-password-requirements">
+                        <span>Password must contain:</span>
+                        <ul>
+                            <li data-rule="length"><i></i>At least 8 characters</li>
+                            <li data-rule="uppercase"><i></i>One uppercase letter</li>
+                            <li data-rule="lowercase"><i></i>One lowercase letter</li>
+                            <li data-rule="number"><i></i>One number</li>
+                            <li data-rule="special"><i></i>One special character</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="epaper-input-group">
+                    <label for="epaperConfirmPassword">Confirm Password</label>
+                    <input type="password" id="epaperConfirmPassword" placeholder="Confirm your password" required>
+                </div>
+
+                <button type="submit" class="epaper-signin-btn">Create Account</button>
+            </form>
+
+            <div class="epaper-divider">
+                <span>or</span>
+            </div>
+
+            <p class="epaper-register" id="epaperSwitchText">
+                Don't have an account?
+                <a href="#" id="epaperCreateAccount">Create an account</a>
+            </p>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    const closeButton = modal.querySelector(".epaper-close");
+    const signInForm = modal.querySelector("#epaperSignInForm");
+    const registerForm = modal.querySelector("#epaperRegisterForm");
+    const createAccount = modal.querySelector("#epaperCreateAccount");
+    const switchText = modal.querySelector("#epaperSwitchText");
+    const title = modal.querySelector("#epaperModalTitle");
+    const text = modal.querySelector("#epaperModalText");
+
+    function openModal() {
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeModal() {
+        modal.classList.remove("active");
+        document.body.style.overflow = "";
+    }
+
+    function showRegisterForm(event) {
+        event.preventDefault();
+
+        signInForm.style.display = "none";
+        registerForm.style.display = "block";
+
+        title.textContent = "Create an Account";
+        text.textContent = "Create your account to access Today's ePaper.";
+
+        switchText.innerHTML = `
+            Already have an account?
+            <a href="#" id="epaperSignIn">Sign in</a>
+        `;
+
+        modal.querySelector("#epaperSignIn").addEventListener("click", showSignInForm);
+    }
+
+    function showSignInForm(event) {
+        event.preventDefault();
+
+        registerForm.style.display = "none";
+        signInForm.style.display = "block";
+
+        title.textContent = "Access the ePaper";
+        text.textContent = "Sign in to continue reading today's edition.";
+
+        switchText.innerHTML = `
+            Don't have an account?
+            <a href="#" id="epaperCreateAccount">Create an account</a>
+        `;
+
+        modal.querySelector("#epaperCreateAccount").addEventListener("click", showRegisterForm);
+    }
+
+    epaper.addEventListener("click", openModal);
+    closeButton.addEventListener("click", closeModal);
+
+    modal.addEventListener("click", event => {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && modal.classList.contains("active")) {
+            closeModal();
+        }
+    });
+                const registerPassword = modal.querySelector("#epaperRegisterPassword");
+                const passwordRequirements = modal.querySelectorAll(".epaper-password-requirements li");
+
+                registerPassword.addEventListener("input", () => {
+                    const password = registerPassword.value;
+
+                    const rules = {
+                        length: password.length >= 8,
+                        uppercase: /[A-Z]/.test(password),
+                        lowercase: /[a-z]/.test(password),
+                        number: /[0-9]/.test(password),
+                        special: /[^A-Za-z0-9]/.test(password)
+                    };
+
+                    passwordRequirements.forEach(requirement => {
+                        const rule = requirement.dataset.rule;
+                        const icon = requirement.querySelector("i");
+
+                        if (rules[rule]) {
+                            requirement.classList.add("valid");
+                            icon.textContent = "✓";
+                        } else {
+                            requirement.classList.remove("valid");
+                            icon.textContent = "";
+                        }
+                    });
+                });
+
+    createAccount.addEventListener("click", showRegisterForm);
+
+    signInForm.addEventListener("submit", event => {
+        event.preventDefault();
+        console.log("ePaper sign-in submitted");
+    });
+
+
+    registerForm.addEventListener("submit", event => {
+    event.preventDefault();
+
+    const submitButton = registerForm.querySelector(".epaper-signin-btn");
+    submitButton.disabled = true;
+    submitButton.textContent = "Creating Account...";
+
+    setTimeout(() => {
+        submitButton.disabled = false;
+        submitButton.textContent = "Create Account";
+
+        const popup = document.createElement("div");
+        popup.className = "epaper-error-popup";
+
+        popup.innerHTML = `
+            <div class="epaper-error-content">
+                <button type="button" class="epaper-error-close">&times;</button>
+                <div class="epaper-error-icon">!</div>
+                <h3>Something went wrong</h3>
+                <p>Please try again later.</p>
+                <button type="button" class="epaper-error-ok">Okay</button>
+            </div>
+        `;
+
+        document.body.appendChild(popup);
+
+        setTimeout(() => {
+            popup.classList.add("active");
+        }, 10);
+
+        function closeErrorPopup() {
+            popup.classList.remove("active");
+
+            setTimeout(() => {
+                popup.remove();
+            }, 300);
+        }
+
+        popup.querySelector(".epaper-error-close").addEventListener("click", closeErrorPopup);
+        popup.querySelector(".epaper-error-ok").addEventListener("click", closeErrorPopup);
+
+        popup.addEventListener("click", event => {
+            if (event.target === popup) {
+                closeErrorPopup();
+            }
+        });
+    }, 10000);
+});
+
+
+}
+
+document.addEventListener("DOMContentLoaded", initEPaperModal);
