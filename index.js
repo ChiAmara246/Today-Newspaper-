@@ -723,29 +723,17 @@ function renderTopNewsCategory(articles) {
 
 }
 function renderMostRead(articles) {
-
   const container = document.getElementById("mostReadGrid");
-
-  if (!container) {
-    return;
-  }
-
-  const views = JSON.parse(localStorage.getItem("articleViews")) || {};
+  if (!container) return;
 
   const mostRead = [...articles]
-    .sort((a, b) => {
-      const viewsA = views[a.id] || 0;
-      const viewsB = views[b.id] || 0;
-
-      return viewsB - viewsA;
-    })
-    .slice(0, 5);
+    .sort((a, b) => (b.view || 0) - (a.view || 0))
+    .slice(0, 4);
 
   container.innerHTML = "";
 
   mostRead.forEach((article, index) => {
-
-    const articleViews = views[article.id] || 0;
+    const articleViews = article.view || 0;
 
     const item = document.createElement("article");
     item.classList.add("most-read-item");
@@ -1363,8 +1351,24 @@ function initEPaperModal() {
 
                 <div class="epaper-input-group">
                     <label for="epaperRegisterPassword">Password</label>
-                    <input type="password" id="epaperRegisterPassword" placeholder="Create a password" required>
-                    
+
+                    <div class="epaper-password-wrapper">
+                        <input 
+                            type="password" 
+                            id="epaperRegisterPassword" 
+                            placeholder="Create a password" 
+                            required
+                        >
+                        <button 
+                            type="button" 
+                            class="epaper-show-password" 
+                            data-target="epaperRegisterPassword"
+                            aria-label="Show password"
+                        >
+                            <i data-lucide="eye"></i>
+                        </button>
+                    </div>
+                                    
                     <div class="epaper-password-requirements">
                         <span>Password must contain:</span>
                         <ul>
@@ -1379,7 +1383,26 @@ function initEPaperModal() {
 
                 <div class="epaper-input-group">
                     <label for="epaperConfirmPassword">Confirm Password</label>
-                    <input type="password" id="epaperConfirmPassword" placeholder="Confirm your password" required>
+
+                    <div class="epaper-password-wrapper">
+                        <input 
+                            type="password" 
+                            id="epaperConfirmPassword" 
+                            placeholder="Confirm your password" 
+                            required
+                        >
+
+                        <button 
+                            type="button" 
+                            class="epaper-show-password" 
+                            data-target="epaperConfirmPassword"
+                            aria-label="Show password"
+                        >
+                            <i data-lucide="eye"></i>
+                        </button>
+                    </div>
+
+                    <div id="epaperPasswordMatchMessage" class="epaper-password-match-message"></div>
                 </div>
 
                 <button type="submit" class="epaper-signin-btn">Create Account</button>
@@ -1397,6 +1420,7 @@ function initEPaperModal() {
     `;
 
     document.body.appendChild(modal);
+    lucide.createIcons();
 
     const closeButton = modal.querySelector(".epaper-close");
     const signInForm = modal.querySelector("#epaperSignInForm");
@@ -1464,33 +1488,104 @@ function initEPaperModal() {
             closeModal();
         }
     });
-                const registerPassword = modal.querySelector("#epaperRegisterPassword");
-                const passwordRequirements = modal.querySelectorAll(".epaper-password-requirements li");
+    const registerPassword = modal.querySelector("#epaperRegisterPassword");
+    const passwordRequirements = modal.querySelectorAll(".epaper-password-requirements li");
 
-                registerPassword.addEventListener("input", () => {
+    const showPasswordButtons = modal.querySelectorAll(".epaper-show-password");
+
+    showPasswordButtons.forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            const targetId = button.dataset.target;
+            const passwordInput = modal.querySelector(`#${targetId}`);
+
+            if (!passwordInput) {
+                return;
+            }
+
+            if (passwordInput.type === "password") {
+
+                passwordInput.type = "text";
+
+                button.setAttribute("aria-label", "Hide password");
+                button.innerHTML = `<i data-lucide="eye-off"></i>`;
+
+            } else {
+
+                passwordInput.type = "password";
+
+                button.setAttribute("aria-label", "Show password");
+                button.innerHTML = `<i data-lucide="eye"></i>`;
+
+            }
+
+            lucide.createIcons();
+
+        });
+
+    });
+
+    const confirmPassword = modal.querySelector("#epaperConfirmPassword");
+    const passwordMatchMessage = modal.querySelector("#epaperPasswordMatchMessage");
+
+    function checkPasswordMatch() {
+
+        const password = registerPassword.value;
+        const confirmPasswordValue = confirmPassword.value;
+
+        // Don't show anything if confirm password is empty
+        if (confirmPasswordValue === "") {
+            passwordMatchMessage.textContent = "";
+            passwordMatchMessage.classList.remove("error", "success");
+
+            return true;
+        }
+
+        // Passwords don't match
+        if (password !== confirmPasswordValue) {
+
+            passwordMatchMessage.textContent = "Passwords do not match.";
+            passwordMatchMessage.classList.add("error");
+            passwordMatchMessage.classList.remove("success");
+
+            return false;
+        }
+
+        // Passwords match
+        passwordMatchMessage.textContent = "Passwords match.";
+        passwordMatchMessage.classList.add("success");
+        passwordMatchMessage.classList.remove("error");
+
+        return true;
+    }
+
+    registerPassword.addEventListener("input", checkPasswordMatch);
+    confirmPassword.addEventListener("input", checkPasswordMatch);
+
+    registerPassword.addEventListener("input", () => {
                     const password = registerPassword.value;
 
-                    const rules = {
-                        length: password.length >= 8,
-                        uppercase: /[A-Z]/.test(password),
-                        lowercase: /[a-z]/.test(password),
-                        number: /[0-9]/.test(password),
-                        special: /[^A-Za-z0-9]/.test(password)
-                    };
+        const rules = {length: password.length >= 8,
+            uppercase: /[A-Z]/.test(password),
+            lowercase: /[a-z]/.test(password),
+            number: /[0-9]/.test(password),
+            special: /[^A-Za-z0-9]/.test(password)
+        };
 
-                    passwordRequirements.forEach(requirement => {
-                        const rule = requirement.dataset.rule;
-                        const icon = requirement.querySelector("i");
+        passwordRequirements.forEach(requirement => {
+            const rule = requirement.dataset.rule;
+            const icon = requirement.querySelector("i");
 
-                        if (rules[rule]) {
-                            requirement.classList.add("valid");
-                            icon.textContent = "✓";
-                        } else {
-                            requirement.classList.remove("valid");
-                            icon.textContent = "";
-                        }
-                    });
-                });
+            if (rules[rule]) {
+                requirement.classList.add("valid");
+                icon.textContent = "✓";
+            } else {
+                requirement.classList.remove("valid");
+                icon.textContent = "";
+            }
+        });
+    });
 
     createAccount.addEventListener("click", showRegisterForm);
 

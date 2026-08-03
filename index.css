@@ -159,27 +159,19 @@ body{
 
 /* Containers */
 .container0 {
-  display: flex;
-  width: 100%;
-  gap: 20px;
-  padding: 10px;
-  box-sizing: border-box;
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(280px, 1fr);
+    gap: 20px;
 }
 
 .container {
-  flex: 3;
-  min-width: 0;
+    min-width: 0;
 }
 
 .aside {
-  flex: 1;
-  min-width: 0;
-
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  border-left: 1px solid var(--border);
+    min-width: 0;
 }
+
 /*-----3. HEADER------*/
 
 header{
@@ -1404,22 +1396,153 @@ h6{
 .epaper-modal {
     position: fixed;
     inset: 0;
-    z-index: 9999;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
-    background: rgba(5,12,25,.72);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+
+    /*
+    Responsive breathing room around the modal
+    */
+    padding: clamp(16px, 4vw, 50px);
+
+    background: rgba(7, 17, 35, 0.72);
+
     opacity: 0;
     visibility: hidden;
-    transition: opacity .35s ease, visibility .35s ease;
+
+    transition:
+        opacity 0.35s ease,
+        visibility 0.35s ease;
+
+    z-index: 9999;
 }
 
 .epaper-modal.active {
     opacity: 1;
     visibility: visible;
+}
+
+
+/* =========================================
+   MODAL CONTAINER
+   ========================================= */
+
+.epaper-modal-content {
+    position: relative;
+
+    /*
+    Comfortable width that responds to viewport
+    */
+    width: clamp(320px, 42vw, 500px);
+
+    /*
+    Responsive height based on viewport
+    */
+    max-height: calc(100dvh - clamp(32px, 8vh, 80px));
+
+    /*
+    The modal itself scrolls if the viewport
+    becomes too short
+    */
+    overflow-y: auto;
+
+    background: #ffffff;
+
+    border-radius: clamp(12px, 1.2vw, 18px);
+
+    border: 1px solid rgba(11, 44, 95, 0.06);
+
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.20),
+        0 10px 30px rgba(0, 0, 0, 0.08);
+
+    transform: translateY(20px) scale(0.98);
+
+    transition:
+        transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.4s ease;
+
+    -webkit-overflow-scrolling: touch;
+}
+
+.epaper-modal.active .epaper-modal-content {
+    transform: translateY(0) scale(1);
+}
+
+
+/* =========================================
+   TABLET
+   ========================================= */
+
+@media (max-width: 900px) {
+
+    .epaper-modal {
+        padding: 30px;
+    }
+
+    .epaper-modal-content {
+        width: min(90vw, 480px);
+
+        max-height: calc(100dvh - 60px);
+    }
+}
+
+
+/* =========================================
+   PHONE
+   ========================================= */
+
+@media (max-width: 600px) {
+
+    .epaper-modal {
+        padding: 20px 15px;
+    }
+
+    .epaper-modal-content {
+        width: 100%;
+
+        max-height: calc(100dvh - 40px);
+
+        border-radius: 14px;
+    }
+}
+
+
+/* =========================================
+   SMALL PHONE
+   ========================================= */
+
+@media (max-width: 380px) {
+
+    .epaper-modal {
+        padding: 12px;
+    }
+
+    .epaper-modal-content {
+        max-height: calc(100dvh - 24px);
+
+        border-radius: 12px;
+    }
+}
+
+
+/* =========================================
+   SHORT VIEWPORT
+   ========================================= */
+
+@media (max-height: 600px) {
+
+    .epaper-modal {
+        align-items: flex-start;
+
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+
+    .epaper-modal-content {
+        max-height: calc(100dvh - 50px);
+    }
 }
 
 .epaper-modal-content {
@@ -1759,7 +1882,118 @@ h6{
     background: #287a55;
     color: #fff;
 }
+.epaper-password-wrapper {
+    position: relative;
+    width: 100%;
+}
 
+.epaper-password-wrapper input {
+    width: 100%;
+    padding-right: 48px;
+}
+
+.epaper-show-password {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 32px;
+    height: 32px;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: #777;
+
+    cursor: pointer;
+
+    transition:
+        color 0.25s ease,
+        background 0.25s ease;
+}
+
+.epaper-show-password:hover {
+    color: #0b2c5f;
+    background: rgba(11, 44, 95, 0.07);
+}
+
+.epaper-show-password svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 1.8;
+}
+
+.epaper-password-match-message {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    margin-top: 8px;
+    padding: 0;
+
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+
+    transform: translateY(-4px);
+
+    transition:
+        opacity 0.25s ease,
+        max-height 0.25s ease,
+        transform 0.25s ease;
+}
+
+/* Small elegant indicator */
+.epaper-password-match-message::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+}
+
+/* Passwords don't match */
+.epaper-password-match-message.error {
+    opacity: 1;
+    max-height: 30px;
+
+    color: #9b3d3d;
+
+    transform: translateY(0);
+}
+
+.epaper-password-match-message.error::before {
+    background: #9b3d3d;
+}
+
+/* Passwords match */
+.epaper-password-match-message.success {
+    opacity: 1;
+    max-height: 30px;
+
+    color: #56705c;
+
+    transform: translateY(0);
+}
+
+.epaper-password-match-message.success::before {
+    background: #56705c;
+}
 /* =========================================
    MOBILE STICKY AREA
    ========================================= */
@@ -1851,9 +2085,10 @@ h6{
 
 #mostRead {
   width: 100%;
-  min-height: 200px;
+  min-height: 190px;
+  border-radius: 0%;
 
-  padding: 18px;
+  padding: 10px;
 }
 
 
@@ -1893,6 +2128,7 @@ h6{
   background: var(--background);
 
   border-left: 1px solid var(--border);
+  width: 100%;
 }
 
 
@@ -2771,22 +3007,22 @@ footer {
 
   /* Layout */
 
-  .container0{
-    flex-direction:column;
-  }
+  .container0 {
+        display: flex;
+        flex-direction: column;
+    }
 
-  .container,
-  .aside{
-    width:100%;
-  }
+    .container {
+        width: 100%;
+    }
 
-  .aside{
-    display:flex;
-    gap:20px;
-    align-items:center;
-    padding-bottom:20px;
-    position: relative;
-  }
+    .aside {
+        width: 100%;
+    }
+
+    #relatedGrid {
+        order: -1;
+    }
   /* Sidebar */
 
   #frameBox{
@@ -3289,3 +3525,4 @@ footer {
     width: 28px;
   }
 }
+
