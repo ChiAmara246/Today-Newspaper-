@@ -1324,7 +1324,24 @@ function initEPaperModal() {
 
                 <div class="epaper-input-group">
                     <label for="epaperPassword">Password</label>
-                    <input type="password" id="epaperPassword" placeholder="Enter your password" required>
+
+                    <div class="epaper-password-wrapper">
+                        <input 
+                            type="password" 
+                            id="epaperPassword" 
+                            placeholder="Enter your password" 
+                            required
+                        >
+
+                        <button 
+                            type="button" 
+                            class="epaper-show-password" 
+                            data-target="epaperPassword"
+                            aria-label="Show password"
+                        >
+                            <i data-lucide="eye"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="epaper-form-options">
