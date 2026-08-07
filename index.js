@@ -1163,66 +1163,46 @@ function sidebarCarousel() {
 
 sidebarCarousel();
 
-function handleStickyAds() {
-  const stickyArea = document.querySelector(".mobile-sticky-area");
-  const aside = document.querySelector(".aside");
-  const footer = document.querySelector("footer");
+function handleStickyAds(){
+  const stickyArea=document.querySelector(".mobile-sticky-area");
+  const aside=document.querySelector(".aside");
+  const footer=document.querySelector("footer");
 
-  if (!stickyArea || !aside || !footer) {
+  if(!stickyArea||!aside||!footer){
     return;
   }
 
-  const asideRect = aside.getBoundingClientRect();
-  const footerRect = footer.getBoundingClientRect();
+  const asideRect=aside.getBoundingClientRect();
 
-  const bottomOffset = 20;
-  const stickyHeight = stickyArea.offsetHeight;
+  const H=document.documentElement.scrollHeight;
+  const F=footer.offsetHeight+stickyArea.offsetHeight;
+  const V=window.innerHeight;
 
-  /*
-  Position where the sticky area should normally sit.
-  */
-  const desiredTop =
-    window.innerHeight -
-    stickyHeight -
-    bottomOffset;
+  const h=H-F;
+  const fh=window.scrollY+V;
 
-  /*
-  The bottom boundary of the sidebar.
-  */
-  const asideBottom = asideRect.bottom;
+  const stick=fh<h+50;
 
-  /*
-  If the sidebar is tall enough,
-  keep the ads fixed at the desired viewport position.
-  */
-  if (asideBottom > desiredTop + stickyHeight) {
-
+  if(stick){
     stickyArea.classList.add("is-sticky");
 
-    stickyArea.style.left =
+    stickyArea.style.left=
       `${asideRect.left}px`;
 
-    stickyArea.style.width =
+    stickyArea.style.width=
       `${asideRect.width}px`;
-
-  } else {
-
-    /*
-    Stop the sticky area at the bottom
-    of the sidebar before the footer.
-    */
+  }else{
     stickyArea.classList.remove("is-sticky");
 
-    stickyArea.style.left = "";
-    stickyArea.style.width = "";
+    stickyArea.style.left="";
+    stickyArea.style.width="";
   }
 }
-
 
 window.addEventListener(
   "scroll",
   handleStickyAds,
-  { passive: true }
+  {passive:true}
 );
 
 window.addEventListener(
@@ -1665,3 +1645,121 @@ function initEPaperModal() {
 }
 
 document.addEventListener("DOMContentLoaded", initEPaperModal);
+
+function initMobileStickyAds(){
+    const stickyArea=document.querySelector(".mobile-sticky-area");
+    const ads=document.getElementById("mobileAds");
+
+    if(!stickyArea||!ads) return;
+
+    let button=document.getElementById("toggleMobileAds");
+
+    if(!button){
+        button=document.createElement("button");
+        button.id="toggleMobileAds";
+        button.className="toggle-mobile-ads";
+        button.type="button";
+        button.setAttribute("aria-label","Hide adverts");
+        button.innerHTML='<span id="toggleArrow">⌄</span>';
+        stickyArea.insertBefore(button,ads);
+    }
+
+    const arrow=button.querySelector("#toggleArrow");
+
+    if(!arrow) return;
+
+    let timer=null;
+
+    function isSticky(){
+        return stickyArea.classList.contains("is-sticky");
+    }
+
+    function showAds(){
+        ads.classList.remove("hidden");
+        arrow.textContent="⌄";
+        button.setAttribute("aria-label","Hide adverts");
+        localStorage.removeItem("mobileAdsHidden");
+        clearTimeout(timer);
+        timer=null;
+    }
+
+    function hideAds(){
+        ads.classList.add("hidden");
+        arrow.textContent="⌃";
+        button.setAttribute("aria-label","Show adverts");
+
+        const hiddenTime=Date.now();
+
+        localStorage.setItem("mobileAdsHidden",hiddenTime);
+
+        clearTimeout(timer);
+
+        timer=setTimeout(()=>{
+            localStorage.removeItem("mobileAdsHidden");
+
+            if(isSticky()){
+                showAds();
+            }
+        },300000);
+    }
+
+    function updateStickyState(){
+        if(isSticky()){
+            button.style.display="flex";
+
+            const hiddenTime=localStorage.getItem("mobileAdsHidden");
+
+            if(hiddenTime){
+                const elapsed=Date.now()-Number(hiddenTime);
+
+                if(elapsed<300000){
+                    ads.classList.add("hidden");
+                    arrow.textContent="⌃";
+                    button.setAttribute("aria-label","Show adverts");
+
+                    clearTimeout(timer);
+
+                    timer=setTimeout(()=>{
+                        localStorage.removeItem("mobileAdsHidden");
+                        showAds();
+                    },300000-elapsed);
+                }else{
+                    showAds();
+                }
+            }else{
+                ads.classList.remove("hidden");
+                arrow.textContent="⌄";
+                button.setAttribute("aria-label","Hide adverts");
+            }
+
+        }else{
+            button.style.display="none";
+            ads.classList.remove("hidden");
+        }
+    }
+
+    button.addEventListener("click",function(event){
+        event.preventDefault();
+        event.stopPropagation();
+
+        if(!isSticky()) return;
+
+        if(ads.classList.contains("hidden")){
+            showAds();
+        }else{
+            hideAds();
+        }
+    });
+
+    const observer=new MutationObserver(()=>{
+        updateStickyState();
+    });
+
+    observer.observe(stickyArea,{
+        attributes:true,
+        attributeFilter:["class"]
+    });
+
+    updateStickyState();
+}
+initMobileStickyAds();

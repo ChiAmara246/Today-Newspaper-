@@ -1,164 +1,490 @@
 
-/*-----1. RESET & GLOBAL------*/
+/* =========================================================
+   1. RESET & GLOBAL
+   ========================================================= */
 
-/* Root Variables */
-:root{
-  /* Colors */
+/* ROOT VARIABLES*/
+
+:root {
+
+  /* -------------------------
+     BRAND
+     ------------------------- */
+
   --primary: #032456;
-  --primary-dark: #163d7a;
+  --primary-dark: #021a3f;
 
-  --background: #fafafa;
-  --surface: #fff;
+  /* Elegant editorial accent */
+  --accent: #b08a4a;
+  --accent-dark: #927038;
 
-  --text: #111;
-  --text-secondary: #333;
-  --text-muted: #666;
 
-  --border: #d7d7d7;
+  /* -------------------------
+     BACKGROUNDS
+     ------------------------- */
 
-  /* Border Radius */
-  --radius: 12px;
-  --radius-large: 20px;
+  --background: #f7f7f5;
+  --surface: #ffffff;
+  --surface-soft: #f1f2f3;
 
-  /* Shadow */
-  --shadow: 0 15px 40px rgba(0, 0, 0, .12);
 
-  /* Transition */
-  --transition: .25s ease;
+  /* -------------------------
+     TEXT
+     ------------------------- */
+
+  --text: #111111;
+  --text-secondary: #333333;
+  --text-muted: #666666;
+  --text-light: #ffffff;
+
+
+  /* -------------------------
+     BORDERS
+     ------------------------- */
+
+  --border: #e1e2e4;
+  --border-dark: #d1d3d6;
+
+
+  /* -------------------------
+     RADIUS
+     ------------------------- */
+
+  --radius-small: 6px;
+  --radius: 10px;
+  --radius-large: 16px;
+  --radius-xl: 20px;
+
+
+  /* -------------------------
+     SHADOWS
+     ------------------------- */
+
+  --shadow-small:
+    0 2px 8px rgba(0, 0, 0, 0.04);
+
+  --shadow:
+    0 8px 24px rgba(0, 0, 0, 0.07);
+
+  --shadow-large:
+    0 15px 40px rgba(0, 0, 0, 0.10);
+
+
+  /* -------------------------
+     TRANSITIONS
+     ------------------------- */
+
+  --transition-fast: 0.18s ease;
+  --transition: 0.25s ease;
+  --transition-slow: 0.35s ease;
+
+
+  /* -------------------------
+     SPACING
+     ------------------------- */
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 48px;
+  --space-10: 64px;
+
+
+  /* -------------------------
+     CONTENT
+     ------------------------- */
+
+  --content-width: 1400px;
+  --reading-width: 900px;
 }
-/* =========================
+
+
+/* =========================================================
    DARK MODE
-========================= */
+   ========================================================= */
 
 html.dark-mode {
-  /* Brand */
+
+  /* -------------------------
+     BRAND
+     ------------------------- */
+
   --primary: #0b2856;
-  --primary-dark: #a88a4f;
+  --primary-dark: #061a38;
 
-  /* Backgrounds */
-  --background: #1b2936;
-  --surface: #000c1a;
+  --accent: #d8b56a;
+  --accent-dark: #b89554;
 
-  /* Text */
+
+  /* -------------------------
+     BACKGROUNDS
+     ------------------------- */
+
+  --background: #111b26;
+  --surface: #162330;
+  --surface-soft: #1c2a38;
+
+
+  /* -------------------------
+     TEXT
+     ------------------------- */
+
   --text: #f1f0ec;
-  --text-secondary: #c5c5c2;
-  --text-muted: #92959a;
+  --text-secondary: #c9c9c5;
+  --text-muted: #94999f;
+  --text-light: #ffffff;
 
-  /* Borders */
-  --border: #303438;
+
+  /* -------------------------
+     BORDERS
+     ------------------------- */
+
+  --border: #2c3741;
+  --border-dark: #394550;
 }
 
-/* =========================
+
+/* =========================================================
+   GLOBAL RESET
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+body {
+  margin: 0;
+  padding: 0;
+
+  overflow-x: hidden;
+
+  background: var(--background);
+  color: var(--text);
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  line-height: 1.6;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  text-rendering: optimizeLegibility;
+
+  transition:
+    background-color var(--transition),
+    color var(--transition);
+}
+
+
+/* =========================================================
+   MEDIA
+   ========================================================= */
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+
+/* =========================================================
+   FORM ELEMENTS
+   ========================================================= */
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+
+button {
+  cursor: pointer;
+}
+
+
+/* Prevent ugly tap highlight on mobile */
+
+button,
+a,
+input,
+textarea,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+/* =========================================================
+   LINKS
+   ========================================================= */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+/* =========================================================
+   HEADINGS
+   ========================================================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+
+  line-height: 1.2;
+
+  text-wrap: balance;
+}
+
+
+/* =========================================================
+   PARAGRAPHS
+   ========================================================= */
+
+p {
+  margin-top: 0;
+}
+
+
+/* =========================================================
+   DARK MODE TRANSITIONS
+   ========================================================= */
+
+body,
+button,
+input,
+textarea,
+select,
+.card,
+.article-card,
+.aside,
+footer,
+header,
+nav {
+  transition:
+    background-color var(--transition),
+    color var(--transition),
+    border-color var(--transition);
+}
+
+
+/* =========================================================
    DARK MODE SWITCH
-========================= */
+   ========================================================= */
 
 .theme-toggle {
   position: relative;
+
   width: 52px;
-  height: 16px;
+  height: 18px;
+
   padding: 0;
+
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 50px;
+
   background: rgba(255, 255, 255, 0.12);
+
   cursor: pointer;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   overflow: hidden;
-  transition: all 0.3s ease;
+
+  transition:
+    background-color var(--transition),
+    border-color var(--transition),
+    transform var(--transition),
+    box-shadow var(--transition);
 }
 
-/* Sun and Moon icons */
+
+/* =========================================================
+   SUN & MOON ICONS
+   ========================================================= */
+
 .theme-icon {
   position: relative;
   z-index: 2;
+
   width: 20px;
   height: 20px;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   font-size: 12px;
-  transition: all 0.3s ease;
+
+  transition:
+    opacity var(--transition),
+    color var(--transition);
 }
+
 
 .sun {
   color: #f5c76b;
 }
 
+
 .moon {
   color: #d7d9e0;
 }
 
-/* Sliding circle */
+
+/* =========================================================
+   SLIDING SWITCH
+   ========================================================= */
+
 .theme-switch {
   position: absolute;
-  top: 0.5px;
-  left: 0px;
+
+  top: 1px;
+  left: 0;
+
   width: 20px;
-  height: 13px;
+  height: 15px;
+
   border-radius: 40%;
+
   background: #ffffff;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
-  transition: transform 0.35s ease, background 0.35s ease;
+
+  box-shadow:
+    0 3px 10px rgba(0, 0, 0, 0.25);
+
+  transition:
+    transform var(--transition-slow),
+    background-color var(--transition-slow),
+    box-shadow var(--transition-slow);
 }
 
-/* =========================
+
+/* =========================================================
    DARK MODE ACTIVE
-========================= */
+   ========================================================= */
 
 html.dark-mode .theme-toggle {
   background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.15);
+
+  border-color:
+    rgba(255, 255, 255, 0.15);
 }
+
 
 html.dark-mode .theme-switch {
   transform: translateX(30px);
-  background: #d8b56a;
+
+  background: var(--accent);
+
+  box-shadow:
+    0 3px 12px rgba(216, 181, 106, 0.25);
 }
+
 
 html.dark-mode .sun {
   opacity: 0.35;
 }
 
+
 html.dark-mode .moon {
   color: #ffffff;
 }
 
-/* Hover */
+
+/* =========================================================
+   THEME TOGGLE HOVER
+   ========================================================= */
+
 .theme-toggle:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.18);
 }
 
-/* Keyboard accessibility */
+
+/* =========================================================
+   KEYBOARD ACCESSIBILITY
+   ========================================================= */
+
 .theme-toggle:focus-visible {
-  outline: 2px solid #d8b56a;
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
-/* Reset */
-*,
-*::before,
-*::after{
-  box-sizing: border-box;
+
+
+/* =========================================================
+   MOBILE FOUNDATION
+   ========================================================= */
+
+@media (max-width: 745px) {
+
+  body {
+    font-size: 15px;
+  }
+
 }
 
-html{
-  scroll-behavior: smooth;
+
+/* =========================================================
+   TABLET FOUNDATION
+   ========================================================= */
+
+@media (min-width: 746px) {
+
+  body {
+    font-size: 15.5px;
+  }
+
 }
 
-body{
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
 
-  font-family: Arial, Helvetica, sans-serif;
-  background: var(--background);
-  color: var(--text);
+/* =========================================================
+   DESKTOP FOUNDATION
+   ========================================================= */
+
+@media (min-width: 1000px) {
+
+  body {
+    font-size: 16px;
+  }
+
 }
+
 /*-----2. LAYOUT------*/
 
 /* Containers */
 .container0 {
+    margin: 0 7px;
     display: grid;
     grid-template-columns: minmax(0, 3fr) minmax(280px, 1fr);
     gap: 20px;
@@ -2867,16 +3193,11 @@ footer {
   font-size: 12px;
 }
 
-
-/* =========================
-   MOBILE
-========================= */
-
 /* =========================
    MOBILE / SMALL SCREENS
 ========================= */
 
-@media (max-width: 746px) {
+@media (max-width: 746px) /*footer*/ {
 
   footer {
     margin-top: 0;
@@ -3355,147 +3676,465 @@ footer {
   }
 }
 
-@media (max-width: 900px) {
-  .aside {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 10px;
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
+
+/* =========================================================
+   MOBILE / TABLET SIDEBAR
+   ========================================================= */
+
+@media (max-width:900px){
+
+  /* =======================================================
+     SIDEBAR FOUNDATION
+     ======================================================= */
+
+  .aside{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:12px;
+
+    width:100%;
+    max-width:100%;
+    min-width:0;
+
+    margin:0;
+    padding:0;
+
+    box-sizing:border-box;
   }
 
-  #charityEvent {
-    grid-column: 1;
-    grid-row: 1;
-    width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-    overflow: hidden;
+
+  /* =======================================================
+     CHARITY EVENT
+     ======================================================= */
+
+  #charityEvent{
+    grid-column:1;
+    grid-row:1;
+
+    width:100%;
+    max-width:100%;
+    min-width:0;
+
+    margin:0;
+    padding:0;
+
+    overflow:hidden;
+    box-sizing:border-box;
+
+    border-radius:var(--radius);
   }
 
-  #ePaper {
-    grid-column: 2;
-    grid-row: 1;
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-    padding: 6px;
+
+  /* =======================================================
+     EPAPER
+     ======================================================= */
+
+  #ePaper{
+    grid-column:2;
+    grid-row:1;
+
+    width:100%;
+    max-width:100%;
+    min-width:0;
+
+    margin:0;
+    padding:6px;
+
+    overflow:hidden;
+    box-sizing:border-box;
+
+    border-radius:var(--radius);
+  }
+
+
+  /* =======================================================
+     TEAM PRESENTATION / FRAME
+     ======================================================= */
+
+  #frameBox{
+    grid-column:1 / -1;
+    grid-row:2;
+
+    width:100%;
+    max-width:100%;
+    min-width:0;
+
+    margin:0;
+    padding:0;
+
+    height:auto;
+
+    overflow:hidden;
+    box-sizing:border-box;
+
+    border-radius:var(--radius);
+  }
+
+
+  /* =======================================================
+     MOST READ
+     ======================================================= */
+
+  #mostRead{
+    display:none;
+  }
+
+
+  /* =======================================================
+     MOBILE STICKY AREA
+     Natural position remains completely normal.
+     ======================================================= */
+
+  .mobile-sticky-area{
+    grid-column:1 / -1;
+    grid-row:auto;
+
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+
+    width:100%;
+    max-width:100%;
+    min-width:0;
+
+    margin:0;
+    padding:0;
+
+    position:relative;
+    z-index:100;
+
+    box-sizing:border-box;
+    
 }
-  #frameBox {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    width: 100%;
-    min-width: 0;
-    height: auto;
-    box-sizing: border-box;
-    overflow: hidden;
+
+
+  /* =======================================================
+     AD TOGGLE
+     Hidden naturally.
+     Only appears while sticky.
+     ======================================================= */
+
+  .toggle-mobile-ads{
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    width:100%;
+    height:24px;
+
+    margin:0;
+    padding:0;
+
+    border:0;
+    background:transparent;
+
+    color:var(--text-muted);
+
+    font-size:17px;
+    line-height:1;
+
+    cursor:pointer;
+
+    box-sizing:border-box;
+
+    transition:
+      color var(--transition),
+      opacity var(--transition);
   }
 
-  #mostRead {
-    display: none;
+  .toggle-mobile-ads:hover{
+    color:var(--primary);
   }
 
-  .mobile-sticky-area {
-    grid-column: 1 / -1;
-    grid-row: 3;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 8px;
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    position: relative;
-    z-index: 100;
-    box-sizing: border-box;
-    overflow: hidden;
+  .toggle-mobile-ads:focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:2px;
+    border-radius:4px;
   }
 
-  .mobile-sticky-area.is-sticky {
-    position: fixed;
-    left: 10px;
-    right: 10px;
-    bottom: 10px;
-    width: auto;
-    padding: 7px;
-    box-sizing: border-box;
-    z-index: 9998;
-    border-radius: 10px;
-    border: 1px solid rgba(11, 44, 95, 0.12);
-    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.12);
+
+  /* =======================================================
+     ONLY SHOW ARROW WHILE STICKY
+     ======================================================= */
+
+  .mobile-sticky-area.is-sticky .toggle-mobile-ads{
+    display:flex;
   }
 
-  .mobile-sticky-area .uniPub {
-    position: static;
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    aspect-ratio: 1 / 1;
-    height: auto;
-    min-height: 0;
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    overflow: hidden;
-    border-radius: 5px;
+  .mobile-sticky-area:not(.is-sticky) .toggle-mobile-ads{
+    display:none;
   }
 
-  .mobile-sticky-area .uniPub a {
-    display: block;
-    width: 100%;
-    height: 100%;
+  #mobileStickyPlaceholder{
+    width:100%;
+    margin:0;
+    padding:0;
+    visibility:hidden;
+    pointer-events:none;
+    box-sizing:border-box;
+    }
+  /* =======================================================
+     MOBILE AD GRID
+     Natural display.
+     ======================================================= */
+
+  .mobile-ads{
+    display:grid;
+
+    grid-template-columns:
+      minmax(0,1fr)
+      minmax(0,1fr);
+
+    gap:8px;
+
+    width:100%;
+    max-width:100%;
+    min-width:0;
+
+    margin:0;
+    padding:0;
+
+    overflow:hidden;
+
+    box-sizing:border-box;
+
+    max-height:500px;
+    opacity:1;
+
+    transition:
+      max-height var(--transition),
+      opacity var(--transition);
   }
 
-  .mobile-sticky-area .uniPub img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
-    object-fit: cover;
+
+  /* =======================================================
+     HIDDEN ADS
+     ======================================================= */
+
+  .mobile-ads.hidden{
+    max-height:0;
+    opacity:0;
+
+    margin:0;
+    padding:0;
+
+    pointer-events:none;
+    overflow:hidden;
   }
 
-  .mobile-sticky-area #whatsapp {
-    grid-column: 1 / -1;
-    position: static;
-    width: 100%;
-    height: 40px;
-    min-height: 40px;
-    padding: 0;
-    margin: 0;
-    border-radius: 8px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+  /* =======================================================
+     AD ITEMS
+     ======================================================= */
+
+  .mobile-sticky-area .uniPub{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+
+    aspect-ratio:1 / 1;
+
+    margin:0;
+    padding:0;
+
+    overflow:hidden;
+
+    border-radius:var(--radius-small);
+
+    box-sizing:border-box;
+
+    background:var(--surface);
   }
 
-  .mobile-sticky-area #whatsapp a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
+  .mobile-sticky-area .uniPub a{
+    display:block;
+
+    width:100%;
+    height:100%;
   }
 
-  .mobile-sticky-area #whatsapp img {
-    display: block;
-    height: 25px;
-    width: 25px;
-    object-fit: cover;
+  .mobile-sticky-area .uniPub img{
+    display:block;
+
+    width:100%;
+    height:100%;
+    max-width:100%;
+
+    object-fit:cover;
+    object-position:center;
+
+    transition:transform var(--transition);
   }
 
-  .mobile-sticky-area.is-sticky #whatsapp {
-    height: 40px;
-    min-height: 40px;
+  .mobile-sticky-area .uniPub:hover img{
+    transform:scale(1.02);
   }
 
-  .mobile-sticky-area.is-sticky #whatsapp img {
-    height: 25px;
-    width: 25px;
+
+  /* =======================================================
+     WHATSAPP
+     Always visible.
+     ======================================================= */
+
+  .mobile-sticky-area #whatsapp{
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    width:100%;
+    height:42px;
+    min-height:42px;
+
+    margin:0;
+
+    border-radius:var(--radius);
+
+    overflow:hidden;
+
+    box-sizing:border-box;
   }
+
+  .mobile-sticky-area #whatsapp a{
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    width:100%;
+    height:100%;
+  }
+
+  .mobile-sticky-area #whatsapp img{
+    display:block;
+
+    width:25px;
+    height:25px;
+
+    object-fit:contain;
+  }
+
+
+  /* =======================================================
+     STICKY MOBILE AREA
+     ======================================================= */
+
+  .mobile-sticky-area.is-sticky{
+    position:fixed;
+
+    left:10px;
+    right:10px;
+    bottom:10px;
+
+    width:auto;
+    max-width:none;
+
+    padding:7px;
+
+    z-index:9998;
+
+    box-sizing:border-box;
+
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+
+    background:color-mix(
+      in srgb,
+      var(--surface) 94%,
+      transparent
+    );
+
+    box-shadow:
+      0 -6px 24px rgba(0,0,0,.10);
+
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+  }
+
+
+  /* =======================================================
+     STICKY AD ADJUSTMENTS
+     ======================================================= */
+
+  .mobile-sticky-area.is-sticky .mobile-ads{
+    gap:6px;
+  }
+
+  .mobile-sticky-area.is-sticky .uniPub{
+    border-radius:6px;
+  }
+
+
+  /* =======================================================
+     STICKY WHATSAPP
+     ======================================================= */
+
+  .mobile-sticky-area.is-sticky #whatsapp{
+    height:40px;
+    min-height:40px;
+
+    border-radius:7px;
+  }
+
+  .mobile-sticky-area.is-sticky #whatsapp img{
+    width:25px;
+    height:25px;
+  }
+
+
+  /* =======================================================
+     VERY SMALL PHONES
+     ======================================================= */
+
+  @media (max-width:380px){
+
+    .aside{
+      gap:8px;
+    }
+
+    .mobile-ads{
+      gap:6px;
+    }
+
+    .mobile-sticky-area.is-sticky{
+      left:7px;
+      right:7px;
+      bottom:7px;
+
+      padding:6px;
+    }
+
+    .mobile-sticky-area #whatsapp{
+      height:38px;
+      min-height:38px;
+    }
+
+  }
+
 }
+
+
+/* =========================================================
+   DESKTOP
+   Completely disable the mobile ad toggle.
+   ========================================================= */
+
+@media (min-width:901px){
+
+  .toggle-mobile-ads{
+    display:none!important;
+  }
+
+  .mobile-ads{
+    display:grid!important;
+    max-height:none!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+  }
+
+}
+
 
 @media (max-width: 380px) {
   .aside {
