@@ -701,7 +701,7 @@ nav a.active{
   transform: translateX(-100%);
   transition: transform .35s ease;
 
-  z-index: 1001;
+  z-index: 10000;
 
   overflow-y: auto;
   max-height: calc(65vh - 20px);
@@ -3947,8 +3947,6 @@ footer {
     border-radius:var(--radius-small);
 
     box-sizing:border-box;
-
-    background:var(--surface);
   }
 
   .mobile-sticky-area .uniPub a{
@@ -4042,12 +4040,6 @@ footer {
 
     border:1px solid var(--border);
     border-radius:var(--radius);
-
-    background:color-mix(
-      in srgb,
-      var(--surface) 94%,
-      transparent
-    );
 
     box-shadow:
       0 -6px 24px rgba(0,0,0,.10);
