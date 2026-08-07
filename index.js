@@ -1172,30 +1172,47 @@ function handleStickyAds(){
     return;
   }
 
-  const asideRect=aside.getBoundingClientRect();
+  let placeholder=document.querySelector(".mobile-sticky-placeholder");
+
+  if(!placeholder){
+    placeholder=document.createElement("div");
+    placeholder.className="mobile-sticky-placeholder";
+    stickyArea.parentNode.insertBefore(placeholder,stickyArea);
+  }
+
+  const stickyHeight=stickyArea.offsetHeight;
 
   const H=document.documentElement.scrollHeight;
-  const F=footer.offsetHeight+stickyArea.offsetHeight;
+  const F=footer.offsetHeight+stickyHeight;
   const V=window.innerHeight;
 
   const h=H-F;
   const fh=window.scrollY+V;
 
-  const stick=fh<h+50;
+  const stick=fh<h;
 
-  if(stick){
-    stickyArea.classList.add("is-sticky");
+  if(stick&&!stickyArea.classList.contains("is-sticky")){
+
+    placeholder.style.height=`${stickyHeight}px`;
+
+    const asideRect=aside.getBoundingClientRect();
 
     stickyArea.style.left=
       `${asideRect.left}px`;
 
     stickyArea.style.width=
       `${asideRect.width}px`;
-  }else{
+
+    stickyArea.classList.add("is-sticky");
+
+  }else if(!stick&&stickyArea.classList.contains("is-sticky")){
+
     stickyArea.classList.remove("is-sticky");
 
     stickyArea.style.left="";
     stickyArea.style.width="";
+
+    placeholder.style.height="0px";
   }
 }
 
