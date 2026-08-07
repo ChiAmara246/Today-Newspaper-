@@ -1677,7 +1677,12 @@ function initMobileStickyAds(){
         button.className="toggle-mobile-ads";
         button.type="button";
         button.setAttribute("aria-label","Hide adverts");
-        button.innerHTML='<span id="toggleArrow">⌄</span>';
+
+        const arrow=document.createElement("span");
+        arrow.id="toggleArrow";
+        arrow.textContent="⌄";
+
+        button.appendChild(arrow);
         stickyArea.insertBefore(button,ads);
     }
 
@@ -1695,7 +1700,9 @@ function initMobileStickyAds(){
         ads.classList.remove("hidden");
         arrow.textContent="⌄";
         button.setAttribute("aria-label","Hide adverts");
+
         localStorage.removeItem("mobileAdsHidden");
+
         clearTimeout(timer);
         timer=null;
     }
@@ -1707,7 +1714,10 @@ function initMobileStickyAds(){
 
         const hiddenTime=Date.now();
 
-        localStorage.setItem("mobileAdsHidden",hiddenTime);
+        localStorage.setItem(
+            "mobileAdsHidden",
+            hiddenTime
+        );
 
         clearTimeout(timer);
 
@@ -1721,37 +1731,53 @@ function initMobileStickyAds(){
     }
 
     function updateStickyState(){
-        if(isSticky()){
-            button.style.display="flex";
+        if(!isSticky()){
+            button.style.display="none";
+            ads.classList.remove("hidden");
 
-            const hiddenTime=localStorage.getItem("mobileAdsHidden");
+            clearTimeout(timer);
+            timer=null;
 
-            if(hiddenTime){
-                const elapsed=Date.now()-Number(hiddenTime);
+            return;
+        }
 
-                if(elapsed<300000){
-                    ads.classList.add("hidden");
-                    arrow.textContent="⌃";
-                    button.setAttribute("aria-label","Show adverts");
+        button.style.display="flex";
 
-                    clearTimeout(timer);
+        const hiddenTime=
+            localStorage.getItem("mobileAdsHidden");
 
-                    timer=setTimeout(()=>{
-                        localStorage.removeItem("mobileAdsHidden");
+        if(hiddenTime){
+
+            const elapsed=
+                Date.now()-Number(hiddenTime);
+
+            if(elapsed<300000){
+
+                ads.classList.add("hidden");
+                arrow.textContent="⌃";
+                button.setAttribute(
+                    "aria-label",
+                    "Show adverts"
+                );
+
+                clearTimeout(timer);
+
+                timer=setTimeout(()=>{
+                    localStorage.removeItem(
+                        "mobileAdsHidden"
+                    );
+
+                    if(isSticky()){
                         showAds();
-                    },300000-elapsed);
-                }else{
-                    showAds();
-                }
+                    }
+                },300000-elapsed);
+
             }else{
-                ads.classList.remove("hidden");
-                arrow.textContent="⌄";
-                button.setAttribute("aria-label","Hide adverts");
+                showAds();
             }
 
         }else{
-            button.style.display="none";
-            ads.classList.remove("hidden");
+            showAds();
         }
     }
 
