@@ -126,7 +126,7 @@ html.dark-mode {
      ------------------------- */
 
   --background: #111b26;
-  --surface: #162330;
+  --surface: #020c17;
   --surface-soft: #1c2a38;
 
 
@@ -838,7 +838,105 @@ nav a.active{
 #next{
   right: 10px;
 }
+
 /*-----6. CARDS------*/
+
+/* =========================================
+   FAILED IMAGE CARD
+   ========================================= */
+
+.card.image-error {
+    position: relative;
+}
+
+
+/* Hide only the failed image */
+.card.image-error > img {
+    opacity: 0;
+}
+
+
+/* Error message inside the image area */
+.card.image-error::after {
+    content: "! \A something when wrong. Please refresh the page.";
+
+    white-space: pre;
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 40%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+
+    text-align: center;
+
+    font-size: 11px;
+    font-weight: 500;
+
+    line-height: 1.8;
+    letter-spacing: 0.04em;
+
+    color: #777;
+
+    background: #f5f5f3;
+
+    pointer-events: none;
+}
+
+
+/* =========================================
+   HIDE ONLY SUMMARY
+   ========================================= */
+
+.card.image-error .cardContent p {
+    display: none;
+}
+
+
+/* =========================================
+   KEEP HEADLINE AND DATE VISIBLE
+   ========================================= */
+
+.card.image-error .cardContent {
+    display: block;
+}
+
+.card.image-error .cardContent h3 {
+    display: block;
+}
+
+.card.image-error .cardContent .date {
+    display: block;
+    visibility: visible;
+    opacity: 1;
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 746px) {
+
+    .card.image-error::after {
+        height: 200px;
+
+        padding: 18px;
+
+        font-size: 10px;
+    }
+}
 
 /* Base Card */
 
@@ -994,7 +1092,7 @@ nav a.active{
 }
 
 
-/* Side Card */
+/* Side Card*/
 
 .side-card {
   background: var(--surface);
@@ -3850,6 +3948,7 @@ footer {
     color:var(--text-muted);
     font-size:25px;
     line-height:1;
+    background: transparent;
     transition:
         color .2s ease,
         border-color .2s ease,
@@ -4180,3 +4279,316 @@ footer {
   }
 }
 
+/* =========================================
+   ADAPTIVE DESKTOP ARTICLE GRID
+   ========================================= */
+
+@media (min-width: 901px) {
+
+    /* =========================================
+       ARTICLE GRID
+       ========================================= */
+
+    #newsGridEducation, #newsGridPolitics, #newsGridToday {
+        display: grid;
+
+        gap: clamp(14px, 1.5vw, 22px);
+
+        width: 100%;
+    }
+
+
+    /* =========================================
+       GRID VARIATIONS
+       ========================================= */
+
+    #newsGridEducation.grid-1, #newsGridPolitics.grid-1, #newsGridToday.grid-1 {
+        grid-template-columns: 1fr;
+    }
+
+    #newsGridEducation.grid-2, #newsGridPolitics.grid-2, #newsGridToday.grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #newsGridEducation.grid-3, #newsGridPolitics.grid-3, #newsGridToday.grid-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    #newsGridEducation.grid-4, #newsGridPolitics.grid-4, #newsGridToday.grid-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    #newsGridEducation.grid-5, #newsGridPolitics.grid-5, #newsGridToday.grid-5 {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    #newsGridEducation.grid-6, #newsGridPolitics.grid-6, #newsGridToday.grid-6 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    #newsGridEducation.grid-7, #newsGridPolitics.grid-7, #newsGridToday.grid-7 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    #newsGridEducation.grid-8, #newsGridPolitics.grid-8, #newsGridToday.grid-8 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+
+    /* =========================================
+       WHOLE CARD — SQUARE
+       ========================================= */
+
+    #newsGridEducation .card, #newsGridPolitics .card, #newsGridToday .card {
+
+        width: 100%;
+
+        aspect-ratio: 1 / 1;
+
+        min-width: 0;
+        min-height: 0;
+
+        display: flex;
+        flex-direction: column;
+
+        overflow: hidden;
+
+        box-sizing: border-box;
+    }
+
+
+    /* =========================================
+       IMAGE
+       ========================================= */
+
+    #newsGridEducation .card > img, #newsGridPolitics .card > img, #newsGridToday .card > img {
+
+        width: 100%;
+
+        /*
+         * The image occupies part of
+         * the square card.
+         */
+        height: 52%;
+
+        flex-shrink: 0;
+
+        object-fit: cover;
+
+        display: block;
+    }
+
+
+    /* =========================================
+       CONTENT
+       ========================================= */
+
+    #newsGridEducation .cardContent, #newsGridPolitics .cardContent, #newsGridToday .cardContent {
+
+        flex: 1;
+
+        min-height: 0;
+        min-width: 0;
+
+        display: flex;
+        flex-direction: column;
+
+        padding:
+            clamp(8px, 0.9vw, 14px);
+    }
+
+
+    /* =========================================
+       HEADLINE
+       ========================================= */
+
+    #newsGridEducation .cardContent h3, #newsGridPolitics .cardContent h3, #newsGridToday .cardContent h3 {
+
+        margin: 0;
+
+        font-size:
+            clamp(10px, 1vw, 15px);
+
+        line-height: 1.2;
+
+        display: -webkit-box;
+
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+
+        overflow: hidden;
+    }
+
+
+    /* =========================================
+       SUMMARY
+       ========================================= */
+
+    #newsGridEducation .cardContent p, #newsGridPolitics .cardContent p, #newsGridToday .cardContent p {
+
+        margin:
+            clamp(5px, 0.6vw, 8px)
+            0;
+
+        font-size:
+            clamp(9px, 0.7vw, 10px);
+
+        line-height: 1.2;
+
+        display: -webkit-box;
+
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+
+        overflow: hidden;
+    }
+
+
+    /* =========================================
+       DATE
+       ========================================= */
+
+    #newsGridEducation .cardContent .date, #newsGridPolitics .cardContent .date, #newsGridToday .cardContent .date {
+
+        margin-top: auto;
+
+        font-size:
+            clamp(8px, 0.6vw, 10px);
+
+        line-height: 1.2;
+
+        flex-shrink: 0;
+    }
+
+}
+@media (min-width: 901px) {
+
+    /* =========================================
+       TOP NEWS
+       ========================================= */
+
+    #topnewsGrid {
+        display: grid;
+
+        grid-template-columns:
+            minmax(0, 2fr)
+            minmax(0, 1fr);
+
+        gap: clamp(14px, 1.5vw, 22px);
+
+        width: 100%;
+    }
+
+
+    /* =========================================
+       SIDE NEWS — ONE COLUMN
+       ========================================= */
+
+    #topnewsGrid .side-news {
+        display: grid;
+
+        grid-template-columns: 1fr;
+
+        gap: clamp(10px, 1.5vw, 17px);
+
+        width: 100%;
+
+        min-width: 0;
+    }
+
+
+    /* =========================================
+       SIDE CARD — SAME CARD SYSTEM
+       ========================================= */
+
+    #topnewsGrid .side-card {
+
+        width: 100%;
+
+        aspect-ratio: 1 / 1;
+
+        min-width: 0;
+        min-height: 0;
+
+        display: flex;
+        flex-direction: column;
+
+        overflow: hidden;
+
+        box-sizing: border-box;
+    }
+
+
+    /* =========================================
+       SIDE CARD IMAGE
+       ========================================= */
+
+    #topnewsGrid .side-card > img {
+
+        width: 100%;
+
+        height: 52%;
+
+        flex-shrink: 0;
+
+        object-fit: cover;
+
+        display: block;
+    }
+
+
+    /* =========================================
+       SIDE CARD CONTENT
+       ========================================= */
+
+    #topnewsGrid .side-card > div {
+
+        flex: 1;
+
+        min-width: 0;
+        min-height: 0;
+
+        display: flex;
+        flex-direction: column;
+
+        padding: clamp(8px, 0.9vw, 14px);
+    }
+
+
+    /* =========================================
+       SIDE CARD HEADLINE
+       ========================================= */
+
+    #topnewsGrid .side-card h4 {
+
+        margin: 0;
+
+        font-size: clamp(10px, 1vw, 15px);
+
+        line-height: 1.2;
+
+        display: -webkit-box;
+
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+
+        overflow: hidden;
+    }
+
+
+    /* =========================================
+       SIDE CARD DATE
+       ========================================= */
+
+    #topnewsGrid .side-card .date {
+
+        margin-top: auto;
+
+        font-size: clamp(8px, 0.6vw, 10px);
+
+        line-height: 1.2;
+
+        flex-shrink: 0;
+    }
+
+}

@@ -77,6 +77,217 @@ function formatPublicationDate(dateString) {
 
 }
 /*topnews home page*/
+function matchTopNewsSideCardsToArticleCards() {
+
+    const referenceCard =
+        document.querySelector("#newsGridEducation .card");
+
+    const sideCards =
+        document.querySelectorAll("#topnewsGrid .side-card");
+
+    if (!referenceCard || !sideCards.length) {
+        return;
+    }
+
+
+    /* =========================================
+       GET COMPUTED STYLE FROM NORMAL CARD
+       ========================================= */
+
+    const referenceStyle =
+        window.getComputedStyle(referenceCard);
+
+
+    /* =========================================
+       PROPERTIES WE WANT TO SHARE
+       ========================================= */
+
+    const properties = [
+
+        /* Card shape */
+        "aspectRatio",
+        "boxSizing",
+        "overflow",
+
+        /* Flex layout */
+        "display",
+        "flexDirection",
+
+        /* Card spacing */
+        "padding",
+        "borderRadius",
+
+        /* Image/content proportions */
+        "minWidth",
+        "minHeight"
+    ];
+
+
+    /* =========================================
+       APPLY TO SIDE CARDS
+       ========================================= */
+
+    sideCards.forEach(sideCard => {
+
+        properties.forEach(property => {
+
+            sideCard.style[property] =
+                referenceStyle[property];
+
+        });
+
+
+        /*
+         * IMPORTANT:
+         * Do NOT copy width/height.
+         *
+         * The side card must be allowed to
+         * determine its own width from
+         * .side-news.
+         */
+
+        sideCard.style.width = "100%";
+        sideCard.style.height = "auto";
+
+        sideCard.style.aspectRatio = "1 / 1";
+
+
+        /* =====================================
+           IMAGE
+           ===================================== */
+
+        const referenceImage =
+            referenceCard.querySelector(":scope > img");
+
+        const sideImage =
+            sideCard.querySelector(":scope > img");
+
+        if (referenceImage && sideImage) {
+
+            const imageStyle =
+                window.getComputedStyle(referenceImage);
+
+            sideImage.style.width =
+                imageStyle.width;
+
+            sideImage.style.height =
+                imageStyle.height;
+
+            sideImage.style.objectFit =
+                imageStyle.objectFit;
+
+            sideImage.style.display =
+                imageStyle.display;
+
+            sideImage.style.flexShrink =
+                imageStyle.flexShrink;
+        }
+
+
+        /* =====================================
+           CONTENT
+           ===================================== */
+
+        const referenceContent =
+            referenceCard.querySelector(".cardContent");
+
+        const sideContent =
+            sideCard.querySelector(":scope > div");
+
+        if (referenceContent && sideContent) {
+
+            const contentStyle =
+                window.getComputedStyle(referenceContent);
+
+            sideContent.style.flex =
+                contentStyle.flex;
+
+            sideContent.style.display =
+                contentStyle.display;
+
+            sideContent.style.flexDirection =
+                contentStyle.flexDirection;
+
+            sideContent.style.minWidth =
+                contentStyle.minWidth;
+
+            sideContent.style.minHeight =
+                contentStyle.minHeight;
+
+            sideContent.style.padding =
+                contentStyle.padding;
+        }
+
+
+        /* =====================================
+           HEADLINE
+           ===================================== */
+
+        const referenceHeadline =
+            referenceContent?.querySelector("h3");
+
+        const sideHeadline =
+            sideCard.querySelector("h4");
+
+        if (referenceHeadline && sideHeadline) {
+
+            const headlineStyle =
+                window.getComputedStyle(referenceHeadline);
+
+            sideHeadline.style.fontSize =
+                headlineStyle.fontSize;
+
+            sideHeadline.style.lineHeight =
+                headlineStyle.lineHeight;
+
+            sideHeadline.style.margin =
+                headlineStyle.margin;
+
+            sideHeadline.style.display =
+                headlineStyle.display;
+
+            sideHeadline.style.overflow =
+                headlineStyle.overflow;
+
+            sideHeadline.style.webkitLineClamp =
+                headlineStyle.webkitLineClamp;
+
+            sideHeadline.style.webkitBoxOrient =
+                headlineStyle.webkitBoxOrient;
+        }
+
+
+        /* =====================================
+           DATE
+           ===================================== */
+
+        const referenceDate =
+            referenceContent?.querySelector(".date");
+
+        const sideDate =
+            sideCard.querySelector(".date");
+
+        if (referenceDate && sideDate) {
+
+            const dateStyle =
+                window.getComputedStyle(referenceDate);
+
+            sideDate.style.marginTop =
+                dateStyle.marginTop;
+
+            sideDate.style.fontSize =
+                dateStyle.fontSize;
+
+            sideDate.style.lineHeight =
+                dateStyle.lineHeight;
+
+            sideDate.style.flexShrink =
+                dateStyle.flexShrink;
+        }
+
+    });
+}
+
 function renderTopNews(articles) {
 
   // Newest first
@@ -134,15 +345,20 @@ function renderTopNews(articles) {
       `).join("")}
     </div>
   `;
-
+  matchTopNewsSideCardsToArticleCards();
+      
   grid.addEventListener("click", (e) => {
   const card = e.target.closest("[data-id]");
   if (!card) return;
-
   openArticle(card.dataset.id);
 });
 
+window.addEventListener("resize", () => {
+    matchTopNewsSideCardsToArticleCards();
+});
+
 }
+
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -703,7 +919,6 @@ function renderTopNewsCategory(articles) {
           <img src="${getImagePath(article.img)}" alt="${article.headline}">
           <div>
             <h4>${article.headline}</h4>
-            <p>${article.summary}</p>
             <span class="date">${formatPublicationDate(article.date)}</span>
           </div>
         </div>
@@ -777,103 +992,247 @@ async function loadArticles(containerId, category, limit = 6, page = 1) {
 
   try {
     const response = await fetch(getDataPath());
+
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }
 
     articles = await response.json();
+
     renderMostRead(articles);
 
   } catch (err) {
+
     console.error("Failed to load articles:", err);
+
     showFailedCards(container, limit);
+
     return;
   }
 
-  // Sort newest to oldest
-  articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  // =========================================
+  // SORT NEWEST TO OLDEST
+  // =========================================
+
+  articles.sort(
+    (a, b) => new Date(b.date) - new Date(a.date)
+  );
+
 
   let data = [...articles];
 
-  // Filter by category
+
+  // =========================================
+  // FILTER BY CATEGORY
+  // =========================================
+
   if (category) {
-    data = data.filter(article => article.category === category);
+
+    data = data.filter(
+      article => article.category === category
+    );
+
   }
 
-  // Home page Top News
+
+  // =========================================
+  // HOME PAGE TOP NEWS
+  // =========================================
+
   if (document.getElementById("newsGridEducation")) {
+
     renderTopNews(articles);
+
   }
 
-  // Category page Top News
+
+  // =========================================
+  // CATEGORY PAGE TOP NEWS
+  // =========================================
+
   let usedIds = [];
 
   if (document.getElementById("topNewsGrids")) {
+
     usedIds = renderTopNewsCategory(data);
+
   }
 
-  // Remove Top News articles from pagination
-  data = data.filter(article => !usedIds.includes(article.id));
 
-  // Clear loading skeletons
+  // =========================================
+  // REMOVE TOP NEWS ARTICLES FROM PAGINATION
+  // =========================================
+
+  data = data.filter(
+    article => !usedIds.includes(article.id)
+  );
+
+
+  // =========================================
+  // CLEAR LOADING SKELETONS
+  // =========================================
+
   container.innerHTML = "";
 
-  // Calculate total pages
+
+  // =========================================
+  // CALCULATE TOTAL PAGES
+  // =========================================
+
   let totalPages;
 
   if (data.length <= 4) {
+
     totalPages = 1;
+
   } else {
-    totalPages = 1 + Math.ceil((data.length - 4) / 8);
+
+    totalPages =
+      1 + Math.ceil((data.length - 4) / 8);
+
   }
 
-  // Determine which articles to display
-  let start, end;
+
+  // =========================================
+  // DETERMINE ARTICLES TO DISPLAY
+  // =========================================
+
+  let start;
+  let end;
 
   if (page === 1) {
+
     start = 0;
     end = 4;
+
   } else {
+
     start = 4 + (page - 2) * 8;
     end = start + 8;
+
   }
+
 
   const paginated = data.slice(start, end);
 
-  // Show Top News only on page 1
-  const topNewsSection = document.getElementById("topNewsGrid");
+
+  // =========================================
+  // SHOW TOP NEWS ONLY ON PAGE 1
+  // =========================================
+
+  const topNewsSection =
+    document.getElementById("topNewsGrid");
 
   if (topNewsSection) {
-    topNewsSection.style.display = page === 1 ? "" : "none";
+
+    topNewsSection.style.display =
+      page === 1 ? "" : "none";
+
   }
+
+
+  // =========================================
+  // RENDER ARTICLE CARDS
+  // =========================================
 
   paginated.forEach((article, index) => {
 
     const card = document.createElement("article");
+
     card.classList.add("card");
 
+
+    // First card is featured
     if (index === 0) {
+
       card.classList.add("featured");
+
     }
 
-    card.innerHTML = `
-      <img src="${getImagePath(article.img)}" alt="${article.headline}">
-      <div class="cardContent">
-        <h3>${article.headline}</h3>
-        <p>${article.summary}</p>
-        <span class="date">${formatPublicationDate(article.date)}</span>
-      </div>
-    `;
 
-    card.addEventListener("click", () => {
-      openArticle(article.id);
+    // =========================================
+    // ARTICLE IMAGE
+    // =========================================
+
+    const image = document.createElement("img");
+
+    image.src = getImagePath(article.img);
+
+    image.alt = article.headline;
+
+
+    // =========================================
+    // IMAGE ERROR
+    // =========================================
+
+    image.addEventListener("error", () => {
+
+      /*
+       * Add the error state to the card.
+       * The card structure itself does not change.
+       */
+      card.classList.add("image-error");
+
+      image.alt = "something when wrong please try again in few seconds";
+
     });
 
+
+    // =========================================
+    // CARD CONTENT
+    // =========================================
+
+    const cardContent =
+      document.createElement("div");
+
+    cardContent.classList.add("cardContent");
+
+
+    cardContent.innerHTML = `
+      <h3>${article.headline}</h3>
+
+      <p>${article.summary}</p>
+
+      <span class="date">
+        ${formatPublicationDate(article.date)}
+      </span>
+    `;
+
+
+    // =========================================
+    // BUILD CARD
+    // =========================================
+
+    card.appendChild(image);
+
+    card.appendChild(cardContent);
+
+
+    // =========================================
+    // CARD CLICK
+    // =========================================
+
+    card.addEventListener("click", () => {
+
+      openArticle(article.id);
+
+    });
+
+
+    // =========================================
+    // ADD CARD TO CONTAINER
+    // =========================================
+
     container.appendChild(card);
+
   });
+  setArticleGridLayout(container);
+
 
   return totalPages;
 }
+
 /* =========================
    SEARCH SYSTEM (SAFE)
 ========================= */
@@ -959,7 +1318,67 @@ async function searchFunction() {
     grid.appendChild(card);
   });
 }
+function setArticleGridLayout(container) {
 
+    if (!container) return;
+
+    const cards = container.querySelectorAll(".card");
+
+    const count = cards.length;
+
+    /*
+     * Remove previous layout classes
+     */
+    container.classList.remove(
+        "grid-1",
+        "grid-2",
+        "grid-3",
+        "grid-4",
+        "grid-5",
+        "grid-6",
+        "grid-7",
+        "grid-8"
+    );
+
+
+    /*
+     * Apply layout based on number of cards
+     */
+
+    if (count === 1) {
+
+        container.classList.add("grid-1");
+
+    } else if (count === 2) {
+
+        container.classList.add("grid-2");
+
+    } else if (count === 3) {
+
+        container.classList.add("grid-3");
+
+    } else if (count === 4) {
+
+        container.classList.add("grid-4");
+
+    } else if (count === 5) {
+
+        container.classList.add("grid-5");
+
+    } else if (count === 6) {
+
+        container.classList.add("grid-6");
+
+    } else if (count === 7) {
+
+        container.classList.add("grid-7");
+
+    } else {
+
+        container.classList.add("grid-8");
+
+    }
+}
 let currentPage = 1;
 let totalPages = 1;
 const limit = 4;
