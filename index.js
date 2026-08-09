@@ -77,288 +77,584 @@ function formatPublicationDate(dateString) {
 
 }
 /*topnews home page*/
-function matchTopNewsSideCardsToArticleCards() {
+function createNewsCard(article, type = "standard", showCategory = false) {
+const card = document.createElement("article");
+card.classList.add("card");
+card.dataset.id = article.id;
 
-    const referenceCard =
-        document.querySelector("#newsGridEducation .card");
+if (type === "featured") {
+card.classList.add("featured");
+}
 
-    const sideCards =
-        document.querySelectorAll("#topnewsGrid .side-card");
+if (type === "side") {
+card.classList.add("side-card");
+}
 
-    if (!referenceCard || !sideCards.length) {
-        return;
+const image = document.createElement("img");
+image.src = getImagePath(article.img);
+image.alt = article.headline;
+
+const cardContent = document.createElement("div");
+cardContent.classList.add("cardContent");
+
+if (showCategory) {
+const categoryTag = document.createElement("span");
+categoryTag.classList.add("categoryTag");
+categoryTag.textContent = article.category;
+cardContent.appendChild(categoryTag);
+}
+
+const headline = document.createElement("h3");
+headline.textContent = article.headline;
+cardContent.appendChild(headline);
+
+let summary = null;
+
+if (type !== "side") {
+summary = document.createElement("p");
+summary.textContent = article.summary;
+cardContent.appendChild(summary);
+}
+
+const date = document.createElement("span");
+date.classList.add("date");
+date.textContent = formatPublicationDate(article.date);
+cardContent.appendChild(date);
+
+image.addEventListener("error", () => {
+image.onerror = null;
+
+card.classList.add("image-error");
+
+image.alt = "something when wrong";
+
+image.removeAttribute("src");
+
+if (summary) {
+summary.style.display = "none";
+}
+});
+
+card.appendChild(image);
+card.appendChild(cardContent);
+
+card.addEventListener("click", () => {
+openArticle(article.id);
+});
+
+return card;
+}
+
+
+
+
+
+function renderTopNews(articles) {
+
+    // =========================================
+    // NEWEST FIRST
+    // =========================================
+
+    const sorted = [...articles].sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+    );
+
+
+    // =========================================
+    // HERO
+    // =========================================
+
+    const latestEight = sorted.slice(0, 8);
+
+    if (!latestEight.length) return;
+
+    const hero =
+        latestEight[
+            Math.floor(Math.random() * latestEight.length)
+        ];
+
+
+    // =========================================
+    // SIDE CATEGORIES
+    // =========================================
+
+    const categories = [
+        "Education",
+        "Politics",
+        "Trending",
+        "Entertainment"
+    ];
+
+
+    // =========================================
+    // ONLY 2 SIDE ARTICLES
+    // =========================================
+
+    const others = categories
+        .map(category =>
+            sorted.find(article =>
+                article.category === category &&
+                article.id !== hero.id
+            )
+        )
+        .filter(Boolean)
+        .slice(0, 2);
+
+
+    // =========================================
+    // GRID
+    // =========================================
+
+    const grid =
+        document.getElementById("topnewsGrid");
+
+    if (!grid) return;
+
+    grid.innerHTML = "";
+
+
+    // =========================================
+    // HERO CARD
+    // KEEP HERO STRUCTURE
+    // =========================================
+
+    const heroCard =
+        document.createElement("article");
+
+    heroCard.classList.add(
+        "hero-card"
+    );
+
+    heroCard.dataset.id =
+        hero.id;
+
+
+    // HERO IMAGE
+
+    const heroImage =
+        document.createElement("img");
+
+    heroImage.src =
+        getImagePath(hero.img);
+
+    heroImage.alt =
+        hero.headline;
+
+
+    heroImage.addEventListener(
+        "error",
+        () => {
+
+            heroCard.classList.add(
+                "image-error"
+            );
+
+            heroImage.alt =
+                "something went wrong";
+
+        }
+    );
+
+
+    heroCard.appendChild(
+        heroImage
+    );
+
+
+    // HERO CONTENT
+
+    const heroContent =
+        document.createElement("div");
+
+    heroContent.classList.add(
+        "content"
+    );
+
+
+    // CATEGORY
+
+    const categoryTag =
+        document.createElement("span");
+
+    categoryTag.classList.add(
+        "categoryTag"
+    );
+
+    categoryTag.textContent =
+        hero.category;
+
+    heroContent.appendChild(
+        categoryTag
+    );
+
+
+    // HEADLINE
+
+    const heroHeadline =
+        document.createElement("h3");
+
+    heroHeadline.textContent =
+        hero.headline;
+
+    heroContent.appendChild(
+        heroHeadline
+    );
+
+
+    // SUMMARY
+
+    const heroSummary =
+        document.createElement("p");
+
+    heroSummary.textContent =
+        hero.summary;
+
+    heroContent.appendChild(
+        heroSummary
+    );
+
+
+    // DATE
+
+    const heroDate =
+        document.createElement("span");
+
+    heroDate.classList.add(
+        "date"
+    );
+
+    heroDate.textContent =
+        formatPublicationDate(
+            hero.date
+        );
+
+    heroContent.appendChild(
+        heroDate
+    );
+
+
+    heroCard.appendChild(
+        heroContent
+    );
+
+
+    grid.appendChild(
+        heroCard
+    );
+
+
+    // =========================================
+    // SIDE NEWS
+    // =========================================
+
+    const sideNews =
+        document.createElement("div");
+
+    sideNews.classList.add(
+        "side-news"
+    );
+
+
+    others.forEach(article => {
+
+        const sideCard =
+            createNewsCard(
+                article,
+                "side",
+                true
+            );
+
+        sideCard.classList.add(
+            "side-card"
+        );
+
+        sideNews.appendChild(
+            sideCard
+        );
+
+    });
+
+
+    grid.appendChild(
+        sideNews
+    );
+
+
+    // =========================================
+    // CLICK
+    // =========================================
+
+    grid.onclick = (e) => {
+
+        const card =
+            e.target.closest(
+                "[data-id]"
+            );
+
+        if (!card) return;
+
+        openArticle(
+            card.dataset.id
+        );
+
+    };
+
+}
+/* =========================================================
+   FIT CATEGORY CONTENT TO ASIDE
+   ========================================================= */
+
+function fitCategoryContentToAside(latestContainer) {
+
+    const container0 =
+        document.querySelector(".container0");
+
+    const mainContainer =
+        container0?.querySelector(".container");
+
+    const aside =
+        container0?.querySelector(".aside");
+
+    const topNews =
+        document.getElementById("topNewsGrids");
+
+    const pagination =
+        document.getElementById("pagination");
+
+
+    if (
+        !container0 ||
+        !mainContainer ||
+        !aside ||
+        !topNews ||
+        !pagination ||
+        !latestContainer
+    ) {
+        return null;
     }
 
 
     /* =========================================
-       GET COMPUTED STYLE FROM NORMAL CARD
+       PHONE
        ========================================= */
 
-    const referenceStyle =
-        window.getComputedStyle(referenceCard);
+    if (window.innerWidth <= 746) {
 
-
-    /* =========================================
-       PROPERTIES WE WANT TO SHARE
-       ========================================= */
-
-    const properties = [
-
-        /* Card shape */
-        "aspectRatio",
-        "boxSizing",
-        "overflow",
-
-        /* Flex layout */
-        "display",
-        "flexDirection",
-
-        /* Card spacing */
-        "padding",
-        "borderRadius",
-
-        /* Image/content proportions */
-        "minWidth",
-        "minHeight"
-    ];
-
-
-    /* =========================================
-       APPLY TO SIDE CARDS
-       ========================================= */
-
-    sideCards.forEach(sideCard => {
-
-        properties.forEach(property => {
-
-            sideCard.style[property] =
-                referenceStyle[property];
-
-        });
-
+        mainContainer.style.height = "auto";
 
         /*
-         * IMPORTANT:
-         * Do NOT copy width/height.
-         *
-         * The side card must be allowed to
-         * determine its own width from
-         * .side-news.
-         */
+           Phone does not use the desktop
+           height calculation.
 
-        sideCard.style.width = "100%";
-        sideCard.style.height = "auto";
+           Keep the number between 4 and 6,
+           according to the supplied limit.
+        */
 
-        sideCard.style.aspectRatio = "1 / 1";
+        return 6;
+    }
 
 
-        /* =====================================
-           IMAGE
-           ===================================== */
+    /* =========================================
+       CONTAINER HEIGHT = ASIDE HEIGHT
+       ========================================= */
 
-        const referenceImage =
-            referenceCard.querySelector(":scope > img");
+    const asideHeight =
+        aside.getBoundingClientRect().height;
 
-        const sideImage =
-            sideCard.querySelector(":scope > img");
-
-        if (referenceImage && sideImage) {
-
-            const imageStyle =
-                window.getComputedStyle(referenceImage);
-
-            sideImage.style.width =
-                imageStyle.width;
-
-            sideImage.style.height =
-                imageStyle.height;
-
-            sideImage.style.objectFit =
-                imageStyle.objectFit;
-
-            sideImage.style.display =
-                imageStyle.display;
-
-            sideImage.style.flexShrink =
-                imageStyle.flexShrink;
-        }
+    if (!asideHeight) {
+        return null;
+    }
 
 
-        /* =====================================
-           CONTENT
-           ===================================== */
-
-        const referenceContent =
-            referenceCard.querySelector(".cardContent");
-
-        const sideContent =
-            sideCard.querySelector(":scope > div");
-
-        if (referenceContent && sideContent) {
-
-            const contentStyle =
-                window.getComputedStyle(referenceContent);
-
-            sideContent.style.flex =
-                contentStyle.flex;
-
-            sideContent.style.display =
-                contentStyle.display;
-
-            sideContent.style.flexDirection =
-                contentStyle.flexDirection;
-
-            sideContent.style.minWidth =
-                contentStyle.minWidth;
-
-            sideContent.style.minHeight =
-                contentStyle.minHeight;
-
-            sideContent.style.padding =
-                contentStyle.padding;
-        }
+    mainContainer.style.height =
+        `${asideHeight}px`;
 
 
-        /* =====================================
-           HEADLINE
-           ===================================== */
+    /* =========================================
+       CONTAINER INNER HEIGHT
+       ========================================= */
 
-        const referenceHeadline =
-            referenceContent?.querySelector("h3");
+    const mainStyles =
+        getComputedStyle(mainContainer);
 
-        const sideHeadline =
-            sideCard.querySelector("h4");
+    const paddingTop =
+        parseFloat(mainStyles.paddingTop) || 0;
 
-        if (referenceHeadline && sideHeadline) {
-
-            const headlineStyle =
-                window.getComputedStyle(referenceHeadline);
-
-            sideHeadline.style.fontSize =
-                headlineStyle.fontSize;
-
-            sideHeadline.style.lineHeight =
-                headlineStyle.lineHeight;
-
-            sideHeadline.style.margin =
-                headlineStyle.margin;
-
-            sideHeadline.style.display =
-                headlineStyle.display;
-
-            sideHeadline.style.overflow =
-                headlineStyle.overflow;
-
-            sideHeadline.style.webkitLineClamp =
-                headlineStyle.webkitLineClamp;
-
-            sideHeadline.style.webkitBoxOrient =
-                headlineStyle.webkitBoxOrient;
-        }
+    const paddingBottom =
+        parseFloat(mainStyles.paddingBottom) || 0;
 
 
-        /* =====================================
-           DATE
-           ===================================== */
+    const containerHeight =
+        asideHeight -
+        paddingTop -
+        paddingBottom;
 
-        const referenceDate =
-            referenceContent?.querySelector(".date");
 
-        const sideDate =
-            sideCard.querySelector(".date");
+    /* =========================================
+       MAIN CONTAINER GAP
+       ========================================= */
 
-        if (referenceDate && sideDate) {
+    const containerGap =
+        parseFloat(mainStyles.gap) || 0;
 
-            const dateStyle =
-                window.getComputedStyle(referenceDate);
 
-            sideDate.style.marginTop =
-                dateStyle.marginTop;
+    /* =========================================
+       TOP NEWS HEIGHT
+       ========================================= */
 
-            sideDate.style.fontSize =
-                dateStyle.fontSize;
+    const topNewsHeight =
+        topNews.getBoundingClientRect().height;
 
-            sideDate.style.lineHeight =
-                dateStyle.lineHeight;
 
-            sideDate.style.flexShrink =
-                dateStyle.flexShrink;
-        }
+    /* =========================================
+       PAGINATION HEIGHT
+       ========================================= */
 
-    });
+    const paginationHeight =
+        pagination.getBoundingClientRect().height;
+
+
+    /* =========================================
+       AVAILABLE LATEST NEWS HEIGHT
+       =========================================
+
+       container
+       - top news
+       - pagination
+       - gaps
+    */
+
+    const availableHeight =
+        containerHeight -
+        topNewsHeight -
+        paginationHeight -
+        (containerGap * 2);
+
+
+    if (availableHeight <= 0) {
+        return null;
+    }
+
+
+    /* =========================================
+       LATEST NEWS WIDTH
+       ========================================= */
+
+    const latestRect =
+        latestContainer.getBoundingClientRect();
+
+    const latestWidth =
+        latestRect.width;
+
+    if (latestWidth <= 0) {
+        return null;
+    }
+
+
+    /* =========================================
+       GRID GAP
+       ========================================= */
+
+    const gridStyles =
+        getComputedStyle(latestContainer);
+
+    const columnGap =
+        parseFloat(
+            gridStyles.columnGap
+        ) || 0;
+
+    const rowGap =
+        parseFloat(
+            gridStyles.rowGap
+        ) || 0;
+
+
+    /* =========================================
+       RESPONSIVE COLUMNS
+       ========================================= */
+
+    let columns = 3;
+
+    /*
+       The available width determines
+       the number of columns.
+
+       Desktop:
+       3 columns
+
+       Smaller desktop/tablet:
+       2 columns
+    */
+
+    if (window.innerWidth <= 900) {
+        columns = 2;
+    }
+
+
+    /* =========================================
+       SQUARE CARD WIDTH
+       ========================================= */
+
+    const totalColumnGaps =
+        columnGap *
+        (columns - 1);
+
+    const cardWidth =
+        (
+            latestWidth -
+            totalColumnGaps
+        ) / columns;
+
+
+    if (cardWidth <= 0) {
+        return null;
+    }
+
+
+    /* =========================================
+       SQUARE CARD HEIGHT
+       ========================================= */
+
+    const cardHeight =
+        cardWidth;
+
+
+    /* =========================================
+       NUMBER OF ROWS THAT FIT
+       ========================================= */
+
+    const rows =
+        Math.floor(
+            (
+                availableHeight +
+                rowGap
+            ) /
+            (
+                cardHeight +
+                rowGap
+            )
+        );
+
+
+    if (rows <= 0) {
+        return columns;
+    }
+
+
+    /* =========================================
+       TOTAL ARTICLES
+       ========================================= */
+
+    const articleCount =
+        rows *
+        columns;
+
+
+    return Math.max(
+        columns,
+        articleCount
+    );
 }
-
-function renderTopNews(articles) {
-
-  // Newest first
-  const sorted = [...articles].sort(
-    (a, b) => new Date(b.date) - new Date(a.date)
-  );
-
-  // Pick a random hero from the newest 8
-  const latestEight = sorted.slice(0, 8);
-  const hero = latestEight[Math.floor(Math.random() * latestEight.length)];
-
-  // Categories to display in the side cards
-  const categories = [
-    "Education",
-    "Politics",
-    "Trending",
-    "Entertainment"
-  ];
-
-  // Get the newest article from each category, excluding the hero
-  const others = categories
-    .map(category =>
-      sorted.find(article =>
-        article.category === category &&
-        article.id !== hero.id
-      )
-    )
-    .filter(Boolean)
-    .slice(0, 3);
-
-  const grid = document.getElementById("topnewsGrid");
-  if (!grid) return;
-
-  grid.innerHTML = `
-    <div class="hero-card" data-id="${hero.id}">
-      <img src="${getImagePath(hero.img)}" alt="${hero.headline}">
-      <div class="content">
-        <span class="categoryTag">${hero.category}</span>
-        <h3>${hero.headline}</h3>
-        <p>${hero.summary}</p>
-        <span class="date">${formatPublicationDate(hero.date)}</span>
-      </div>
-    </div>
-
-    <div class="side-news">
-      ${others.map(article => `
-        <div class="side-card" data-id="${article.id}">
-          <img src="${getImagePath(article.img)}" alt="${article.headline}">
-          <div>
-            <span class="categoryTag">${article.category}</span>
-            <h4>${article.headline}</h4>
-            <span class="date">${formatPublicationDate(article.date)}</span>
-          </div>
-        </div>
-      `).join("")}
-    </div>
-  `;
-  matchTopNewsSideCardsToArticleCards();
-      
-  grid.addEventListener("click", (e) => {
-  const card = e.target.closest("[data-id]");
-  if (!card) return;
-  openArticle(card.dataset.id);
-});
-
-window.addEventListener("resize", () => {
-    matchTopNewsSideCardsToArticleCards();
-});
-
-}
-
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -563,123 +859,428 @@ if (whatsapp && whatsappPopup) {
   );
 
 }
+
 /* =========================
    SLIDER SYSTEM
 ========================= */
-let news = [
-  {
-    img: "https://elements-resized.envatousercontent.com/envato-dam-assets-production/46fc6827-980d-491d-b4ca-429a0281d76f/fddcef10-fa33-44b2-86c8-30615c6f0fa8.jpg?w=1600&cf_fit=scale-down&mark-alpha=18&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark4.png&q=85&format=auto&s=21ee1801dc9e6e3a434ea905ee9cbae18487415953dc1f7963d9b16eea4b225d",
-    title: "Gloria and Grace are cooking something",
-    desc: "Stock markets react to economic updates"
-  },
-  {
-    img: "https://elements-resized.envatousercontent.com/envato-dam-assets-production/EVA/TRX/29/f5/e4/59/b0/v1_E10/E10PLB8.jpg?w=1600&cf_fit=scale-down&mark-alpha=18&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark4.png&q=85&format=auto&s=7d5bc67ec7b118e31139006d21b304bcf4ea5508f6595c382fd4e8117c10f733",
-    title: "when you have time, visit Greece",
-    desc: "make I cook this beans finish."
-  },
-  {
-    img: "https://elements-resized.envatousercontent.com/envato-dam-assets-production/EVA/TRX/46/73/8c/23/ee/v1_E10/E10BK8LT.jpg?w=1600&cf_fit=scale-down&mark-alpha=18&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark4.png&q=85&format=auto&s=d19b7f7c46180897bda401d2d9d8f47d42dd787d10be82ee0097154141b35f40",
-    title: "JESUS est le Chemin, la Verite et la Vie",
-    desc: "AI and robotics reshape modern industries"
-  },
-  {
-    img: "https://elements-resized.envatousercontent.com/envato-dam-assets-production/EVA/TRX/e5/c4/09/50/7a/v1_E10/E10AG887.jpg?w=1600&cf_fit=scale-down&mark-alpha=18&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark4.png&q=85&format=auto&s=67b8086922c6c391b1fde399a25c2ceb9ee598b898801043044940b222375bb6",
-    title: "in progress of building the future",
-    desc: "Top teams compete in thrilling finals"
-  }
+
+const news = [
+    {
+      img: getImagePath("slider/bnimage1.png"),
+      title: "FG Introduces National Textbook Ranking System, Implementation Begins September",
+        desc: "The system is intended to create a nationwide framework for assessing and ranking textbooks used in Nigerian schools.",
+        categoryTag: "Breaking News"
+    },
+
+    {
+      img: getImagePath("slider/bnimage2.png"),
+      title: "FG Launches ₦365m National Laureate Programme for Nigerian Students",
+        desc: "The Federal Government has commenced the 2026 Tertiary Institutions National Laureate Programme, with a ₦365 million prize attached to the programme. Institutions have been directed to establish selection committees.",
+        categoryTag: "Breaking News"
+    },
+
+    {
+      img: getImagePath("slider/bnimage3.png"),
+      title: "FG Unveils New Autism Education Reforms, Targets Specialist Workforce",
+        desc: "Education Minister Tunji Alausa recently announced a major initiative aimed at transforming autism care and developing Nigeria’s specialist workforce.",
+        categoryTag: "Breaking News"
+    },
+
+    {
+        img: getImagePath("slider/bnimage4.png"),
+        title: "JAMB’s New Admission Rules for 2026/27 Academic Session: UTME Exemption for Select Courses",
+        desc: "JAMB Announces New Admission Rules, UTME Exemption Takes Effect for Selected Courses",
+        categoryTag: "Breaking News"
+    }
 ];
 
+
+/* =========================
+   STATE
+========================= */
+
 let index = 0;
+let autoSlideTimer = null;
 
-/* SHOW SLIDE */
-function showSlide(i) {
-  index = i;
-  document.getElementById("slide").src = news[i].img;
-  document.getElementById("title").textContent = news[i].title;
-  document.getElementById("desc").textContent = news[i].desc;
-  //updateDots();
-}
-
-/* DOTS */
-function createDots() {
-  let dotsContainer = document.getElementById("dots");
-  for (let i = 0; i < news.length; i++) {
-    let dot = document.createElement("span");
-    dot.classList.add("dot");
-    dot.onclick = () => showSlide(i);
-    dotsContainer.appendChild(dot);
-  }
-}
-
-function updateDots() {
-  let dots = document.getElementsByClassName("dot");
-  for (let i = 0; i < dots.length; i++) {
-    dots[i].classList.remove("active");
-  }
-  dots[index].classList.add("active");
-}
-
-/* NEXT / PREV */
-function nextSlide() {
-  index = (index + 1) % news.length;
-  showSlide(index);
-}
-
-function prevSlide() {
-  index = (index - 1 + news.length) % news.length;
-  showSlide(index);
-}
-
-/* AUTO SLIDE */
-setInterval(nextSlide, 5000);
-
-/* DRAG / SWIPE */
 let startX = 0;
 let isDragging = false;
 
+
+/* =========================
+   ELEMENTS
+========================= */
+
 const slider = document.getElementById("slider");
+const slide = document.getElementById("slide");
+const title = document.getElementById("title");
+const desc = document.getElementById("desc");
+const categoryTag = document.querySelector(".categoryTag");
 
-if(slider) {
-  slider.addEventListener("mousedown", (e) => {
-    isDragging = true;
-    startX = e.clientX;
-  });
+const prevButton = document.getElementById("prev");
+const nextButton = document.getElementById("next");
 
-slider.addEventListener("mouseup", (e) => {
-  if (!isDragging) return;
-  isDragging = false;
 
-  let endX = e.clientX;
+/* =========================
+   SHOW SLIDE
+========================= */
 
-  if (startX - endX > 50) {
-    nextSlide(); // swipe left
-  } else if (endX - startX > 50) {
-    prevSlide(); // swipe right
-  }
+function showSlide(newIndex) {
+
+    if (!news.length || !slide) return;
+
+    const targetIndex =
+        (newIndex + news.length) % news.length;
+
+    const current = news[targetIndex];
+
+    /*
+     * PRELOAD IMAGE FIRST
+     *
+     * This prevents the headline from
+     * changing before the new image is ready.
+     */
+
+    const image = new Image();
+
+    image.onload = function () {
+
+        index = targetIndex;
+
+        /*
+         * Update EVERYTHING together.
+         */
+
+        slide.src = current.img;
+
+        if (categoryTag) {
+            categoryTag.textContent =
+                current.categoryTag;
+        }
+
+        if (title) {
+            title.textContent =
+                current.title;
+        }
+
+        if (desc) {
+            desc.textContent =
+                current.desc;
+        }
+
+        updateDots();
+    };
+
+    image.onerror = function () {
+
+        /*
+         * If the image fails, still show
+         * the corresponding story.
+         */
+
+        index = targetIndex;
+
+        if (categoryTag) {
+            categoryTag.textContent =
+                current.categoryTag;
+        }
+
+        if (title) {
+            title.textContent =
+                current.title;
+        }
+
+        if (desc) {
+            desc.textContent =
+                current.desc;
+        }
+
+        updateDots();
+    };
+
+    image.src = current.img;
+}
+
+
+/* =========================
+   NEXT
+========================= */
+
+function nextSlide() {
+
+    showSlide(index + 1);
+
+    restartAutoSlide();
+}
+
+
+/* =========================
+   PREVIOUS
+========================= */
+
+function prevSlide() {
+
+    showSlide(index - 1);
+
+    restartAutoSlide();
+}
+
+
+/* =========================
+   AUTO SLIDE
+========================= */
+
+function startAutoSlide() {
+
+    clearInterval(autoSlideTimer);
+
+    autoSlideTimer = setInterval(() => {
+
+        showSlide(index + 1);
+
+    }, 5000);
+}
+
+
+function stopAutoSlide() {
+
+    clearInterval(autoSlideTimer);
+
+    autoSlideTimer = null;
+}
+
+
+function restartAutoSlide() {
+
+    stopAutoSlide();
+
+    startAutoSlide();
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+if (prevButton) {
+
+    prevButton.addEventListener("click", (event) => {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        prevSlide();
+
+    });
+
+}
+
+
+if (nextButton) {
+
+    nextButton.addEventListener("click", (event) => {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        nextSlide();
+
+    });
+
+}
+
+
+/* =========================
+   DOTS
+========================= */
+
+function createDots() {
+
+    const dotsContainer =
+        document.getElementById("dots");
+
+    if (!dotsContainer) return;
+
+    dotsContainer.innerHTML = "";
+
+    news.forEach((_, i) => {
+
+        const dot =
+            document.createElement("span");
+
+        dot.classList.add("dot");
+
+        dot.addEventListener("click", (event) => {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            showSlide(i);
+
+            restartAutoSlide();
+
+        });
+
+        dotsContainer.appendChild(dot);
+
+    });
+
+    updateDots();
+}
+
+
+function updateDots() {
+
+    const dots =
+        document.querySelectorAll(".dot");
+
+    dots.forEach((dot, i) => {
+
+        dot.classList.toggle(
+            "active",
+            i === index
+        );
+
+    });
+}
+
+
+/* =========================
+   TOUCH SWIPE
+========================= */
+
+if (slider) {
+
+    slider.addEventListener(
+        "touchstart",
+        (event) => {
+
+            startX =
+                event.touches[0].clientX;
+
+        },
+        { passive: true }
+    );
+
+
+    slider.addEventListener(
+        "touchend",
+        (event) => {
+
+            const endX =
+                event.changedTouches[0].clientX;
+
+            const distance =
+                startX - endX;
+
+            if (Math.abs(distance) < 50) {
+                return;
+            }
+
+            if (distance > 0) {
+
+                nextSlide();
+
+            } else {
+
+                prevSlide();
+
+            }
+
+        },
+        { passive: true }
+    );
+
+}
+
+
+/* =========================
+   MOUSE DRAG
+========================= */
+
+if (slider) {
+
+    slider.addEventListener(
+        "mousedown",
+        (event) => {
+
+            isDragging = true;
+
+            startX =
+                event.clientX;
+
+        }
+    );
+
+
+    slider.addEventListener(
+        "mouseup",
+        (event) => {
+
+            if (!isDragging) return;
+
+            isDragging = false;
+
+            const endX =
+                event.clientX;
+
+            const distance =
+                startX - endX;
+
+            if (Math.abs(distance) < 50) {
+                return;
+            }
+
+            if (distance > 0) {
+
+                nextSlide();
+
+            } else {
+
+                prevSlide();
+
+            }
+
+        }
+    );
+
+
+    slider.addEventListener(
+        "mouseleave",
+        () => {
+
+            isDragging = false;
+
+        }
+    );
+
+}
+
+
+/* =========================
+   PRELOAD ALL IMAGES
+========================= */
+
+news.forEach((item) => {
+
+    const image =
+        new Image();
+
+    image.src =
+        item.img;
+
 });
 
-slider.addEventListener("mouseleave", () => {
-  isDragging = false;
-});
 
-/* MOBILE TOUCH SUPPORT */
-slider.addEventListener("touchstart", (e) => {
-  startX = e.touches[0].clientX;
-});
+/* =========================
+   INITIALIZE
+========================= */
 
-slider.addEventListener("touchend", (e) => {
-  let endX = e.changedTouches[0].clientX;
+showSlide(0);
 
-  if (startX - endX > 50) {
-    nextSlide();
-  } else if (endX - startX > 50) {
-    prevSlide();
-  }
-});}
+createDots();
 
-/* INIT */
-//createDots();
-//showSlide(0);
+startAutoSlide();
+
 
 /* =========================
   MENU SYSTEM
@@ -813,128 +1414,312 @@ function showFailedCards(container, count = 4) {
 }
 function renderTopNewsCategory(articles) {
 
-  const grid = document.getElementById("topNewsGrids");
+    const grid =
+        document.getElementById(
+            "topNewsGrids"
+        );
 
-  if (!grid) {
-    console.log("Grid not found");
-    return [];
-  }
-  const now = new Date();
-  const sevenDays = 7 * 24 * 60 * 60 * 1000;
+    if (!grid) {
 
-  // Only articles from the last 7 days
-  const recent = articles.filter(article => {
-    const diff = now - new Date(article.date);
-    return diff >= 0 && diff <= sevenDays;
-  }).sort((a, b) => new Date(b.date) - new Date(a.date));
+        console.log(
+            "Grid not found"
+        );
 
-  if (recent.length < 3) {
-    grid.innerHTML = "";
-    return [];
-  }
+        return [];
 
-  // Group articles by day (ignore time)
-  const grouped = {};
-
-  recent.forEach(article => {
-    const day = article.date.split("T")[0];
-
-    if (!grouped[day]) {
-      grouped[day] = [];
     }
 
-    grouped[day].push(article);
-  });
 
-  const dates = Object.keys(grouped);
+    // =========================================
+    // DATE RANGE
+    // =========================================
 
-  if (dates.length < 3) {
-    grid.innerHTML = "";
-    return [];
-  }
+    const now =
+        new Date();
 
-  const category = recent[0].category;
-  const storageKey = `topNews_${category}`;
+    const sevenDays =
+        7 * 24 * 60 * 60 * 1000;
 
-  let selected = [];
 
-  // Check saved selection
-  const saved = JSON.parse(localStorage.getItem(storageKey));
+    // =========================================
+    // ONLY ARTICLES FROM LAST 7 DAYS
+    // =========================================
 
-  if (saved && saved.expires > Date.now()) {
+    const recent =
+        articles
+            .filter(article => {
 
-    selected = saved.ids
-      .map(id => recent.find(article => article.id === id))
-      .filter(Boolean);
+                const diff =
+                    now -
+                    new Date(article.date);
 
-  }
+                return (
+                    diff >= 0 &&
+                    diff <= sevenDays
+                );
 
-  // Create a new selection if necessary
-  if (selected.length !== 3) {
+            })
+            .sort(
+                (a, b) =>
+                    new Date(b.date) -
+                    new Date(a.date)
+            );
 
-    // Shuffle the available dates
-    const shuffledDates = [...dates].sort(() => Math.random() - 0.5);
 
-    // Pick three unique dates
-    const chosenDates = shuffledDates.slice(0, 3);
+    if (recent.length < 3) {
 
-    selected = chosenDates.map(date => {
+        grid.innerHTML = "";
 
-      const group = grouped[date];
+        return [];
 
-      return group[Math.floor(Math.random() * group.length)];
+    }
+
+
+    // =========================================
+    // GROUP ARTICLES BY DAY
+    // =========================================
+
+    const grouped = {};
+
+
+    recent.forEach(article => {
+
+        const day =
+            article.date.split("T")[0];
+
+
+        if (!grouped[day]) {
+
+            grouped[day] = [];
+
+        }
+
+
+        grouped[day].push(
+            article
+        );
 
     });
 
-    // Shuffle selected articles so the hero is random
-    selected.sort(() => Math.random() - 0.5);
 
-    // Save for 2 days
-    localStorage.setItem(storageKey, JSON.stringify({
+    const dates =
+        Object.keys(grouped);
 
-      ids: selected.map(article => article.id),
 
-      expires: Date.now() + (2 * 24 * 60 * 60 * 1000)
+    if (dates.length < 3) {
 
-    }));
+        grid.innerHTML = "";
 
-  }
+        return [];
 
-  const hero = selected[0];
-  const others = selected.slice(1);
+    }
 
-  grid.innerHTML = `
-    <div class="featured" data-id="${hero.id}">
-      <img src="${getImagePath(hero.img)}" alt="${hero.headline}">
-      <div class="cardContent">
-        <h3>${hero.headline}</h3>
-        <p>${hero.summary}</p>
-        <span class="date">${formatPublicationDate(hero.date)}</span>
-      </div>
-    </div>
 
-    <div class="s-card">
-      ${others.map(article => `
-        <div class="card" data-id="${article.id}">
-          <img src="${getImagePath(article.img)}" alt="${article.headline}">
-          <div>
-            <h4>${article.headline}</h4>
-            <span class="date">${formatPublicationDate(article.date)}</span>
-          </div>
-        </div>
-      `).join("")}
-    </div>
-  `;
+    // =========================================
+    // STORAGE
+    // =========================================
 
-  grid.onclick = (e) => {
-  const card = e.target.closest("[data-id]");
-  if (!card) return;
+    const category =
+        recent[0].category;
 
-  openArticle(card.dataset.id);
-};
+    const storageKey =
+        `topNews_${category}`;
 
-  // Return IDs so Latest News can exclude them
-  return selected.map(article => article.id);
+
+    let selected = [];
+
+
+    // =========================================
+    // CHECK SAVED SELECTION
+    // =========================================
+
+    let saved = null;
+
+
+    try {
+
+        saved =
+            JSON.parse(
+                localStorage.getItem(
+                    storageKey
+                )
+            );
+
+    } catch (error) {
+
+        saved = null;
+
+    }
+
+
+    if (
+        saved &&
+        saved.expires > Date.now()
+    ) {
+
+        selected =
+            saved.ids
+                .map(id =>
+                    recent.find(
+                        article =>
+                            article.id === id
+                    )
+                )
+                .filter(Boolean);
+
+    }
+
+
+    // =========================================
+    // CREATE NEW SELECTION
+    // =========================================
+
+    if (selected.length !== 3) {
+
+        const shuffledDates =
+            [...dates].sort(
+                () => Math.random() - 0.5
+            );
+
+
+        const chosenDates =
+            shuffledDates.slice(0, 3);
+
+
+        selected =
+            chosenDates.map(date => {
+
+                const group =
+                    grouped[date];
+
+
+                return group[
+                    Math.floor(
+                        Math.random() *
+                        group.length
+                    )
+                ];
+
+            });
+
+
+        // Randomise hero position
+        selected.sort(
+            () => Math.random() - 0.5
+        );
+
+
+        // Save for 2 days
+        localStorage.setItem(
+            storageKey,
+            JSON.stringify({
+
+                ids:
+                    selected.map(
+                        article =>
+                            article.id
+                    ),
+
+                expires:
+                    Date.now() +
+                    (
+                        2 *
+                        24 *
+                        60 *
+                        60 *
+                        1000
+                    )
+
+            })
+        );
+
+    }
+
+
+    // =========================================
+    // HERO + SIDE ARTICLES
+    // =========================================
+
+    const hero =
+        selected[0];
+
+    const others =
+        selected.slice(1);
+
+
+    // =========================================
+    // CLEAR GRID
+    // =========================================
+
+    grid.innerHTML = "";
+
+
+    // =========================================
+    // HERO
+    // =========================================
+
+    const heroCard =
+        createNewsCard(
+            hero,
+            "featured",
+            true
+        );
+
+
+    heroCard.classList.add(
+        "hero-card"
+    );
+
+
+    grid.appendChild(
+        heroCard
+    );
+
+
+    // =========================================
+    // SIDE NEWS
+    // =========================================
+
+    const sideNews =
+        document.createElement(
+            "div"
+        );
+
+    sideNews.classList.add(
+        "side-news"
+    );
+
+
+    others.forEach(article => {
+
+        const sideCard =
+            createNewsCard(
+                article,
+                "side",
+                true
+            );
+
+
+        sideNews.appendChild(
+            sideCard
+        );
+
+    });
+
+
+    grid.appendChild(
+        sideNews
+    );
+
+
+    // =========================================
+    // RETURN USED ARTICLE IDS
+    // =========================================
+
+    return selected.map(
+        article =>
+            article.id
+    );
 
 }
 function renderMostRead(articles) {
@@ -976,262 +1761,792 @@ function renderMostRead(articles) {
 }
 /* Load articles from JSON file and display them in the specified container */
 
-async function loadArticles(containerId, category, limit = 6, page = 1) {
+let categoryPageLimit = null;
+let categoryPageWidth = null;
 
-  const container = document.getElementById(containerId);
 
-  if (!container) {
-    console.error(`Container "${containerId}" not found.`);
-    return;
-  }
+async function loadArticles(
+    containerId,
+    category,
+    limit = 6,
+    page = 1
+) {
 
-  // Show loading placeholders
-  showLoadingCards(container, limit);
+    const container =
+        document.getElementById(containerId);
 
-  let articles;
-
-  try {
-    const response = await fetch(getDataPath());
-
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
+    if (!container) {
+        console.error(
+            `Container "${containerId}" not found.`
+        );
+        return;
     }
 
-    articles = await response.json();
 
-    renderMostRead(articles);
+    /* =====================================================
+       EDITOR'S PICKS
+       ===================================================== */
 
-  } catch (err) {
+    if (containerId === "newsGridEditor") {
 
-    console.error("Failed to load articles:", err);
+        showLoadingCards(
+            container,
+            limit
+        );
 
-    showFailedCards(container, limit);
+        try {
 
-    return;
-  }
+            const response =
+                await fetch(getDataPath());
+
+            if (!response.ok) {
+                throw new Error(
+                    `HTTP ${response.status}`
+                );
+            }
+
+            const articles =
+                await response.json();
+
+            renderEditorsPicks(
+                articles
+            );
+
+            return 1;
+
+        } catch (err) {
+
+            console.error(
+                "Failed to load Editor's Picks:",
+                err
+            );
+
+            showFailedCards(
+                container,
+                limit
+            );
+
+            return;
+        }
+    }
 
 
-  // =========================================
-  // SORT NEWEST TO OLDEST
-  // =========================================
+    /* =====================================================
+       CATEGORY PAGE
+       ===================================================== */
 
-  articles.sort(
-    (a, b) => new Date(b.date) - new Date(a.date)
-  );
-
-
-  let data = [...articles];
+    const isCategoryPage =
+        !!document.getElementById(
+            "topNewsGrids"
+        );
 
 
-  // =========================================
-  // FILTER BY CATEGORY
-  // =========================================
+    /* =====================================================
+       CACHE
+       ===================================================== */
 
-  if (category) {
+    const cacheKey =
+        `pageCache_${containerId}_${category || "all"}_${page}`;
 
-    data = data.filter(
-      article => article.category === category
+    if (!isCategoryPage) {
+
+        const cachedPage =
+            sessionStorage.getItem(
+                cacheKey
+            );
+
+        if (cachedPage) {
+
+            try {
+
+                const saved =
+                    JSON.parse(
+                        cachedPage
+                    );
+
+                container.innerHTML =
+                    saved.articleHTML || "";
+
+
+                const topNewsGrid =
+                    document.getElementById(
+                        "topNewsGrid"
+                    );
+
+
+                if (
+                    topNewsGrid &&
+                    saved.topNewsHTML !==
+                    undefined
+                ) {
+
+                    topNewsGrid.innerHTML =
+                        saved.topNewsHTML;
+
+                    topNewsGrid.style.display =
+                        saved.topNewsDisplay || "";
+                }
+
+
+                const categoryTopNews =
+                    document.getElementById(
+                        "topNewsGrids"
+                    );
+
+
+                if (
+                    categoryTopNews &&
+                    saved.categoryTopNewsHTML !==
+                    undefined
+                ) {
+
+                    categoryTopNews.innerHTML =
+                        saved.categoryTopNewsHTML;
+                }
+
+
+                setArticleGridLayout(
+                    container
+                );
+
+
+                /* =====================================
+                   RESTORE IMAGE ERRORS
+                   ===================================== */
+
+                const restoreImageError =
+                    image => {
+
+                        image.addEventListener(
+                            "error",
+                            () => {
+
+                                if (
+                                    image.dataset
+                                        .errorHandled ===
+                                    "true"
+                                ) {
+                                    return;
+                                }
+
+                                image.dataset
+                                    .errorHandled =
+                                    "true";
+
+                                const card =
+                                    image.closest(
+                                        ".card"
+                                    );
+
+                                if (!card) {
+                                    return;
+                                }
+
+                                card.classList.add(
+                                    "image-error"
+                                );
+
+                                image.removeAttribute(
+                                    "src"
+                                );
+
+                                image.alt =
+                                    "Image unavailable";
+                            }
+                        );
+                    };
+
+
+                container
+                    .querySelectorAll("img")
+                    .forEach(
+                        restoreImageError
+                    );
+
+
+                if (topNewsGrid) {
+
+                    topNewsGrid
+                        .querySelectorAll("img")
+                        .forEach(
+                            restoreImageError
+                        );
+                }
+
+
+                /* =====================================
+                   RESTORE ARTICLE CLICKS
+                   ===================================== */
+
+                container
+                    .querySelectorAll("[data-id]")
+                    .forEach(card => {
+
+                        card.addEventListener(
+                            "click",
+                            () => {
+
+                                openArticle(
+                                    card.dataset.id
+                                );
+
+                            }
+                        );
+
+                    });
+
+
+                if (topNewsGrid) {
+
+                    topNewsGrid
+                        .querySelectorAll("[data-id]")
+                        .forEach(card => {
+
+                            card.addEventListener(
+                                "click",
+                                () => {
+
+                                    openArticle(
+                                        card.dataset.id
+                                    );
+
+                                }
+                            );
+
+                        });
+                }
+
+
+                return saved.totalPages;
+
+            } catch (error) {
+
+                console.warn(
+                    "Invalid page cache. Loading page normally.",
+                    error
+                );
+
+                sessionStorage.removeItem(
+                    cacheKey
+                );
+            }
+        }
+    }
+
+
+    /* =====================================================
+       LOADING
+       ===================================================== */
+
+    showLoadingCards(
+        container,
+        limit
     );
 
-  }
 
+    /* =====================================================
+       FETCH
+       ===================================================== */
 
-  // =========================================
-  // HOME PAGE TOP NEWS
-  // =========================================
+    let articles;
 
-  if (document.getElementById("newsGridEducation")) {
+    try {
 
-    renderTopNews(articles);
+        const response =
+            await fetch(getDataPath());
 
-  }
+        if (!response.ok) {
+            throw new Error(
+                `HTTP ${response.status}`
+            );
+        }
 
+        articles =
+            await response.json();
 
-  // =========================================
-  // CATEGORY PAGE TOP NEWS
-  // =========================================
+        renderMostRead(
+            articles
+        );
 
-  let usedIds = [];
+    } catch (err) {
 
-  if (document.getElementById("topNewsGrids")) {
+        console.error(
+            "Failed to load articles:",
+            err
+        );
 
-    usedIds = renderTopNewsCategory(data);
+        showFailedCards(
+            container,
+            limit
+        );
 
-  }
-
-
-  // =========================================
-  // REMOVE TOP NEWS ARTICLES FROM PAGINATION
-  // =========================================
-
-  data = data.filter(
-    article => !usedIds.includes(article.id)
-  );
-
-
-  // =========================================
-  // CLEAR LOADING SKELETONS
-  // =========================================
-
-  container.innerHTML = "";
-
-
-  // =========================================
-  // CALCULATE TOTAL PAGES
-  // =========================================
-
-  let totalPages;
-
-  if (data.length <= 4) {
-
-    totalPages = 1;
-
-  } else {
-
-    totalPages =
-      1 + Math.ceil((data.length - 4) / 8);
-
-  }
-
-
-  // =========================================
-  // DETERMINE ARTICLES TO DISPLAY
-  // =========================================
-
-  let start;
-  let end;
-
-  if (page === 1) {
-
-    start = 0;
-    end = 4;
-
-  } else {
-
-    start = 4 + (page - 2) * 8;
-    end = start + 8;
-
-  }
-
-
-  const paginated = data.slice(start, end);
-
-
-  // =========================================
-  // SHOW TOP NEWS ONLY ON PAGE 1
-  // =========================================
-
-  const topNewsSection =
-    document.getElementById("topNewsGrid");
-
-  if (topNewsSection) {
-
-    topNewsSection.style.display =
-      page === 1 ? "" : "none";
-
-  }
-
-
-  // =========================================
-  // RENDER ARTICLE CARDS
-  // =========================================
-
-  paginated.forEach((article, index) => {
-
-    const card = document.createElement("article");
-
-    card.classList.add("card");
-
-
-    // First card is featured
-    if (index === 0) {
-
-      card.classList.add("featured");
-
+        return;
     }
 
 
-    // =========================================
-    // ARTICLE IMAGE
-    // =========================================
+    /* =====================================================
+       SORT
+       ===================================================== */
 
-    const image = document.createElement("img");
-
-    image.src = getImagePath(article.img);
-
-    image.alt = article.headline;
-
-
-    // =========================================
-    // IMAGE ERROR
-    // =========================================
-
-    image.addEventListener("error", () => {
-
-      /*
-       * Add the error state to the card.
-       * The card structure itself does not change.
-       */
-      card.classList.add("image-error");
-
-      image.alt = "something when wrong please try again in few seconds";
-
-    });
+    articles.sort(
+        (a, b) =>
+            new Date(b.date) -
+            new Date(a.date)
+    );
 
 
-    // =========================================
-    // CARD CONTENT
-    // =========================================
+    /* =====================================================
+       FILTER CATEGORY
+       ===================================================== */
 
-    const cardContent =
-      document.createElement("div");
+    let data =
+        [...articles];
 
-    cardContent.classList.add("cardContent");
+    if (category) {
 
-
-    cardContent.innerHTML = `
-      <h3>${article.headline}</h3>
-
-      <p>${article.summary}</p>
-
-      <span class="date">
-        ${formatPublicationDate(article.date)}
-      </span>
-    `;
+        data =
+            data.filter(
+                article =>
+                    article.category ===
+                    category
+            );
+    }
 
 
-    // =========================================
-    // BUILD CARD
-    // =========================================
+    /* =====================================================
+       GENERAL TOP NEWS
+       ===================================================== */
 
-    card.appendChild(image);
+    if (
+        document.getElementById(
+            "newsGridEducation"
+        )
+    ) {
 
-    card.appendChild(cardContent);
-
-
-    // =========================================
-    // CARD CLICK
-    // =========================================
-
-    card.addEventListener("click", () => {
-
-      openArticle(article.id);
-
-    });
+        renderTopNews(
+            articles
+        );
+    }
 
 
-    // =========================================
-    // ADD CARD TO CONTAINER
-    // =========================================
+    /* =====================================================
+       CATEGORY TOP NEWS
+       ===================================================== */
 
-    container.appendChild(card);
+    let usedIds = [];
 
-  });
-  setArticleGridLayout(container);
+    if (isCategoryPage) {
+
+        usedIds =
+            renderTopNewsCategory(
+                data
+            ) || [];
+    }
 
 
-  return totalPages;
+    /* =====================================================
+       REMOVE TOP NEWS ARTICLES
+       ===================================================== */
+
+    data =
+        data.filter(
+            article =>
+                !usedIds.includes(
+                    article.id
+                )
+        );
+
+
+    /* =====================================================
+       TOP NEWS ALWAYS VISIBLE
+       ===================================================== */
+
+    const topNewsSection =
+        document.getElementById(
+            "topNewsGrids"
+        );
+
+    if (topNewsSection) {
+
+        topNewsSection.style.display =
+            "";
+    }
+
+
+    /* =====================================================
+       PAGE CAPACITY
+       ===================================================== */
+
+    let pageLimit =
+        limit;
+
+
+    if (isCategoryPage) {
+
+        /* =================================================
+           PHONE
+           ================================================= */
+
+        if (window.innerWidth <= 746) {
+
+            /*
+               Phone always renders 4–6 articles.
+
+               No desktop height calculation.
+            */
+
+            pageLimit =
+                Math.max(
+                    4,
+                    Math.min(
+                        6,
+                        limit
+                    )
+                );
+
+
+            /*
+               Keep the phone capacity available
+               for the next page call.
+            */
+
+            categoryPageLimit =
+                pageLimit;
+
+            categoryPageWidth =
+                window.innerWidth;
+        }
+
+
+        /* =================================================
+           DESKTOP / TABLET
+           ================================================= */
+
+        else {
+
+            /*
+               PAGE 1:
+               Calculate the capacity once.
+            */
+
+            if (
+                page === 1 ||
+                categoryPageLimit === null ||
+                categoryPageWidth !==
+                    window.innerWidth
+            ) {
+
+                const calculatedLimit =
+                    fitCategoryContentToAside(
+                        container
+                    );
+
+
+                if (
+                    calculatedLimit &&
+                    calculatedLimit > 0
+                ) {
+
+                    categoryPageLimit =
+                        calculatedLimit;
+
+                } else {
+
+                    categoryPageLimit =
+                        limit;
+                }
+
+
+                /*
+                   Remember the responsive width
+                   at which the calculation was made.
+                */
+
+                categoryPageWidth =
+                    window.innerWidth;
+            }
+
+
+            /*
+               EVERY PAGE AFTER PAGE 1
+               uses the same capacity.
+            */
+
+            pageLimit =
+                categoryPageLimit;
+        }
+
+
+        /* =================================================
+           NEVER EXCEED AVAILABLE DATA
+           ================================================= */
+
+        pageLimit =
+            Math.max(
+                1,
+                Math.min(
+                    pageLimit,
+                    data.length
+                )
+            );
+    }
+
+
+    /* =====================================================
+       PAGINATION OFFSET
+       ===================================================== */
+
+    let start = 0;
+
+
+    if (isCategoryPage) {
+
+        /*
+           SAME CAPACITY ON EVERY PAGE.
+
+           Example:
+
+           pageLimit = 9
+
+           Page 1 → 0–8
+           Page 2 → 9–17
+           Page 3 → 18–26
+           Page 4 → 27–35
+        */
+
+        start =
+            (page - 1) *
+            pageLimit;
+
+    } else {
+
+        /*
+           Existing non-category pagination.
+        */
+
+        if (page === 1) {
+
+            start = 0;
+
+        } else {
+
+            start =
+                limit +
+                (
+                    page - 2
+                ) * 8;
+        }
+    }
+
+
+    /* =====================================================
+       END POSITION
+       ===================================================== */
+
+    const end =
+        start +
+        pageLimit;
+
+
+    /* =====================================================
+       FINAL ARTICLES
+       ===================================================== */
+
+    const paginated =
+        data.slice(
+            start,
+            end
+        );
+
+
+    /* =====================================================
+       RENDER LATEST NEWS
+       ===================================================== */
+
+    container.innerHTML = "";
+
+
+    paginated.forEach(
+        article => {
+
+            /*
+               All Latest News cards are standard
+               so they remain square.
+            */
+
+            const card =
+                createNewsCard(
+                    article,
+                    "standard"
+                );
+
+            container.appendChild(
+                card
+            );
+        }
+    );
+
+
+    /* =====================================================
+       GRID LAYOUT
+       ===================================================== */
+
+    setArticleGridLayout(
+        container
+    );
+
+
+    /* =====================================================
+       MATCH MAIN CONTAINER TO ASIDE
+       ===================================================== */
+
+    if (isCategoryPage) {
+
+        const container0 =
+            document.querySelector(
+                ".container0"
+            );
+
+        const mainContainer =
+            container0?.querySelector(
+                ".container"
+            );
+
+        const aside =
+            container0?.querySelector(
+                ".aside"
+            );
+
+
+        if (
+            mainContainer &&
+            aside &&
+            window.innerWidth > 746
+        ) {
+
+            const asideHeight =
+                aside.getBoundingClientRect()
+                    .height;
+
+            if (asideHeight) {
+
+                mainContainer.style.height =
+                    `${asideHeight}px`;
+            }
+        }
+    }
+
+
+    /* =====================================================
+       TOTAL PAGES
+       ===================================================== */
+
+    let totalPages;
+
+
+    if (isCategoryPage) {
+
+        if (
+            pageLimit <= 0 ||
+            data.length === 0
+        ) {
+
+            totalPages = 1;
+
+        } else {
+
+            /*
+               Every page uses the SAME capacity
+               calculated on page 1.
+            */
+
+            totalPages =
+                Math.ceil(
+                    data.length /
+                    pageLimit
+                );
+        }
+
+    } else {
+
+        if (
+            data.length <=
+            limit
+        ) {
+
+            totalPages = 1;
+
+        } else {
+
+            totalPages =
+                1 +
+                Math.ceil(
+                    (
+                        data.length -
+                        limit
+                    ) / 8
+                );
+        }
+    }
+
+
+    /* =====================================================
+       CACHE NON-CATEGORY PAGES ONLY
+       ===================================================== */
+
+    if (!isCategoryPage) {
+
+        try {
+
+            sessionStorage.setItem(
+                cacheKey,
+                JSON.stringify({
+
+                    articleHTML:
+                        container.innerHTML,
+
+                    topNewsHTML:
+                        topNewsSection
+                            ? topNewsSection.innerHTML
+                            : "",
+
+                    topNewsDisplay:
+                        topNewsSection
+                            ? topNewsSection.style.display
+                            : "",
+
+                    categoryTopNewsHTML:
+                        document.getElementById(
+                            "topNewsGrids"
+                        )
+                            ? document.getElementById(
+                                  "topNewsGrids"
+                              ).innerHTML
+                            : "",
+
+                    totalPages:
+                        totalPages
+                })
+            );
+
+        } catch (error) {
+
+            console.warn(
+                "Could not save page cache:",
+                error
+            );
+        }
+    }
+
+
+    /* =====================================================
+       RETURN TOTAL PAGES
+       ===================================================== */
+
+    return totalPages;
 }
+
+
 
 /* =========================
    SEARCH SYSTEM (SAFE)
@@ -1298,25 +2613,11 @@ async function searchFunction() {
 
   matches.forEach(article => {
 
-    const card = document.createElement("article");
-    card.classList.add("card");
-
-    card.innerHTML = `
-      <img src="${getImagePath(article.img)}" alt="${article.headline}">
-      <div class="cardContent">
-        <span class="categoryTag">${article.category}</span>
-        <h3>${article.headline}</h3>
-        <p>${article.summary}</p>
-        <span class="date">${formatPublicationDate(article.date)}</span>
-      </div>
-    `;
-
-    card.addEventListener("click", () => {
-      openArticle(article.id);
-    });
+    const card = createNewsCard(article);
 
     grid.appendChild(card);
-  });
+
+});
 }
 function setArticleGridLayout(container) {
 
@@ -1486,14 +2787,122 @@ if (pagination) {
   renderPage(currentPage);
 }
 
+async function loadHomePage() {
 
+    try {
+
+        const response =
+            await fetch(
+                getDataPath()
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                `HTTP ${response.status}`
+            );
+
+        }
+
+        const articles =
+            await response.json();
+
+
+        articles.sort(
+            (a, b) =>
+                new Date(b.date) -
+                new Date(a.date)
+        );
+
+
+        // =====================================
+        // MOST READ
+        // =====================================
+
+        renderMostRead(
+            articles
+        );
+
+
+        // =====================================
+        // TOP NEWS
+        // =====================================
+
+        renderTopNews(
+            articles
+        );
+
+
+        // =====================================
+        // EDITOR'S PICKS
+        // =====================================
+
+        renderEditorsPicks(
+            articles
+        );
+
+
+        // =====================================
+        // EDUCATION
+        // =====================================
+
+        loadHomeCategory(
+            articles,
+            "newsGridEducation",
+            "Education",
+            3
+        );
+
+
+        // =====================================
+        // POLITICS
+        // =====================================
+
+        loadHomeCategory(
+            articles,
+            "newsGridPolitics",
+            "Politics",
+            3
+        );
+
+
+        // =====================================
+        // TRENDING
+        // =====================================
+
+        loadHomeCategory(
+            articles,
+            "newsGridToday",
+            "Trending",
+            3
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Failed to load home page:",
+            error
+        );
+
+    }
+
+}
 //HOME PAGE
+if (
+    document.getElementById(
+        "newsGridEducation"
+    )
+) {
+
+    loadHomePage();
+
+}
 if (document.getElementById("newsGridEducation")) {
-  loadArticles("topnewsGrid", 6);
-  loadArticles("newsGridEducation", "Education", 3);
-  loadArticles("newsGridPolitics", "Politics", 3);
-  loadArticles("newsGridToday", "Trending", 3);
-  loadArticles("newsGridEditor", "Editor", 3);
+    loadArticles("newsGridEducation", "Education", 3);
+    loadArticles("newsGridPolitics", "Politics", 3);
+    loadArticles("newsGridToday", "Trending", 3);
+
 }
 
 const pageCategories = {"education.html": "Education", "politics.html": "Politics", "entertainment.html": "Entertainment", "announces.html": "Announces", "economy.html": "Economy", "laugh.html": "Laugh", "pressEvent.html": "Press & Events", "today.html": "Trending"};
@@ -2225,3 +3634,117 @@ function initMobileStickyAds(){
     updateStickyState();
 }
 initMobileStickyAds();
+
+function renderEditorsPicks(articles) {
+const grid = document.getElementById("newsGridEditor");
+if (!grid) return;
+
+const storageKey = "editorsPicks";
+const TEN_DAYS = 10 * 24 * 60 * 60 * 1000;
+const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
+
+let saved = null;
+
+try {
+    saved = JSON.parse(localStorage.getItem(storageKey));
+} catch (error) {
+    saved = null;
+}
+
+if (
+    saved &&
+    saved.expires > Date.now() &&
+    Array.isArray(saved.ids)
+) {
+    const selected = saved.ids
+        .map(id =>
+            articles.find(
+                article =>
+                    String(article.id) === String(id)
+            )
+        )
+        .filter(Boolean);
+
+    if (selected.length === 4) {
+        renderEditorCards(grid, selected);
+        return;
+    }
+}
+
+const now = Date.now();
+
+const eligible = articles.filter(article => {
+    const articleDate = new Date(article.date);
+
+    if (Number.isNaN(articleDate.getTime())) {
+        return false;
+    }
+
+    const age = now - articleDate.getTime();
+
+    return age >= 0 && age <= TEN_DAYS;
+});
+
+const categoryGroups = {};
+
+eligible.forEach(article => {
+    const category = article.category;
+
+    if (!category) return;
+
+    if (!categoryGroups[category]) {
+        categoryGroups[category] = [];
+    }
+
+    categoryGroups[category].push(article);
+});
+
+const categories = Object.keys(categoryGroups);
+
+if (categories.length < 4) {
+    grid.innerHTML = "";
+    return;
+}
+
+const selectedCategories = [...categories]
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 4);
+
+const selected = selectedCategories.map(category => {
+    const categoryArticles = categoryGroups[category];
+
+    const randomIndex = Math.floor(
+        Math.random() * categoryArticles.length
+    );
+
+    return categoryArticles[randomIndex];
+});
+
+localStorage.setItem(
+    storageKey,
+    JSON.stringify({
+        ids: selected.map(article => article.id),
+        expires: Date.now() + SEVEN_DAYS
+    })
+);
+
+renderEditorCards(grid, selected);
+
+}
+
+function renderEditorCards(grid, articles) {
+grid.innerHTML = "";
+
+articles.forEach(article => {
+    const card = createNewsCard(
+        article,
+        "standard",
+        true
+    );
+
+    grid.appendChild(card);
+});
+
+setArticleGridLayout(grid);
+
+}

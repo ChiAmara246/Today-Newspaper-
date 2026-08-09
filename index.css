@@ -114,12 +114,11 @@ html.dark-mode {
      BRAND
      ------------------------- */
 
-  --primary: #0b2856;
-  --primary-dark: #061a38;
+  --primary: #0c2955;
+  --primary-dark: #d8b56a;
 
   --accent: #d8b56a;
   --accent-dark: #b89554;
-
 
   /* -------------------------
      BACKGROUNDS
@@ -271,7 +270,39 @@ h6 {
 p {
   margin-top: 0;
 }
+#aboutContainer p{
+  color: var(--text-secondary) !important;
+}
 
+#aboutContainer{
+  margin: auto;
+  padding: 20px;
+  text-align: justify;
+}
+
+#ads {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: adsBlink 1.8s ease-in-out infinite;
+
+}
+
+#ads a {
+    display: inline-block;
+    color: var(--border);
+    font-style: italic;
+}
+
+@keyframes adsBlink {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.35;
+    }
+}
 
 /* =========================================================
    DARK MODE TRANSITIONS
@@ -491,11 +522,23 @@ html.dark-mode .moon {
 }
 
 .container {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
     min-width: 0;
+
+    box-sizing: border-box;
+
+    gap: 20px;
+
+    /* Allows the JS-calculated height to work properly */
+    min-height: 0;
 }
 
 .aside {
     min-width: 0;
+    margin: 30px 0;
 }
 
 /*-----3. HEADER------*/
@@ -771,8 +814,8 @@ nav a.active{
 }
 /*-----5. SLIDER------*/
 
-.slider{
-  position: relative;
+#slider{
+  position: relative !important;
   width: 100%;
   height: 340px;
   overflow: hidden;
@@ -842,7 +885,7 @@ nav a.active{
 /*-----6. CARDS------*/
 
 /* =========================================
-   FAILED IMAGE CARD
+   FAILED IMAGE — NATURAL EMPTY STATE
    ========================================= */
 
 .card.image-error {
@@ -850,92 +893,66 @@ nav a.active{
 }
 
 
-/* Hide only the failed image */
+/* Hide the broken image without
+   changing the image area */
 .card.image-error > img {
-    opacity: 0;
+    visibility: hidden;
 }
 
 
-/* Error message inside the image area */
-.card.image-error::after {
-    content: "! \A something when wrong. Please refresh the page.";
+/* =========================================
+   ERROR ICON
+   ========================================= */
 
-    white-space: pre;
+.card.image-error::before {
+
+    content: "!";
 
     position: absolute;
 
-    top: 0;
-    left: 0;
+    top: 26%;
+    left: 50%;
 
-    width: 100%;
-    height: 40%;
+    transform: translate(-50%, -50%);
 
-    display: flex;
+    font-size: clamp(22px, 2vw, 32px);
 
-    align-items: center;
-    justify-content: center;
+    font-weight: 700;
 
-    padding: 20px;
+    line-height: 1;
 
-    box-sizing: border-box;
-
-    text-align: center;
-
-    font-size: 11px;
-    font-weight: 500;
-
-    line-height: 1.8;
-    letter-spacing: 0.04em;
-
-    color: #777;
-
-    background: #f5f5f3;
+    opacity: 0.65;
 
     pointer-events: none;
 }
 
 
 /* =========================================
-   HIDE ONLY SUMMARY
+   ERROR MESSAGE
    ========================================= */
 
-.card.image-error .cardContent p {
-    display: none;
-}
+.card.image-error::after {
 
+    content: "something went wrong";
 
-/* =========================================
-   KEEP HEADLINE AND DATE VISIBLE
-   ========================================= */
+    position: absolute;
 
-.card.image-error .cardContent {
-    display: block;
-}
+    top: 42%;
+    left: 50%;
 
-.card.image-error .cardContent h3 {
-    display: block;
-}
+    transform: translate(-50%, -50%);
 
-.card.image-error .cardContent .date {
-    display: block;
-    visibility: visible;
-    opacity: 1;
-}
+    width: 75%;
 
+    text-align: center;
 
-/* =========================================
-   MOBILE
-   ========================================= */
+    font-size: clamp(9px, 0.7vw, 11px);
 
-@media (max-width: 746px) {
+    line-height: 1.35;
 
-    .card.image-error::after {
-        height: 200px;
+    opacity: 0.65;
 
-        padding: 18px;
-
-        font-size: 10px;
-    }
+    pointer-events: none;
 }
 
 /* Base Card */
@@ -1447,8 +1464,7 @@ nav a.active{
 
   font-size: .72rem;
   font-weight: 600;
-  letter-spacing: .04em;
-  text-transform: uppercase;
+  letter-spacing: 0em;
 
   text-decoration: none;
 
@@ -3369,6 +3385,7 @@ footer {
 
     justify-content: flex-start;
     align-items: center;
+    text-align: center;
 
     gap: 0;
   }
@@ -3418,6 +3435,14 @@ footer {
   font-weight: 600;
   letter-spacing: .5px;
   text-transform: uppercase;
+}
+#categoryTag{
+  border-radius: 0;
+  position: absolute;
+  top: 15px;
+  left: 0;
+  text-align: center;
+  padding: 10px;
 }
 /*-----14. RESPONSIVE------*/
 
@@ -3476,6 +3501,7 @@ footer {
   .h2 {
     margin: 22px 6px 14px;
     padding-bottom: 8px;
+    justify-content: space-between;
   }
 
   .h2 h2 {
@@ -3491,9 +3517,10 @@ footer {
     height: 18px;
   }
 
-  .h2 a {
-    font-size: 7px;
-
+  .h2 span {
+    display: inline;
+    font-size: 8px;
+    width: 50px;
   }
 
 
@@ -3748,6 +3775,11 @@ footer {
     font-size:12px;
     line-height:1.6;
   }
+  #newsGridEditor .grid{
+    display: grid;
+    grid-template-columns:1fr;
+    gap: 20px;
+  }
 }
 
 /* Small Phone */
@@ -3773,6 +3805,7 @@ footer {
   .hero-card img{
     height:170px;
   }
+  
 }
 
 
@@ -4289,7 +4322,7 @@ footer {
        ARTICLE GRID
        ========================================= */
 
-    #newsGridEducation, #newsGridPolitics, #newsGridToday {
+    #newsGridEducation, #newsGridPolitics, #newsGridToday, #newsGridEditor {
         display: grid;
 
         gap: clamp(14px, 1.5vw, 22px);
@@ -4302,35 +4335,35 @@ footer {
        GRID VARIATIONS
        ========================================= */
 
-    #newsGridEducation.grid-1, #newsGridPolitics.grid-1, #newsGridToday.grid-1 {
+    #newsGridEducation.grid-1, #newsGridPolitics.grid-1, #newsGridToday.grid-1, #newsGridEditor.grid-1 {
         grid-template-columns: 1fr;
     }
 
-    #newsGridEducation.grid-2, #newsGridPolitics.grid-2, #newsGridToday.grid-2 {
+    #newsGridEducation.grid-2, #newsGridPolitics.grid-2, #newsGridToday.grid-2, #newsGridEditor.grid-2 {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    #newsGridEducation.grid-3, #newsGridPolitics.grid-3, #newsGridToday.grid-3 {
+    #newsGridEducation.grid-3, #newsGridPolitics.grid-3, #newsGridToday.grid-3, #newsGridEditor.grid-3 {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
-    #newsGridEducation.grid-4, #newsGridPolitics.grid-4, #newsGridToday.grid-4 {
+    #newsGridEducation.grid-4, #newsGridPolitics.grid-4, #newsGridToday.grid-4, #newsGridEditor.grid-4 {
         grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
-    #newsGridEducation.grid-5, #newsGridPolitics.grid-5, #newsGridToday.grid-5 {
+    #newsGridEducation.grid-5, #newsGridPolitics.grid-5, #newsGridToday.grid-5, #newsGridEditor.grid-5 {
         grid-template-columns: repeat(5, minmax(0, 1fr));
     }
 
-    #newsGridEducation.grid-6, #newsGridPolitics.grid-6, #newsGridToday.grid-6 {
+    #newsGridEducation.grid-6, #newsGridPolitics.grid-6, #newsGridToday.grid-6, #newsGridEditor.grid-6 {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
-    #newsGridEducation.grid-7, #newsGridPolitics.grid-7, #newsGridToday.grid-7 {
+    #newsGridEducation.grid-7, #newsGridPolitics.grid-7, #newsGridToday.grid-7, #newsGridEditor.grid-7 {
         grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
-    #newsGridEducation.grid-8, #newsGridPolitics.grid-8, #newsGridToday.grid-8 {
+    #newsGridEducation.grid-8, #newsGridPolitics.grid-8, #newsGridToday.grid-8, #newsGridEditor.grid-8 {
         grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
@@ -4339,7 +4372,7 @@ footer {
        WHOLE CARD — SQUARE
        ========================================= */
 
-    #newsGridEducation .card, #newsGridPolitics .card, #newsGridToday .card {
+    #newsGridEducation .card, #newsGridPolitics .card, #newsGridToday .card, #newsGridEditor .card {
 
         width: 100%;
 
@@ -4361,7 +4394,7 @@ footer {
        IMAGE
        ========================================= */
 
-    #newsGridEducation .card > img, #newsGridPolitics .card > img, #newsGridToday .card > img {
+    #newsGridEducation .card > img, #newsGridPolitics .card > img, #newsGridToday .card > img, #newsGridEditor .card > img {
 
         width: 100%;
 
@@ -4383,7 +4416,7 @@ footer {
        CONTENT
        ========================================= */
 
-    #newsGridEducation .cardContent, #newsGridPolitics .cardContent, #newsGridToday .cardContent {
+    #newsGridEducation .cardContent, #newsGridPolitics .cardContent, #newsGridToday .cardContent, #newsGridEditor .cardContent {
 
         flex: 1;
 
@@ -4402,7 +4435,7 @@ footer {
        HEADLINE
        ========================================= */
 
-    #newsGridEducation .cardContent h3, #newsGridPolitics .cardContent h3, #newsGridToday .cardContent h3 {
+    #newsGridEducation .cardContent h3, #newsGridPolitics .cardContent h3, #newsGridToday .cardContent h3, #newsGridEditor .cardContent h3 {
 
         margin: 0;
 
@@ -4424,7 +4457,7 @@ footer {
        SUMMARY
        ========================================= */
 
-    #newsGridEducation .cardContent p, #newsGridPolitics .cardContent p, #newsGridToday .cardContent p {
+    #newsGridEducation .cardContent p, #newsGridPolitics .cardContent p, #newsGridToday .cardContent p, #newsGridEditor .cardContent p {
 
         margin:
             clamp(5px, 0.6vw, 8px)
@@ -4448,7 +4481,7 @@ footer {
        DATE
        ========================================= */
 
-    #newsGridEducation .cardContent .date, #newsGridPolitics .cardContent .date, #newsGridToday .cardContent .date {
+    #newsGridEducation .cardContent .date, #newsGridPolitics .cardContent .date, #newsGridToday .cardContent .date, #newsGridEditor .cardContent .date {
 
         margin-top: auto;
 
@@ -4456,6 +4489,18 @@ footer {
             clamp(8px, 0.6vw, 10px);
 
         line-height: 1.2;
+
+        flex-shrink: 0;
+    }
+    #newsGridEditor .categoryTag{
+      position: absolute;
+      top: 45%;
+      left: 5px;
+        margin-top: 0;
+        font-size:
+            clamp(8px, 0.6vw, 10px);
+
+        line-height: 1;
 
         flex-shrink: 0;
     }
@@ -4592,3 +4637,63 @@ footer {
     }
 
 }
+
+.ads{
+  width: 100%;
+  height: 200px;
+  border: 1px solid var(--border);
+  margin: 50px 0;
+}
+     /* POPUP WINDOW */
+      .popup2{
+        display: none;
+      }
+      .popup, .popup2{
+        position:fixed;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+        background: var(--background);
+        padding:25px;
+        border-radius:12px;
+        box-shadow:0 4px 15px rgba(0,0,0,0.3);
+        display:none;
+        text-align:center;
+        width:300px;
+        z-index:2000;
+      }
+
+      .popup button, popup2 button{
+        margin-top:15px;
+        padding:8px 15px;
+        border:none;
+        background: var(--primary);
+        color: var(--text-light);
+        border-radius:5px;
+        cursor:pointer;
+      }
+      /* Popup box */
+      .popup-content{
+        background: var(--background);
+        width: 300px;
+        padding: 2px;
+        border-radius: 10px;
+        position: relative;
+      }
+
+      /* Close button */
+      .close{
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        font-size: 25px;
+        cursor: pointer;
+      }
+      a{
+        text-decoration: none;
+        color: var(--text);
+      }
+
+      .about-us{
+        padding: 10px;
+      }

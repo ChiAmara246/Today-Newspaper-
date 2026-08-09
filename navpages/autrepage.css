@@ -92,7 +92,6 @@
 #topNewsGrids .card{
     border-radius:14px;
     overflow:hidden;
-    background:#fff;
     border:1px solid rgba(0,0,0,0.08);
     flex-direction:column;
     margin-top: 10px;
@@ -138,43 +137,7 @@
 ol li{
     height: 80px;
 }
-/* TABLET
 
-@media (max-width:900px){
-
-    .container0{
-        flex-direction:column;
-    }
-
-    .container{
-        width:100%;
-    }
-
-    .aside{
-        display: flex;
-        position: sticky;
-        bottom: 0;
-        height:200px;
-        width: 100%;
-        padding-bottom: 15px;
-    }
-
-    .frameBox{
-        height:200px;
-        width: 300px;
-    }
-
-    #whatsapp img{
-        width:120px;
-    }
-    #whatsapp{
-        width: 120px;
-        padding: 0%;
-        margin: 30px;
-    }
-
-}
-*/
  /*PHONE*/
 
 @media (max-width:746px){
@@ -192,36 +155,3 @@ ol li{
         margin-bottom: 20px;
     }
 }
-
-/* SMALL PHONES 
-
-@media (max-width:450px){
-
-    .links{
-        display: block;
-    }
-
-    .slider{
-        height:220px;
-    }
-
-    .headline h1{
-        font-size:17px;
-    }
-
-    .headline p{
-        font-size:12px;
-    }
-
-    header img{
-        width:180px;
-    }
-
-    #dateheure{
-        display: none;
-    }
-
-    .search-box{
-        width:200px;
-    }
-}*/
