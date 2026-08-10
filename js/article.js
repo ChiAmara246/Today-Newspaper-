@@ -57,15 +57,30 @@ if (related.length < 4) {
 related = related.slice(0, 4);
 }
 
+
 function positionRelatedStories() {
-    const related = document.querySelector(".related-section");
-    const article = document.getElementById("story");
+
+    const related =
+        document.querySelector(".related-section");
+
+    const article =
+        document.getElementById("story");
 
     if (!related || !article) return;
 
     if (window.innerWidth <= 746) {
+
         // Move Related Stories directly after the article
-        article.insertAdjacentElement("afterend", related);
+        article.insertAdjacentElement(
+            "afterend",
+            related
+        );
+
+        // Remember the new position for all articles
+        localStorage.setItem(
+            "relatedStoriesPosition",
+            "mobile"
+        );
     }
 }
 
