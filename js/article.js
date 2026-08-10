@@ -74,7 +74,67 @@ function getReadingTime(text) {
     return `${Math.max(1, Math.ceil(words / 200))} min read`;
 }
 
+function showArticleSkeleton() {
+
+    const headline = document.getElementById("headline");
+    const author = document.getElementById("author");
+    const date = document.getElementById("date");
+    const readingTime = document.getElementById("readingTime");
+    const articleImg = document.getElementById("articleImg");
+    const story = document.getElementById("story");
+
+    if (headline) {
+        headline.innerHTML = `
+            <div class="article-skeleton-block">
+                <span class="article-skeleton-headline-line"></span>
+                <span class="article-skeleton-headline-line"></span>
+                <span class="article-skeleton-headline-line article-skeleton-headline-short"></span>
+            </div>
+        `;
+    }
+
+    if (author) {
+        author.innerHTML = `
+            <span class="article-skeleton-meta-line article-skeleton-author-line"></span>
+        `;
+    }
+
+    if (date) {
+        date.innerHTML = `
+            <span class="article-skeleton-meta-line article-skeleton-date-line"></span>
+        `;
+    }
+
+    if (readingTime) {
+        readingTime.innerHTML = `
+            <span class="article-skeleton-meta-line article-skeleton-reading-line"></span>
+        `;
+    }
+
+    if (articleImg) {
+        articleImg.classList.add("article-skeleton-image");
+    }
+
+    if (story) {
+        story.innerHTML = `
+            <div class="article-skeleton-story">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span class="article-skeleton-story-short"></span>
+            </div>
+        `;
+    }
+}
+
 async function loadArticle() {
+
+    showArticleSkeleton();
 
     const response = await fetch("data/index.json");
     const articles = await response.json();
@@ -82,15 +142,20 @@ async function loadArticle() {
     const article = articles.find(a => a.id === articleId);
 
     if (!article) {
-        document.body.innerHTML = "<h1>Article not found</h1>";
+        document.body.innerHTML = "Article not found";
         return;
     }
 
     document.getElementById("headline").textContent =
         article.headline;
 
-    let authorText = article.author.trim() === "" ? "by Today Newspaper Staff" : `By ${article.author}`;
-    document.getElementById("author").textContent = authorText;
+    let authorText =
+        article.author.trim() === ""
+            ? "by Today Newspaper Staff"
+            : `By ${article.author}`;
+
+    document.getElementById("author").textContent =
+        authorText;
 
     document.getElementById("date").textContent =
         formatPublicationDate(article.date);
@@ -98,17 +163,52 @@ async function loadArticle() {
     document.getElementById("readingTime").textContent =
         getReadingTime(article.fullStory);
 
-    document.getElementById("articleImg").src =
+
+    /* ONLY CHANGE: FULL STORY */
+
+    const articleImg =
+        document.getElementById("articleImg");
+
+    const story =
+        document.getElementById("story");
+
+    articleImg.onload = function () {
+
+        story.textContent =
+            article.fullStory;
+
+    };
+
+    articleImg.onerror = function () {
+
+        story.innerHTML = `
+            <div class="article-content-error">
+
+                <div class="article-content-error-icon">
+                    !
+                </div>
+
+                <div class="article-content-error-title">
+                    Article content unavailable
+                </div>
+
+                <div class="article-content-error-message">
+                    something went wrong at the moment.
+                    Please try again later.
+                </div>
+
+            </div>
+        `;
+
+    };
+
+    articleImg.src =
         getImagePath(article.img);
 
-    document.getElementById("story").textContent =
-        article.fullStory;
 
     positionRelatedStories();
 
     loadRelatedArticles(articleId);
-
 }
-
 
 loadArticle();
