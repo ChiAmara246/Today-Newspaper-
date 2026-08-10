@@ -3721,6 +3721,7 @@ footer {
 
   #story{
     width:100%;
+    margin-bottom: 50px;
     padding:0;
 
     font-size:1.05rem;

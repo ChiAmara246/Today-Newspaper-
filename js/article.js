@@ -57,6 +57,18 @@ if (related.length < 4) {
 related = related.slice(0, 4);
 }
 
+function positionRelatedStories() {
+    const related = document.querySelector(".related-section");
+    const article = document.getElementById("story");
+
+    if (!related || !article) return;
+
+    if (window.innerWidth <= 746) {
+        // Move Related Stories directly after the article
+        article.insertAdjacentElement("afterend", related);
+    }
+}
+
 function getReadingTime(text) {
     const words = text.trim().split(/\s+/).length;
     return `${Math.max(1, Math.ceil(words / 200))} min read`;
@@ -91,6 +103,8 @@ async function loadArticle() {
 
     document.getElementById("story").textContent =
         article.fullStory;
+
+    positionRelatedStories();
 
     loadRelatedArticles(articleId);
 
