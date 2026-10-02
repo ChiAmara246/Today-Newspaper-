@@ -3030,7 +3030,7 @@ function renderCharityEvent() {
 
   const eventDate = new Date(`${charityEvent.date}T00:00:00`);
   const day = eventDate.toLocaleDateString("en-GB", { day: "2-digit" });
-  const month = eventDate.toLocaleDateString("en-GB", { month: "short" });
+  const month = eventDate.toLocaleDateString("en-GB", { month: "short" }).slice(0, 3);
 
   container.innerHTML = `
     <div class="charity-media${charityEvent.image ? "" : " charity-media--banner"}">
@@ -3060,6 +3060,89 @@ function renderCharityEvent() {
 }
 
 renderCharityEvent();
+
+/* =========================
+   LATEST ACTIVITIES
+========================= */
+
+// Newest first. Edit this list to update the box on every page.
+// image and link are optional.
+const latestActivities = [
+  {
+    title: "School Outreach at Ikeja Primary",
+    summary: "Our team donated exercise books and spoke with pupils about reading.",
+    date: "2026-09-26",
+    location: "Ikeja, Lagos",
+    image: "",
+    link: ""
+  },
+  {
+    title: "Community Clean-Up Day",
+    summary: "Volunteers and readers joined us to clean up the market area.",
+    date: "2026-09-12",
+    location: "Yaba, Lagos",
+    image: "",
+    link: ""
+  },
+  {
+    title: "Youth Media Workshop",
+    summary: "A hands-on session on news writing and photography for students.",
+    date: "2026-08-29",
+    location: "Ilishan-Remo, Ogun",
+    image: "",
+    link: ""
+  }
+];
+
+function renderLatestActivities() {
+  const container = document.getElementById("latestActivities");
+  if (!container || !latestActivities.length) return;
+
+  const isNavPage = window.location.pathname.includes("/navpages/");
+
+  const items = latestActivities.slice(0, 3).map((activity) => {
+    const date = new Date(`${activity.date}T00:00:00`);
+    const day = date.toLocaleDateString("en-GB", { day: "2-digit" });
+    const month = date.toLocaleDateString("en-GB", { month: "short" }).slice(0, 3);
+    const fullDate = date.toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    });
+
+    const thumb = activity.image
+      ? `<img src="${getImagePath(activity.image)}" alt="${activity.title}" loading="lazy">`
+      : `<span class="activity-day">${day}</span><span class="activity-month">${month}</span>`;
+
+    const tag = activity.link ? "a" : "div";
+    const href = activity.link
+      ? ` href="${/^(https?:)?\/\//.test(activity.link) || !isNavPage ? activity.link : `../${activity.link}`}"`
+      : "";
+
+    return `
+      <li>
+        <${tag} class="activity-item"${href}>
+          <div class="activity-thumb${activity.image ? " has-image" : ""}">${thumb}</div>
+          <div class="activity-info">
+            <time datetime="${activity.date}">${fullDate} · ${activity.location}</time>
+            <h4>${activity.title}</h4>
+            <p>${activity.summary}</p>
+          </div>
+        </${tag}>
+      </li>
+    `;
+  }).join("");
+
+  container.innerHTML = `
+    <div class="activities-header">
+      <span class="section-label">Recap</span>
+      <h3>Latest Activities</h3>
+    </div>
+    <ul class="activities-list">${items}</ul>
+  `;
+}
+
+renderLatestActivities();
 
 function handleStickyAds(){
   const stickyArea=document.querySelector(".mobile-sticky-area");
