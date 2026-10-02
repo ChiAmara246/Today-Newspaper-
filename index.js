@@ -2991,6 +2991,76 @@ function sidebarCarousel() {
 
 sidebarCarousel();
 
+/* =========================
+   CHARITY EVENT
+========================= */
+
+// Edit this object to update the charity card on every page.
+const charityEvent = {
+  label: "Charity Drive",
+  title: "Books for Every Child",
+  description:
+    "Help us put textbooks and school supplies in the hands of 1,000 pupils across public primary schools.",
+  image: "", // optional, e.g. "charity.jpg" in /images; leave empty for the branded banner
+  date: "2026-11-14",
+  location: "Lagos, Nigeria",
+  raised: 1250000,
+  goal: 2000000,
+  currency: "₦",
+  link: "navpages/about.html#contactUs",
+  cta: "Support this cause"
+};
+
+function renderCharityEvent() {
+  const container = document.getElementById("charityEvent");
+  if (!container) return;
+
+  const isNavPage = window.location.pathname.includes("/navpages/");
+  const link = isNavPage
+    ? `../${charityEvent.link}`
+    : charityEvent.link;
+
+  const percent = Math.min(
+    100,
+    Math.round((charityEvent.raised / charityEvent.goal) * 100)
+  );
+
+  const formatAmount = (amount) =>
+    `${charityEvent.currency}${amount.toLocaleString("en-NG")}`;
+
+  const eventDate = new Date(`${charityEvent.date}T00:00:00`);
+  const day = eventDate.toLocaleDateString("en-GB", { day: "2-digit" });
+  const month = eventDate.toLocaleDateString("en-GB", { month: "short" });
+
+  container.innerHTML = `
+    <div class="charity-media${charityEvent.image ? "" : " charity-media--banner"}">
+      ${charityEvent.image
+        ? `<img src="${getImagePath(charityEvent.image)}" alt="${charityEvent.title}" loading="lazy">`
+        : `<svg class="charity-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.8 4.5c2.1 0 3.6 1.1 5.2 3 1.6-1.9 3.1-3 5.2-3 3.8 0 5.9 3.9 4.4 7.3C19.5 16.4 12 21 12 21z"/></svg>`}
+      <span class="charity-label">${charityEvent.label}</span>
+      <time class="charity-date" datetime="${charityEvent.date}">
+        <span class="charity-day">${day}</span>
+        <span class="charity-month">${month}</span>
+      </time>
+    </div>
+    <div class="charity-body">
+      <h3 class="charity-title">${charityEvent.title}</h3>
+      <p class="charity-location">${charityEvent.location}</p>
+      <p class="charity-description">${charityEvent.description}</p>
+      <div class="charity-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent}" aria-label="Fundraising progress">
+        <span style="width: ${percent}%"></span>
+      </div>
+      <div class="charity-stats">
+        <span><strong>${formatAmount(charityEvent.raised)}</strong> raised</span>
+        <span>${percent}% of ${formatAmount(charityEvent.goal)}</span>
+      </div>
+      <a class="charity-cta" href="${link}">${charityEvent.cta} →</a>
+    </div>
+  `;
+}
+
+renderCharityEvent();
+
 function handleStickyAds(){
   const stickyArea=document.querySelector(".mobile-sticky-area");
   const aside=document.querySelector(".aside");
